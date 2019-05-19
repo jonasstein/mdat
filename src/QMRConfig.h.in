@@ -1,0 +1,3 @@
+// the configured options and settings for Tutorial
+#define QMR_VERSION_MAJOR @QMR_VERSION_MAJOR@
+#define QMR_VERSION_MINOR @QMR_VERSION_MINOR@
