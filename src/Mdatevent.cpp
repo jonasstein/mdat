@@ -15,7 +15,7 @@ Mdatevent::~Mdatevent() {
 }
 
 
-Mdatevent MakeNeutron(int modID, int slotID, int amplitude, int position, int timestamp){
+Mdatevent::MakeNeutron(int modID, int slotID, int amplitude, int position, int timestamp){
 	Mdatevent NewEvent { };
 
 	NewEvent.ID = IDClass::neutron;
