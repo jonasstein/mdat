@@ -1,6 +1,9 @@
 #ifndef SRC_MDATEVENT_H_
 #define SRC_MDATEVENT_H_
 
+#include <cstdint>       // int8_t
+
+
 namespace mevent {
 
 enum class IDClass { neutron = 0, trigger = 1 };
@@ -14,17 +17,28 @@ enum class DataIDClass { Monitor1 = 0, Monitor2, Monitor3, Monitor4,
 	ADC1, ADC2}; // Data source
 
 
+typedef uint8_t EventID_t;
+typedef uint8_t EventTrigID_t;
+typedef uint8_t EventDataID_t;
+
 
 class Mdatevent {
+private:
+	EventID_t EventID;
+	EventTrigID_t EventTrigID;
+	EventDataID_t EventDataID;
+
 public:
+	//Mdatevent(EventID_t myEventID, EventTrigID_t myEventTrigID, EventDataID_t myEventDataID);
 	Mdatevent();
 	virtual ~Mdatevent();
 
 	IDClass ID = IDClass::neutron;
 	TrigIDClass TrigID = TrigIDClass::Source1;
 
-	Mdatevent MakeNeutron(int modID, int slotID, int amplitude, int position, int timestamp);
-	void PrintEvent();
+	//Mdatevent NewNeutronEvent(int modID, int slotID, int amplitude, int position, int timestamp);
+	Mdatevent NewTriggerEvent(EventID_t EventID, EventTrigID_t EventTrigID, EventDataID_t EventDataID);
+	EventID_t getEventID(Mdatevent);
 };
 
 } /* namespace mevent */

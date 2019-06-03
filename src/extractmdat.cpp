@@ -7,15 +7,17 @@
 //============================================================================
 
 #include <iostream>
+#include <string>
 #include "QMRConfig.h"
 #include "Mdatevent.h"
 
 
 int main() {
-	std::cout << "!!!Hello World!!! Version:" << QMR_VERSION_MAJOR << std::endl;
+	std::cout << "Hello World! Version:_ " << QMR_VERSION_STRING << std::endl;
 
-	mevent::Mdatevent testevent { };
-	testevent.mevent::Mdatevent::MakeNeutron(1, 1, 1, 1, 1);
-	testevent.mevent::Mdatevent::PrintEvent();
+	//mevent::Mdatevent ev{};
+
+	//testevent.mevent::Mdatevent::MakeNeutron(1, 1, 1, 1, 1);
+	//testevent.mevent::Mdatevent::PrintEvent();
 	return 0;
 }
