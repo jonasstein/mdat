@@ -5,10 +5,6 @@
 
 //namespace mevent {
 
-//typedef uint8_t EventID_t;
-//typedef uint8_t EventTrigID_t;
-//typedef uint8_t EventDataID_t;
-
 using EventID_t = uint8_t;
 using EventTrigID_t = uint8_t;
 using EventDataID_t = uint8_t;
