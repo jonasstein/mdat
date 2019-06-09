@@ -17,7 +17,5 @@ int main() {
 
 	//mevent::Mdatevent ev{};
 
-	//testevent.mevent::Mdatevent::MakeNeutron(1, 1, 1, 1, 1);
-	//testevent.mevent::Mdatevent::PrintEvent();
 	return 0;
 }

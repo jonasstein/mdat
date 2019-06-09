@@ -6,9 +6,11 @@
 //namespace mevent {
 
 
-
-
 Mdatevent::Mdatevent() {
+	Mdatevent::EventID=IDClass::neutron;
+	Mdatevent::EventTrigID=TrigIDClass::CmpReg;
+	Mdatevent::EventDataID=DataIDClass::ADC1;
+
 }
 
 
