@@ -4,7 +4,7 @@
 #include <cstdint>       // int8_t
 
 
-namespace mevent {
+//namespace mevent {
 
 enum class IDClass { neutron = 0, trigger = 1 };
 enum class TrigIDClass { Source1 = 0, Source2, Source3, Source4,
@@ -38,9 +38,9 @@ public:
 
 	//Mdatevent NewNeutronEvent(int modID, int slotID, int amplitude, int position, int timestamp);
 	Mdatevent NewTriggerEvent(EventID_t EventID, EventTrigID_t EventTrigID, EventDataID_t EventDataID);
-	EventID_t getEventID(Mdatevent);
+	EventID_t getEventID(void);
 };
 
-} /* namespace mevent */
+//} /* namespace mevent */
 
 #endif /* SRC_MDATEVENT_H_ */
