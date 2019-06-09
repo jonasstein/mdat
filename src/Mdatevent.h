@@ -17,9 +17,9 @@ enum class DataIDClass { Monitor1 = 0, Monitor2, Monitor3, Monitor4,
 	ADC1, ADC2}; // Data source
 
 
-typedef uint8_t EventID_t;
-typedef uint8_t EventTrigID_t;
-typedef uint8_t EventDataID_t;
+using EventID_t = uint8_t;
+using EventTrigID_t = uint8_t;
+using EventDataID_t = uint8_t;
 
 
 class Mdatevent {
@@ -36,8 +36,6 @@ public:
 	IDClass ID = IDClass::neutron;
 	TrigIDClass TrigID = TrigIDClass::Source1;
 
-	//Mdatevent NewNeutronEvent(int modID, int slotID, int amplitude, int position, int timestamp);
-	Mdatevent NewTriggerEvent(EventID_t EventID, EventTrigID_t EventTrigID, EventDataID_t EventDataID);
 	EventID_t getEventID(void);
 };
 

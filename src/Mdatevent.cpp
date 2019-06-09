@@ -5,20 +5,13 @@
 
 //namespace mevent {
 
-enum class IDClass { neutron = 0, trigger = 1 };
-enum class TrigIDClass { Source1 = 0, Source2, Source3, Source4,
-	Timer1, Timer2, Timer3, Timer4,
-	RearTTL1, RearTTL2,
-	CmpReg}; // "Compare Register" is used most often to trigger.
+//typedef uint8_t EventID_t;
+//typedef uint8_t EventTrigID_t;
+//typedef uint8_t EventDataID_t;
 
-enum class DataIDClass { Monitor1 = 0, Monitor2, Monitor3, Monitor4,
-	RearTTL1, RearTTL2,
-	ADC1, ADC2}; // Data source
-
-
-typedef uint8_t EventID_t;
-typedef uint8_t EventTrigID_t;
-typedef uint8_t EventDataID_t;
+using EventID_t = uint8_t;
+using EventTrigID_t = uint8_t;
+using EventDataID_t = uint8_t;
 
 
 Mdatevent::Mdatevent() {
@@ -30,16 +23,6 @@ Mdatevent::Mdatevent() {
 
 Mdatevent::~Mdatevent() {
 }
-
-/*
-Mdatevent Mdatevent::NewNeutron(int modID, int slotID, int amplitude, int position, int timestamp){
-	Mdatevent NewEvent { };
-
-	NewEvent.ID = IDClass::neutron;
-	return NewEvent;
-}
-*/
-
 
 
 EventID_t getEventID(void){
