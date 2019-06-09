@@ -10,7 +10,6 @@ Mdatevent::Mdatevent() {
 	Mdatevent::EventID=IDClass::neutron;
 	Mdatevent::EventTrigID=TrigIDClass::CmpReg;
 	Mdatevent::EventDataID=DataIDClass::ADC1;
-
 }
 
 
@@ -18,7 +17,7 @@ Mdatevent::~Mdatevent() {
 }
 
 
-IDClass getEventID(void){
+IDClass Mdatevent::getEventID(void){
 	return Mdatevent::EventID;
 	}
 
