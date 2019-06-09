@@ -1,3 +1,6 @@
+# DIA Temp files
+*.dia~
+
 # Prerequisites
 *.d
 

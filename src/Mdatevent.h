@@ -17,26 +17,18 @@ enum class DataIDClass { Monitor1 = 0, Monitor2, Monitor3, Monitor4,
 	ADC1, ADC2}; // Data source
 
 
-using EventID_t = uint8_t;
-using EventTrigID_t = uint8_t;
-using EventDataID_t = uint8_t;
-
 
 class Mdatevent {
 private:
-	EventID_t EventID;
-	EventTrigID_t EventTrigID;
-	EventDataID_t EventDataID;
+	IDClass EventID;
+	TrigIDClass EventTrigID;
+	DataIDClass EventDataID;
 
 public:
-	//Mdatevent(EventID_t myEventID, EventTrigID_t myEventTrigID, EventDataID_t myEventDataID);
 	Mdatevent();
 	virtual ~Mdatevent();
 
-	IDClass ID = IDClass::neutron;
-	TrigIDClass TrigID = TrigIDClass::Source1;
-
-	EventID_t getEventID(void);
+	IDClass getEventID(void);
 };
 
 //} /* namespace mevent */
