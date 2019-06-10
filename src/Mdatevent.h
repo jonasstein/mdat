@@ -3,7 +3,7 @@
 
 #include <cstdint>       // int8_t
 
-//namespace mevent {
+namespace mevent {
 
 enum class IDClass { neutron = 0, trigger = 1 };
 enum class TrigIDClass { Source1 = 0, Source2, Source3, Source4,
@@ -36,6 +36,6 @@ public:
 
 };
 
-//} /* namespace mevent */
+} /* namespace mevent */
 
 #endif /* SRC_MDATEVENT_H_ */

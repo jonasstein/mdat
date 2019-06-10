@@ -3,7 +3,7 @@
 #include <iostream>     // std::cout
 #include <cstdint>      // int8_t
 
-//namespace mevent {
+namespace mevent {
 
 Mdatevent::Mdatevent() {
 	Mdatevent::EventID=IDClass::neutron;
@@ -29,4 +29,4 @@ IDClass Mdatevent::getEventID(void){
 	}
 
 
-//} /* namespace mevent */
+} /* namespace mevent */
