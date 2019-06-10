@@ -15,7 +15,8 @@
 int main() {
 	std::cout << "Version: " << QMR_VERSION_STRING << std::endl;
 
-	mevent::Mdatevent ev{};
+	mevent::Mdatevent testobject{}; //fails
+
 //	IDClass TestID;
 /*
 	TestID = ev.getEventID();
