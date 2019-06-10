@@ -3,7 +3,6 @@
 
 #include <cstdint>       // int8_t
 
-
 //namespace mevent {
 
 enum class IDClass { neutron = 0, trigger = 1 };
@@ -16,6 +15,9 @@ enum class DataIDClass { Monitor1 = 0, Monitor2, Monitor3, Monitor4,
 	RearTTL1, RearTTL2,
 	ADC1, ADC2}; // Data source
 
+using DataClass = uint32_t;      // 21 bit needed
+using TimestampClass = uint64_t; // 48 bit offset from the header, 19 bit time in the event
+
 
 
 class Mdatevent {
@@ -23,12 +25,15 @@ private:
 	IDClass EventID;
 	TrigIDClass EventTrigID;
 	DataIDClass EventDataID;
+	DataClass EventData;
+	TimestampClass EventTimestamp;
 
 public:
 	Mdatevent();
+	Mdatevent(IDClass myid, TrigIDClass mytrigid, DataIDClass mydataid, DataClass mydata, TimestampClass mytimestamp);
 	virtual ~Mdatevent();
-
 	IDClass getEventID(void);
+
 };
 
 //} /* namespace mevent */

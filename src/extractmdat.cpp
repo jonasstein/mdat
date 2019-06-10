@@ -13,9 +13,19 @@
 
 
 int main() {
-	std::cout << "Hello World! Version:_ " << QMR_VERSION_STRING << std::endl;
+	std::cout << "Version: " << QMR_VERSION_STRING << std::endl;
 
-	//mevent::Mdatevent ev{};
-
+	Mdatevent ev{};
+//	IDClass TestID;
+/*
+	TestID = ev.getEventID();
+	if (IDClass::trigger == TestID) {
+		std::cout<< "This was a trigger\n";
+	}
+	else
+		{
+		std::cout<< "This was a neutron\n";
+		};
+*/
 	return 0;
 }
