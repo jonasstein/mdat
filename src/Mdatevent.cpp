@@ -29,4 +29,10 @@ IDClass Mdatevent::getEventID(void){
 	}
 
 
+void Mdatevent::printEvent(void){
+	printf("This could be an event\n");
+}
+
+
+
 } /* namespace mevent */

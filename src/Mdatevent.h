@@ -2,8 +2,16 @@
 #define SRC_MDATEVENT_H_
 
 #include <cstdint>       // int8_t
+#include <type_traits>
+
 
 namespace mevent {
+template <typename E>
+constexpr auto to_underlying(E e) noexcept
+{
+    return static_cast<std::underlying_type_t<E>>(e);
+}
+
 
 enum class IDClass { neutron = 0, trigger = 1 };
 enum class TrigIDClass { Source1 = 0, Source2, Source3, Source4,
@@ -33,6 +41,7 @@ public:
 	Mdatevent(IDClass myid, TrigIDClass mytrigid, DataIDClass mydataid, DataClass mydata, TimestampClass mytimestamp);
 	virtual ~Mdatevent();
 	IDClass getEventID(void);
+	void printEvent();
 
 };
 
