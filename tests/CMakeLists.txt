@@ -8,9 +8,9 @@ find_package(GTest REQUIRED)
 add_executable(runTests tests.cpp)
 
 add_library(gtestmevent SHARED ../src/Mdatevent.cpp)
-target_link_libraries(gtestqmrdump gtestmevent)
+#target_link_libraries(gtestqmrdump gtestmevent)
 
-add_executable(gtestqmrdump ../src/extractmdat.cpp)
+#add_executable(gtestqmrdump ../src/extractmdat.cpp)
 target_link_libraries(gtestmevent GTest::GTest GTest::Main)
 
 # add_test(all runTests) # old syntax
