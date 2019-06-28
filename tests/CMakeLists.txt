@@ -7,11 +7,11 @@ find_package(GTest REQUIRED)
 # Link runTests with what we want to test and the GTest and pthread library
 add_executable(runTests tests.cpp)
 
-add_library(mevent SHARED ../src/Mdatevent.cpp)
-target_link_libraries(qmrdump mevent)
+add_library(gtestmevent SHARED ../src/Mdatevent.cpp)
+target_link_libraries(gtestqmrdump gtestmevent)
 
-add_executable(qmrdump ../src/extractmdat.cpp)
-target_link_libraries(mevent GTest::GTest GTest::Main)
+add_executable(gtestqmrdump ../src/extractmdat.cpp)
+target_link_libraries(gtestmevent GTest::GTest GTest::Main)
 
 # add_test(all runTests) # old syntax
 add_test(NAME all COMMAND runTests)
