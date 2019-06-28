@@ -13,7 +13,5 @@ target_link_libraries(qmrdump mevent)
 add_executable(qmrdump ../src/extractmdat.cpp)
 target_link_libraries(mevent GTest::GTest GTest::Main)
 
-
-
-add_test(all runTests)
-
+# add_test(all runTests) # old syntax
+add_test(NAME all COMMAND runTests)
