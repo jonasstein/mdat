@@ -13,9 +13,7 @@ target_link_libraries(testrunner mevent)
 message(STATUS, "WARNING")
 message(STATUS, ${GTEST_BOTH_LIBRARIES})
 
-#target_link_libraries(testrunner PUBLIC 
-#	${GTEST_BOTH_LIBRARIES}
-#)
+target_link_libraries(testrunner PUBLIC ${GTEST_BOTH_LIBRARIES})
 
 
 #add_executable(gtestqmrdump ../src/extractmdat.cpp)
