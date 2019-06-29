@@ -8,12 +8,12 @@ find_package(GTest REQUIRED)
 add_executable(testrunner tests.cpp)
 
 #add_library(gtestmevent SHARED ../src/Mdatevent.cpp)
-target_link_libraries(testrunner mevent)
+target_link_libraries(testrunner mevent ${GTEST_BOTH_LIBRARIES})
 
 message(STATUS, "WARNING")
 message(STATUS, ${GTEST_BOTH_LIBRARIES})
 
-target_link_libraries(testrunner PUBLIC ${GTEST_BOTH_LIBRARIES})
+#target_link_libraries(testrunner PUBLIC ${GTEST_BOTH_LIBRARIES})
 
 
 #add_executable(gtestqmrdump ../src/extractmdat.cpp)
