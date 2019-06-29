@@ -27,7 +27,6 @@ using DataClass = uint32_t;      // 21 bit needed
 using TimestampClass = uint64_t; // 48 bit offset from the header, 19 bit time in the event
 
 
-
 class Mdatevent {
 private:
 	IDClass EventID;

@@ -5,27 +5,15 @@
 
 namespace mevent {
 
-Mdatevent::Mdatevent() {
-	Mdatevent::EventID=IDClass::neutron;
-	Mdatevent::EventTrigID=TrigIDClass::CmpReg;
-	Mdatevent::EventDataID=DataIDClass::ADC1;
-	Mdatevent::EventData=0b0;
-	Mdatevent::EventTimestamp=0b0;
+Mdatevent::Mdatevent() :
+		EventID(IDClass::neutron), EventTrigID(TrigIDClass::CmpReg), EventDataID(DataIDClass::ADC1), EventData(0b0), EventTimestamp(0b0) {
 }
-
-/*Mdatevent::Mdatevent(IDClass myid, TrigIDClass mytrigid, DataIDClass mydataid, DataClass mydata, TimestampClass mytimestamp){
-	Mdatevent::EventID=myid;
-	Mdatevent::EventTrigID=mytrigid;
-	Mdatevent::EventDataID=mydataid;
-	Mdatevent::EventData=mydata;
-	Mdatevent::EventTimestamp=mytimestamp;
-	std::cout << "Constructor was called\n";
-}
-*/
 
 Mdatevent::Mdatevent(IDClass myid, TrigIDClass mytrigid, DataIDClass mydataid, DataClass mydata, TimestampClass mytimestamp) :
 		EventID(myid), EventTrigID(mytrigid), EventDataID(mydataid), EventData(mydata), EventTimestamp(mytimestamp) {
+//	std::cout << "Constructor was called\n";
 }
+
 
 Mdatevent::~Mdatevent() {
 }
