@@ -10,11 +10,13 @@ add_executable(testrunner tests.cpp)
 #add_library(gtestmevent SHARED ../src/Mdatevent.cpp)
 target_link_libraries(testrunner mevent)
 
-target_link_libraries(testrunner PUBLIC
-        ${GTEST_BOTH_LIBRARIES}
-)
-
+message("WARNING")
 message(${GTEST_BOTH_LIBRARIES})
+
+#target_link_libraries(testrunner PUBLIC 
+#	${GTEST_BOTH_LIBRARIES}
+#)
+
 
 #add_executable(gtestqmrdump ../src/extractmdat.cpp)
 #target_link_libraries(gtestmevent GTest::GTest GTest::Main)
