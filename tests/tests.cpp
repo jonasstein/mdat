@@ -3,7 +3,7 @@
 //#include <cstdint>
 //#include <string>     // std::string, std::stoull
 
-#include <"../src/mevent.h">
+#include <"../src/Mdatevent.h">
 
 //const std::string testFileName = "samples/180sec_2chan_5kHz_pm_4kHz_FM_4Hz_Trigger1Hz.mdat";
 
