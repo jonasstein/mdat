@@ -33,6 +33,10 @@ void Mdatevent::printEvent(void){
 	printf("This could be an event\n");
 }
 
-
+int Mdatevent::pluseins(int a){
+	int b{0};
+	b=a+1;
+	return b;
+}
 
 } /* namespace mevent */

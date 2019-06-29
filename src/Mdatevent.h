@@ -42,7 +42,7 @@ public:
 	virtual ~Mdatevent();
 	IDClass getEventID(void);
 	void printEvent();
-
+	int pluseins(int a);
 };
 
 } /* namespace mevent */
