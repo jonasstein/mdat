@@ -7,8 +7,15 @@
 
 TEST(CategoryTest, SpecificTest)
 {
+    ASSERT_EQ(1, 1);
+}
+
+
+TEST(CategoryTest, ZeroTest)
+{
     ASSERT_EQ(0, 0);
 }
+
 
 int main(int argc, char **argv)
 {
