@@ -13,13 +13,18 @@ Mdatevent::Mdatevent() {
 	Mdatevent::EventTimestamp=0b0;
 }
 
-Mdatevent::Mdatevent(IDClass myid, TrigIDClass mytrigid, DataIDClass mydataid, DataClass mydata, TimestampClass mytimestamp){
+/*Mdatevent::Mdatevent(IDClass myid, TrigIDClass mytrigid, DataIDClass mydataid, DataClass mydata, TimestampClass mytimestamp){
 	Mdatevent::EventID=myid;
 	Mdatevent::EventTrigID=mytrigid;
 	Mdatevent::EventDataID=mydataid;
 	Mdatevent::EventData=mydata;
 	Mdatevent::EventTimestamp=mytimestamp;
 	std::cout << "Constructor was called\n";
+}
+*/
+
+Mdatevent::Mdatevent(IDClass myid, TrigIDClass mytrigid, DataIDClass mydataid, DataClass mydata, TimestampClass mytimestamp) :
+		EventID(myid), EventTrigID(mytrigid), EventDataID(mydataid), EventData(mydata), EventTimestamp(mytimestamp) {
 }
 
 Mdatevent::~Mdatevent() {
