@@ -3,7 +3,7 @@
 //#include <cstdint>
 //#include <string>     // std::string, std::stoull
 
-#include <"../src/Mdatevent.h">
+#include "../src/Mdatevent.h"
 
 //const std::string testFileName = "samples/180sec_2chan_5kHz_pm_4kHz_FM_4Hz_Trigger1Hz.mdat";
 
@@ -21,7 +21,7 @@ TEST(CategoryTest, ZeroTest)
 
 TEST(CategoryTest, Plustest)
 {
-    ASSERT_EQ(pluseins(1), 2);
+    ASSERT_EQ(mevent::pluseins(1), 2);
 }
 
 int main(int argc, char **argv)
