@@ -3,6 +3,8 @@
 //#include <cstdint>
 //#include <string>     // std::string, std::stoull
 
+#include <"../src/mevent.h">
+
 //const std::string testFileName = "samples/180sec_2chan_5kHz_pm_4kHz_FM_4Hz_Trigger1Hz.mdat";
 
 TEST(CategoryTest, SpecificTest)
@@ -16,6 +18,11 @@ TEST(CategoryTest, ZeroTest)
     ASSERT_EQ(0, 1);
 }
 
+
+TEST(CategoryTest, Plustest)
+{
+    ASSERT_EQ(pluseins(1), 2);
+}
 
 int main(int argc, char **argv)
 {
