@@ -10,8 +10,8 @@ add_executable(testrunner tests.cpp)
 #add_library(gtestmevent SHARED ../src/Mdatevent.cpp)
 target_link_libraries(testrunner mevent)
 
-message("WARNING")
-message(${GTEST_BOTH_LIBRARIES})
+message(STATUS, "WARNING")
+message(STATUS, ${GTEST_BOTH_LIBRARIES})
 
 #target_link_libraries(testrunner PUBLIC 
 #	${GTEST_BOTH_LIBRARIES}
