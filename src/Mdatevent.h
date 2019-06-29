@@ -13,13 +13,13 @@ constexpr auto to_underlying(E e) noexcept
 }
 
 
-enum class IDClass { neutron = 0, trigger = 1 };
-enum class TrigIDClass { Source1 = 0, Source2, Source3, Source4,
+enum class IDClass : uint8_t { neutron = 0, trigger = 1 };
+enum class TrigIDClass : uint8_t{ Source1 = 0, Source2, Source3, Source4,
 	Timer1, Timer2, Timer3, Timer4,
 	RearTTL1, RearTTL2,
 	CmpReg}; // "Compare Register" is used most often to trigger.
 
-enum class DataIDClass { Monitor1 = 0, Monitor2, Monitor3, Monitor4,
+enum class DataIDClass : uint8_t { Monitor1 = 0, Monitor2, Monitor3, Monitor4,
 	RearTTL1, RearTTL2,
 	ADC1, ADC2}; // Data source
 
@@ -35,12 +35,20 @@ private:
 	DataClass EventData;
 	TimestampClass EventTimestamp;
 
+	struct triggerevent { IDClass ID : 1;
+						  TrigIDClass TriID : 3;
+						  DataIDClass DataID : 4;
+						  uint32_t Data : 21;
+						  uint32_t Timestamp : 19;};
+
+
 public:
 	Mdatevent();
 	Mdatevent(IDClass myid, TrigIDClass mytrigid, DataIDClass mydataid, DataClass mydata, TimestampClass mytimestamp);
 	virtual ~Mdatevent();
 	IDClass getEventID(void);
-	void printEvent();
+	void printfullEvent();
+	void printBinaryEvent();
 	int pluseins(int a);
 };
 

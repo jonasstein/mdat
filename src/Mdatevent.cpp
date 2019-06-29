@@ -23,7 +23,7 @@ IDClass Mdatevent::getEventID(void){
 	}
 
 
-void Mdatevent::printEvent(void){
+void Mdatevent::printfullEvent(void){
 	printf("This could be an event\n");
 }
 
