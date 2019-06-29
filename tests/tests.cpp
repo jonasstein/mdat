@@ -27,7 +27,7 @@ TEST(CategoryTest, Plustest)
 					  0b0,
 					  0b0} ;
 
-    ASSERT_EQ(mevent::Mdatevent::testobject2.pluseins(1), 2);
+    ASSERT_EQ(testobject2.pluseins(1), 2);
 }
 
 int main(int argc, char **argv)
