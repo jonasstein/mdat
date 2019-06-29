@@ -21,7 +21,13 @@ TEST(CategoryTest, ZeroTest)
 
 TEST(CategoryTest, Plustest)
 {
-    ASSERT_EQ(mevent::pluseins(1), 2);
+	mevent::Mdatevent testobject2 {mevent::IDClass::trigger,
+					  mevent::TrigIDClass::CmpReg,
+					  mevent::DataIDClass::Monitor1,
+					  0b0,
+					  0b0} ;
+
+    ASSERT_EQ(mevent::Mdatevent::testobject2.pluseins(1), 2);
 }
 
 int main(int argc, char **argv)
