@@ -20,7 +20,7 @@ int main() {
 					  mevent::TrigIDClass::CmpReg,
 					  mevent::DataIDClass::Monitor1,
 					  0b0,
-					  0b0} ;
+					  0b0};
 
 	//testobject2.printEvent();
 

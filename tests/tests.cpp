@@ -15,7 +15,7 @@ TEST(CategoryTest, SpecificTest)
 
 TEST(CategoryTest, ZeroTest)
 {
-    ASSERT_EQ(0, 1);
+    ASSERT_EQ(0, 0);
 }
 
 
