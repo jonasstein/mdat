@@ -16,6 +16,7 @@ configure_file (
 	"QMRConfig.h"
   )
 
-add_library(mevent SHARED Mdatevent.cpp)
+add_library(Mdatevent SHARED Mdatevent.cpp)
+add_library(Lmfile SHARED Lmfile.cpp)
 add_executable(qmrdump extractmdat.cpp)
-target_link_libraries(qmrdump mevent)
+target_link_libraries(qmrdump Mdatevent Lmfile)

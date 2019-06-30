@@ -13,7 +13,7 @@ constexpr auto to_underlying(E e) noexcept
 }
 
 
-enum class IDClass : uint8_t { neutron = 0, trigger = 1 };
+enum class IDClass : bool { neutron = 0, trigger = 1 };
 enum class TrigIDClass : uint8_t{ Source1 = 0, Source2, Source3, Source4,
 	Timer1, Timer2, Timer3, Timer4,
 	RearTTL1, RearTTL2,
@@ -26,6 +26,10 @@ enum class DataIDClass : uint8_t { Monitor1 = 0, Monitor2, Monitor3, Monitor4,
 using DataClass = uint32_t;      // 21 bit needed
 using TimestampClass = uint64_t; // 48 bit offset from the header, 19 bit time in the event
 
+struct eventLMH {
+	uint8_t Lo : 8;
+	uint8_t Mid : 8;
+	uint8_t Hi : 8;};
 
 class Mdatevent {
 private:
@@ -35,11 +39,11 @@ private:
 	DataClass EventData;
 	TimestampClass EventTimestamp;
 
-	struct triggerevent { IDClass ID : 1;
-						  TrigIDClass TriID : 3;
-						  DataIDClass DataID : 4;
-						  uint32_t Data : 21;
-						  uint32_t Timestamp : 19;};
+	struct event { IDClass ID : 1;
+			 	  TrigIDClass TrigID : 3;
+				  DataIDClass DataID : 4;
+				  uint32_t Data : 21;
+				  uint32_t Timestamp : 19;};
 
 
 public:
@@ -48,7 +52,7 @@ public:
 	virtual ~Mdatevent();
 	IDClass getEventID(void);
 	void printfullEvent();
-	void printBinaryEvent();
+	//event getevent(triggerevent ev);
 	int pluseins(int a);
 };
 

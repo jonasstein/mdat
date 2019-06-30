@@ -10,6 +10,7 @@
 #include <string>
 #include "QMRConfig.h"
 #include "Mdatevent.h"
+#include "Lmfile.h"
 
 
 int main() {
