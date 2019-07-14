@@ -79,8 +79,8 @@ int main(int argc, char *argv[]) {
   bool FirstPrintOut = true;
 
   // calculate mean time between SYNC
-  while (!ifs.eof()) {
-    ifs >> CURRENTts >> TrigID >> DataID >> Data;
+  while (ifs >> CURRENTts >> TrigID >> DataID >> Data) {
+
     if (0 == StartOffsetts) {
       StartOffsetts = CURRENTts;
     }
@@ -101,6 +101,7 @@ int main(int argc, char *argv[]) {
       LastSYNCts = CURRENTts;
     }
   }
+  ifs.clear();
 
   if (0 == SYNCtsQty) {
     std::cerr << "WARNING: No SYNC signals found on channel " << ArgChSync
@@ -108,21 +109,18 @@ int main(int argc, char *argv[]) {
   } else {
     SYNCtsMEAN = SYNCtsSUM / SYNCtsQty;
 
-    std::cout << "# Start offset ts: " << StartOffsetts << std::endl;
-    std::cout << "# SYNC event found: " << SYNCtsQty << std::endl;
-    std::cout << "# avg SYNC period: " << SYNCtsMEAN
-              << " ns = " << (float)(SYNCtsMEAN) / 1000000 << " ms "
-              << std::endl;
-    std::cout << "# min SYNC period: " << MindSYNCts
-              << " ns = " << (float)(MindSYNCts) / 1000000 << " ms "
-              << std::endl;
-    std::cout << "# max SYNC period: " << MaxdSYNCts
-              << " ns = " << (float)(MaxdSYNCts) / 1000000 << " ms "
+    std::cout << "# Start offset ts: " << StartOffsetts << "\n"
+              << "# SYNC event found: " << SYNCtsQty << "\n"
+              << "# avg SYNC period: " << SYNCtsMEAN
+              << " ns = " << (float)(SYNCtsMEAN) / 1000000 << " ms\n"
+              << "# min SYNC period: " << MindSYNCts
+              << " ns = " << (float)(MindSYNCts) / 1000000 << " ms\n"
+              << "# max SYNC period: " << MaxdSYNCts
+              << " ns = " << (float)(MaxdSYNCts) / 1000000 << " ms"
               << std::endl;
   }
 
   std::string::size_type sz = 0; // alias of size_t
-  ifs.clear();
 
   if (HISTOGRAMMODE == ArgMode) {
     ifs.seekg(0, ifs.beg); // go to file start again
@@ -135,8 +133,7 @@ int main(int argc, char *argv[]) {
     histogram *histoMon;
     histoMon = new histogram(ArgBins, SYNCtsMEAN / ArgBins);
 
-    while (!ifs.eof()) {
-      ifs >> CURRENTts >> TrigID >> DataID >> Data;
+    while (ifs >> CURRENTts >> TrigID >> DataID >> Data) {
 
       if (CURRENTts < StartOffsetts) {
         std::cerr << "ERROR: Event with timestamp " << CURRENTts
