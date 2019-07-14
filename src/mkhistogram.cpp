@@ -9,7 +9,8 @@
 
 void printhelp() {
   std::cout << "mkhistogram by Jonas Stein (2016-2019) \n"
-            << "Usage: mkhistogram <ChDet> <ChSync> <ChSemaphore> <ChMonitor> <filename> <bins> <mode> \n"
+            << "Usage: mkhistogram <ChDet> <ChSync> <ChSemaphore> <ChMonitor> "
+               "<filename> <bins> <mode> \n"
             << "Only ChMonitor 0..3 will be printed \n"
             << "mode = 1 infomode, 2 histogram" << std::endl;
 }
@@ -61,14 +62,16 @@ int main(int argc, char *argv[]) {
   // if not SEMAPHORE read CURRENTts and printf
   // if SEMAPHORE then histo.print(); histo.reset()
 
-  long long StartOffsetts = 0;
-  long long CURRENTts = 0;
-  long long SYNCtsSUM = 0;
+  using TimeStamp_t = long long;
+
+  TimeStamp_t StartOffsetts = 0;
+  TimeStamp_t CURRENTts = 0;
+  TimeStamp_t SYNCtsSUM = 0;
   long long SYNCtsQty = 0;
-  long long SYNCtsMEAN = 0;
-  long long LastSYNCts = 0;
-  long long MindSYNCts = MAX64INT;
-  long long MaxdSYNCts = 0;
+  TimeStamp_t SYNCtsMEAN = 0;
+  TimeStamp_t LastSYNCts = 0;
+  TimeStamp_t MindSYNCts = MAX64INT;
+  TimeStamp_t MaxdSYNCts = 0;
 
   long long TrigID = 0;
   long long DataID = 0;
@@ -101,8 +104,8 @@ int main(int argc, char *argv[]) {
   }
 
   if (0 == SYNCtsQty) {
-    std::cerr << "WARNING: No SYNC signals found on channel " << ArgChSync << "!"
-              << std::endl;
+    std::cerr << "WARNING: No SYNC signals found on channel " << ArgChSync
+              << "!" << std::endl;
   } else {
     SYNCtsMEAN = SYNCtsSUM / SYNCtsQty;
 
@@ -119,7 +122,6 @@ int main(int argc, char *argv[]) {
               << std::endl;
   }
 
-  long long buffer;
   std::string::size_type sz = 0; // alias of size_t
   ifs.clear();
 
@@ -137,8 +139,14 @@ int main(int argc, char *argv[]) {
     while (!ifs.eof()) {
       ifs >> CURRENTts >> TrigID >> DataID >> Data;
 
-      assert(CURRENTts >= StartOffsetts);
+      if (CURRENTts < StartOffsetts) {
+        std::cerr << "ERROR: Event with timestamp " << CURRENTts
+                  << " was earlier than the start time " << StartOffsetts
+                  << std::endl;
+      };
       CURRENTts -= StartOffsetts;
+
+      TimeStamp_t buffer = 0;
 
       if ((7 == TrigID) && (DataID == ArgChDet)) { // found a detector event
         buffer = (CURRENTts - LastSYNCts);
