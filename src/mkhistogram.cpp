@@ -1,19 +1,17 @@
+#include "histolong.hpp"
+#include <assert.h> /* assert */
 #include <cstdint>
 #include <fstream>  // std::ifstream
 #include <iostream> // std::cout
 #include <istream>
-#include <string> // std::string, std::stoull
 #include <stdio.h>
-#include <assert.h> /* assert */
-#include "histolong.hpp"
+#include <string> // std::string, std::stoull
 
 void printhelp() {
-  std::cout << "mkhistogram by Jonas Stein (2016-2019)" << std::endl;
-  std::cout << "Usage: mkhistogram <ChDet> <ChSync> <ChSemaphore> <ChMonitor> "
-               "<filename> <bins> <mode>"
-            << std::endl;
-  std::cout << "Only ChMonitor 0..3 will be printed" << std::endl;
-  std::cout << "mode = 1 infomode, 2 histogram" << std::endl;
+  std::cout << "mkhistogram by Jonas Stein (2016-2019) \n"
+            << "Usage: mkhistogram <ChDet> <ChSync> <ChSemaphore> <ChMonitor> <filename> <bins> <mode> \n"
+            << "Only ChMonitor 0..3 will be printed \n"
+            << "mode = 1 infomode, 2 histogram" << std::endl;
 }
 
 int main(int argc, char *argv[]) {
@@ -41,7 +39,7 @@ int main(int argc, char *argv[]) {
       atol(argv[7]); // 1=get info about periods, 2=generate histogram
 
   std::cerr << "Read file " << ArgFilename << std::endl;
-  std::cerr << "Generate histograms with " << ArgBins << " bins" << std::endl;
+  std::cerr << "Generate histogram with " << ArgBins << " bins" << std::endl;
   std::cerr << "ChDet:" << ArgChDet << " ChSync:" << ArgChSync
             << " ChSemaphore:" << ArgChSemaphore
             << " ChMonitor:" << ArgChMonitor << std::endl;
@@ -51,7 +49,7 @@ int main(int argc, char *argv[]) {
 
   if (!ifs) // file couldn't be opened
   {
-    std::cerr << "Error: file could not be opened" << std::endl;
+    std::cerr << "ERROR: Could not open file." << std::endl;
     exit(1);
   }
 
@@ -64,7 +62,7 @@ int main(int argc, char *argv[]) {
   // if SEMAPHORE then histo.print(); histo.reset()
 
   long long StartOffsetts = 0;
-  long long CURRENTts;
+  long long CURRENTts = 0;
   long long SYNCtsSUM = 0;
   long long SYNCtsQty = 0;
   long long SYNCtsMEAN = 0;
@@ -72,21 +70,21 @@ int main(int argc, char *argv[]) {
   long long MindSYNCts = MAX64INT;
   long long MaxdSYNCts = 0;
 
-  long long TrigID;
-  long long DataID;
-  long long Data;
+  long long TrigID = 0;
+  long long DataID = 0;
+  long long Data = 0;
 
   bool FirstPrintOut = true;
 
   // calculate mean time between SYNC
   while (!ifs.eof()) {
     ifs >> CURRENTts >> TrigID >> DataID >> Data;
-    if (StartOffsetts == 0) {
+    if (0 == StartOffsetts) {
       StartOffsetts = CURRENTts;
     }
     CURRENTts -= StartOffsetts;
 
-    if ((TrigID == 7) && (DataID == ArgChSync)) { // found a SYNC event
+    if ((7 == TrigID) && (DataID == ArgChSync)) { // found a SYNC event
       if (LastSYNCts > 0) {
         if (ArgMode == INFOMODE) {
           std::cout << CURRENTts - LastSYNCts << " ns period between "
@@ -102,12 +100,12 @@ int main(int argc, char *argv[]) {
     }
   }
 
-  if (SYNCtsQty == 0) {
-    std::cerr << "Zero SYNC signals found on channel " << ArgChSync << " !"
+  if (0 == SYNCtsQty) {
+    std::cerr << "WARNING: No SYNC signals found on channel " << ArgChSync << "!"
               << std::endl;
   } else {
     SYNCtsMEAN = SYNCtsSUM / SYNCtsQty;
-    // if (ArgMode==INFOMODE){
+
     std::cout << "# Start offset ts: " << StartOffsetts << std::endl;
     std::cout << "# SYNC event found: " << SYNCtsQty << std::endl;
     std::cout << "# avg SYNC period: " << SYNCtsMEAN
@@ -119,14 +117,13 @@ int main(int argc, char *argv[]) {
     std::cout << "# max SYNC period: " << MaxdSYNCts
               << " ns = " << (float)(MaxdSYNCts) / 1000000 << " ms "
               << std::endl;
-    //}
   }
 
   long long buffer;
   std::string::size_type sz = 0; // alias of size_t
   ifs.clear();
 
-  if (ArgMode == HISTOGRAMMODE) {
+  if (HISTOGRAMMODE == ArgMode) {
     ifs.seekg(0, ifs.beg); // go to file start again
 
     LastSYNCts = 0; // set time t0
@@ -140,26 +137,25 @@ int main(int argc, char *argv[]) {
     while (!ifs.eof()) {
       ifs >> CURRENTts >> TrigID >> DataID >> Data;
 
-      // std::cout << CURRENTts << std::endl;
       assert(CURRENTts >= StartOffsetts);
       CURRENTts -= StartOffsetts;
 
-      if ((TrigID == 7) && (DataID == ArgChDet)) { // found a detector event
+      if ((7 == TrigID) && (DataID == ArgChDet)) { // found a detector event
         buffer = (CURRENTts - LastSYNCts);
         histoDet->put(buffer);
       }
 
-      if ((TrigID == 7) && (DataID == ArgChMonitor) &&
+      if ((7 == TrigID) && (DataID == ArgChMonitor) &&
           (ArgChMonitor < 4)) { // found a monitor event
         buffer = (CURRENTts - LastSYNCts);
         histoMon->put(buffer);
       }
 
-      if ((TrigID == 7) && (DataID == ArgChSync)) { // found a SYNC event
+      if ((7 == TrigID) && (DataID == ArgChSync)) { // found a SYNC event
         LastSYNCts = CURRENTts;
       }
 
-      if ((TrigID == 7) &&
+      if ((7 == TrigID) &&
           (DataID == ArgChSemaphore)) { // found a SEMAPHORE event (new
                                         // histogram/new scan)
         if (FirstPrintOut) {
