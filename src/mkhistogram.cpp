@@ -1,5 +1,4 @@
 #include "histolong.hpp"
-#include <assert.h> /* assert */
 #include <cstdint>
 #include <fstream>  // std::ifstream
 #include <iostream> // std::cout
