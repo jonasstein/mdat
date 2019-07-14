@@ -16,6 +16,11 @@ configure_file (
 	"QMRConfig.h"
   )
 
+add_library(Histolong SHARED histolong.cpp)
+add_executable(mkhistogram mkhistogram.cpp)
+target_link_libraries(mkhistogram Histolong)
+
+
 add_library(Mdatevent SHARED Mdatevent.cpp)
 add_library(Lmfile SHARED Lmfile.cpp)
 add_executable(qmrdump extractmdat.cpp)

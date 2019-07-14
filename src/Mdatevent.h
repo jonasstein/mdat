@@ -26,6 +26,13 @@ enum class DataIDClass : uint8_t { Monitor1 = 0, Monitor2, Monitor3, Monitor4,
 using DataClass = uint32_t;      // 21 bit needed
 using TimestampClass = uint64_t; // 48 bit offset from the header, 19 bit time in the event
 
+using ModIDClass = uint8_t; // 3 Bit used
+using SlotIDClass = uint8_t; // 5 Bit used
+using AmplitudeClass = uint16_t; // 10 Bit used
+using PositionClass = uint16_t; // 10 Bit used
+
+
+
 struct eventLMH {
 	uint8_t Lo : 8;
 	uint8_t Mid : 8;
@@ -38,6 +45,11 @@ private:
 	DataIDClass EventDataID;
 	DataClass EventData;
 	TimestampClass EventTimestamp;
+
+	ModIDClass ModID;
+	SlotIDClass SlotID;
+	AmplitudeClass Amplitude;
+	PositionClass Position;
 
 	struct event { IDClass ID : 1;
 			 	  TrigIDClass TrigID : 3;

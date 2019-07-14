@@ -16,6 +16,10 @@ private:
 public:
 	Lmfile( const std::string mypath );
 	virtual ~Lmfile();
+	uint32_t parsefileheader();
+	uint64_t Lmfile::read64bit();
+
+
 };
 
 } /* namespace mevent */
