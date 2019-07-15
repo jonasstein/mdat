@@ -5,6 +5,12 @@
 #include <istream>
 #include <stdio.h>
 #include <string> // std::string, std::stoull
+#include <algorithm> //std::min
+
+using Channel_t = uint8_t;
+using Mode_t = uint8_t;
+using TimeStamp_t = long long;
+
 
 void printhelp() {
   std::cout << "mkhistogram by Jonas Stein (2016-2019) \n"
@@ -13,6 +19,8 @@ void printhelp() {
             << "Only ChMonitor 0..3 will be printed \n"
             << "mode = 1 infomode, 2 histogram" << std::endl;
 }
+
+
 
 int main(int argc, char *argv[]) {
 
@@ -23,20 +31,21 @@ int main(int argc, char *argv[]) {
     exit(3);
   }
 
-  const long long INFOMODE = 1;
-  const long long HISTOGRAMMODE = 2;
-  const long long MAX64INT = 9223372036854775807;
-
   // read parameter
   std::string ArgThisProgram(argv[0]);
-  long long ArgChDet = atol(argv[1]);
-  long long ArgChSync = atol(argv[2]);
-  long long ArgChSemaphore = atol(argv[3]);
-  long long ArgChMonitor = atol(argv[4]);
+  Channel_t ArgChDet = std::min(atoi(argv[1]),7);
+  Channel_t ArgChSync = 1; //strtoull(argv[2],NULL,10);
+
+  Channel_t ArgChSemaphore = std::min(atoi(argv[3]),7);
+  Channel_t ArgChMonitor = std::min(atoi(argv[4]),7);
   std::string ArgFilename(argv[5]);
   long long ArgBins = atol(argv[6]);
-  long long ArgMode =
-      atol(argv[7]); // 1=get info about periods, 2=generate histogram
+  Mode_t ArgMode = std::min(atoi(argv[7]), 2); // 1=get info about periods, 2=generate histogram
+
+
+  const Mode_t INFOMODE = 1;
+  const Mode_t HISTOGRAMMODE = 2;
+
 
   std::cerr << "Read file " << ArgFilename << std::endl;
   std::cerr << "Generate histogram with " << ArgBins << " bins" << std::endl;
@@ -61,26 +70,24 @@ int main(int argc, char *argv[]) {
   // if not SEMAPHORE read CURRENTts and printf
   // if SEMAPHORE then histo.print(); histo.reset()
 
-  using TimeStamp_t = long long;
 
   TimeStamp_t StartOffsetts = 0;
   TimeStamp_t CURRENTts = 0;
+  uint8_t TrigID = 0;
+  uint8_t DataID = 0;
+  uint16_t Data = 0;
+
   TimeStamp_t SYNCtsSUM = 0;
   long long SYNCtsQty = 0;
   TimeStamp_t SYNCtsMEAN = 0;
   TimeStamp_t LastSYNCts = 0;
-  TimeStamp_t MindSYNCts = MAX64INT;
+  TimeStamp_t MindSYNCts = 0xffff'ffff'ffff'ffff;
   TimeStamp_t MaxdSYNCts = 0;
-
-  long long TrigID = 0;
-  long long DataID = 0;
-  long long Data = 0;
 
   bool FirstPrintOut = true;
 
   // calculate mean time between SYNC
   while (ifs >> CURRENTts >> TrigID >> DataID >> Data) {
-
     if (0 == StartOffsetts) {
       StartOffsetts = CURRENTts;
     }
@@ -101,13 +108,13 @@ int main(int argc, char *argv[]) {
       LastSYNCts = CURRENTts;
     }
   }
-  ifs.clear();
+  ifs.clear(); // reset EOF flag
 
-  if (0 == SYNCtsQty) {
-    std::cerr << "WARNING: No SYNC signals found on channel " << ArgChSync
-              << "!" << std::endl;
+  if (SYNCtsQty < 2) {
+    std::cerr << "WARNING: Found only " << SYNCtsQty << " SYNC signals on channel " << ArgChSync << "\n"
+              << "WARNING: Expected at least 2 SYNC signals." << std::endl;
   } else {
-    SYNCtsMEAN = SYNCtsSUM / SYNCtsQty;
+    SYNCtsMEAN = SYNCtsSUM / (SYNCtsQty-1);
 
     std::cout << "# Start offset ts: " << StartOffsetts << "\n"
               << "# SYNC event found: " << SYNCtsQty << "\n"
