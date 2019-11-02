@@ -69,7 +69,8 @@ public:
 
 	virtual ~Mdatevent();
 	IDClass getEventID(void);
-	void printfullEvent();
+	void printeventverbose();
+	void printevent();
 };
 
 } /* namespace mevent */

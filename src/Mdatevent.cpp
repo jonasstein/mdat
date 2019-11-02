@@ -29,12 +29,6 @@ IDClass Mdatevent::getEventID(void){
 	return Mdatevent::EventID;
 	}
 
-
-void Mdatevent::printfullEvent(void){
-	printf("This could be an event\n");
-}
-
-
 Mdatevent Mdatevent::neutronevent(TimestampClass mytimestamp,
 		ModIDClass EventModID, SlotIDClass EventSlotID, AmplitudeClass EventAmplitude, PositionClass EventPosition) {
 
@@ -53,6 +47,16 @@ Mdatevent Mdatevent::triggernevent(TimestampClass mytimestamp,
 			mytrigid, mydataid, mydata};
 		return mynewevent;
 }
+
+
+void Mdatevent::printeventverbose(void){
+	printf("This could be an event VERBOSE \n");
+}
+
+void Mdatevent::printevent(void){
+	printf("This could be an event\n");
+}
+
 
 
 } /* namespace mevent */
