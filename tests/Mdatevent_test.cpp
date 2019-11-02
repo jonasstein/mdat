@@ -19,7 +19,7 @@ TEST(CategoryTest, ZeroTest)
 }
 
 
-TEST(CategoryTest, Plustest)
+/*TEST(CategoryTest, Plustest)
 {
 	mevent::Mdatevent testobject2 {mevent::IDClass::trigger,
 					  mevent::TrigIDClass::CmpReg,
@@ -29,6 +29,7 @@ TEST(CategoryTest, Plustest)
 
     ASSERT_EQ(testobject2.pluseins(1), 2);
 }
+*/
 
 int main(int argc, char **argv)
 {
