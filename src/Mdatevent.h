@@ -62,9 +62,9 @@ public:
 			ModIDClass EventModID, SlotIDClass EventSlotID, AmplitudeClass EventAmplitude, PositionClass EventPosition,
 			TrigIDClass mytrigid, DataIDClass mydataid, DataClass mydata);
 
-	Mdatevent neutronevent(IDClass myid, TimestampClass mytimestamp,
+	Mdatevent neutronevent(TimestampClass mytimestamp,
 			ModIDClass EventModID, SlotIDClass EventSlotID, AmplitudeClass EventAmplitude, PositionClass EventPosition);
-	Mdatevent triggernevent(IDClass myid, TimestampClass mytimestamp,
+	Mdatevent triggernevent(TimestampClass mytimestamp,
 			TrigIDClass mytrigid, DataIDClass mydataid, DataClass mydata);
 
 	virtual ~Mdatevent();

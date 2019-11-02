@@ -35,7 +35,7 @@ void Mdatevent::printfullEvent(void){
 }
 
 
-Mdatevent Mdatevent::neutronevent(IDClass myid, TimestampClass mytimestamp,
+Mdatevent Mdatevent::neutronevent(TimestampClass mytimestamp,
 		ModIDClass EventModID, SlotIDClass EventSlotID, AmplitudeClass EventAmplitude, PositionClass EventPosition) {
 
 	mevent::Mdatevent mynewevent{mevent::IDClass::neutron, mytimestamp,
@@ -45,10 +45,10 @@ Mdatevent Mdatevent::neutronevent(IDClass myid, TimestampClass mytimestamp,
 }
 
 
-Mdatevent Mdatevent::triggernevent(IDClass myid, TimestampClass mytimestamp,
+Mdatevent Mdatevent::triggernevent(TimestampClass mytimestamp,
 		TrigIDClass mytrigid, DataIDClass mydataid, DataClass mydata) {
 
-	mevent::Mdatevent mynewevent{mevent::IDClass::neutron, mytimestamp,
+	mevent::Mdatevent mynewevent{mevent::IDClass::trigger, mytimestamp,
 			0, 0, 0, 0,
 			mytrigid, mydataid, mydata};
 		return mynewevent;
