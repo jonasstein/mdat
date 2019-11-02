@@ -10,7 +10,6 @@
 namespace mevent {
 
 
-
 Lmfile::Lmfile(std::string const mypath) : ifs ( mypath, std::ifstream::binary ), filesize ( 0 ),  firsttimestamp_ns ( 0 )
 {
   //filesize = std::filesystem::file_size(mypath); // use this C++17 feature in future

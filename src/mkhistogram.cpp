@@ -9,7 +9,9 @@
 
 using Channel_t = uint8_t;
 using Mode_t = uint8_t;
-using TimeStamp_t = long long;
+using TimeStamp_t = uint64_t;
+using Counter_t = uint64_t;
+
 
 
 void printhelp() {
@@ -39,7 +41,7 @@ int main(int argc, char *argv[]) {
   Channel_t ArgChSemaphore = std::min(atoi(argv[3]),7);
   Channel_t ArgChMonitor = std::min(atoi(argv[4]),7);
   std::string ArgFilename(argv[5]);
-  long long ArgBins = atol(argv[6]);
+  uint64_t ArgBins = atol(argv[6]);
   Mode_t ArgMode = std::min(atoi(argv[7]), 2); // 1=get info about periods, 2=generate histogram
 
 
@@ -48,10 +50,10 @@ int main(int argc, char *argv[]) {
 
 
   std::cerr << "Read file " << ArgFilename << std::endl;
-  std::cerr << "Generate histogram with " << ArgBins << " bins" << std::endl;
-  std::cerr << "ChDet:" << ArgChDet << " ChSync:" << ArgChSync
-            << " ChSemaphore:" << ArgChSemaphore
-            << " ChMonitor:" << ArgChMonitor << std::endl;
+  std::cerr << "Generate histogram with " << static_cast<unsigned int>(ArgBins) << " bins" << std::endl;
+  std::cerr << "ChDet:" << static_cast<unsigned int>(ArgChDet) << " ChSync:" << static_cast<unsigned int>(ArgChSync)
+            << " ChSemaphore:" << static_cast<unsigned int>(ArgChSemaphore)
+            << " ChMonitor:" << static_cast<unsigned int>(ArgChMonitor) << std::endl;
 
   std::ifstream ifs;
   ifs.open(ArgFilename, std::ifstream::in);
@@ -73,12 +75,12 @@ int main(int argc, char *argv[]) {
 
   TimeStamp_t StartOffsetts = 0;
   TimeStamp_t CURRENTts = 0;
-  uint8_t TrigID = 0;
-  uint8_t DataID = 0;
+  uint16_t TrigID = 0;
+  uint16_t DataID = 0;
   uint16_t Data = 0;
 
   TimeStamp_t SYNCtsSUM = 0;
-  long long SYNCtsQty = 0;
+  Counter_t SYNCtsQty = 0;
   TimeStamp_t SYNCtsMEAN = 0;
   TimeStamp_t LastSYNCts = 0;
   TimeStamp_t MindSYNCts = 0xffff'ffff'ffff'ffff;
@@ -111,18 +113,18 @@ int main(int argc, char *argv[]) {
   ifs.clear(); // reset EOF flag
 
   if (SYNCtsQty < 2) {
-    std::cerr << "WARNING: Found only " << SYNCtsQty << " SYNC signals on channel " << ArgChSync << "\n"
+    std::cerr << "WARNING: Found only " << static_cast<unsigned int>(SYNCtsQty) << " SYNC signals on channel " << static_cast<unsigned int>(ArgChSync) << "\n"
               << "WARNING: Expected at least 2 SYNC signals." << std::endl;
   } else {
     SYNCtsMEAN = SYNCtsSUM / (SYNCtsQty-1);
 
-    std::cout << "# Start offset ts: " << StartOffsetts << "\n"
-              << "# SYNC event found: " << SYNCtsQty << "\n"
-              << "# avg SYNC period: " << SYNCtsMEAN
+    std::cout << "# Start offset ts: " << static_cast<unsigned int>(StartOffsetts) << "\n"
+              << "# SYNC event found: " << static_cast<unsigned int>(SYNCtsQty) << "\n"
+              << "# avg SYNC period: " << static_cast<unsigned int>(SYNCtsMEAN)
               << " ns = " << (float)(SYNCtsMEAN) / 1000000 << " ms\n"
-              << "# min SYNC period: " << MindSYNCts
+              << "# min SYNC period: " << static_cast<unsigned int>(MindSYNCts)
               << " ns = " << (float)(MindSYNCts) / 1000000 << " ms\n"
-              << "# max SYNC period: " << MaxdSYNCts
+              << "# max SYNC period: " << static_cast<unsigned int>(MaxdSYNCts)
               << " ns = " << (float)(MaxdSYNCts) / 1000000 << " ms"
               << std::endl;
   }
@@ -143,8 +145,8 @@ int main(int argc, char *argv[]) {
     while (ifs >> CURRENTts >> TrigID >> DataID >> Data) {
 
       if (CURRENTts < StartOffsetts) {
-        std::cerr << "ERROR: Event with timestamp " << CURRENTts
-                  << " was earlier than the start time " << StartOffsetts
+        std::cerr << "ERROR: Event with timestamp " << static_cast<unsigned int>(CURRENTts)
+                  << " was earlier than the start time " << static_cast<unsigned int>(StartOffsetts)
                   << std::endl;
       };
       CURRENTts -= StartOffsetts;

@@ -5,16 +5,16 @@
 
 class histogram{
 private:
-  std::array<long long, 20000> buckets = { { } };
-  long long maxbuckets; 
-  long long binwidth;
-  long long fullperiod_ns;
+  std::array<uint64_t, 20000> buckets = { { } };
+  uint64_t maxbuckets;
+  uint64_t binwidth;
+  uint64_t fullperiod_ns;
   
 public:
-  histogram(const long long setmaxbuckets, const long long setbinwidth);
+  histogram(const uint64_t setmaxbuckets, const uint64_t setbinwidth);
   ~histogram();
   
-  void put(long long &Eventts);
+  void put(uint64_t &Eventts);
   void reset();
   void printheader();
   void print();

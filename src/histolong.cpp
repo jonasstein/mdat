@@ -6,7 +6,7 @@
 #include <assert.h>
 
 
-histogram::histogram(const long long setmaxbuckets, const long long setbinwidth)
+histogram::histogram(const uint64_t setmaxbuckets, const uint64_t setbinwidth)
 {
   maxbuckets = setmaxbuckets;
   binwidth = setbinwidth;
@@ -16,25 +16,25 @@ histogram::histogram(const long long setmaxbuckets, const long long setbinwidth)
 histogram::~histogram()
 {}
 
-void histogram::put(long long &Eventts)
+void histogram::put(uint64_t &Eventts)
 {
-  long long timeOnHistoScale;
-  long long index = 0;
+	uint64_t timeOnHistoScale;
+  uint64_t index = 0;
   timeOnHistoScale = Eventts % (maxbuckets*binwidth);
-  index = (long) ((timeOnHistoScale * maxbuckets) / fullperiod_ns);
+  index = (uint64_t) ((timeOnHistoScale * maxbuckets) / fullperiod_ns);
   buckets[index]++;
 }
 
 void histogram::reset()
 {
-  for (long long n=0; n< maxbuckets; n++){
+  for (uint64_t n=0; n< maxbuckets; n++){
     buckets[n]=0;
    }
 }
 
 void histogram::printheader()
 {
-  for( long long a = 0; a < maxbuckets; a++ ){
+  for( uint64_t a = 0; a < maxbuckets; a++ ){
    if (a < maxbuckets-1)
    {
      std::cout << a * binwidth << ",";
@@ -44,7 +44,7 @@ void histogram::printheader()
 
 void histogram::print()
 {
-  for( long long a = 0; a < maxbuckets; a++ ){
+  for( uint64_t a = 0; a < maxbuckets; a++ ){
    if (a < maxbuckets-1)
    {
      std::cout << buckets[a] << ",";
