@@ -1,6 +1,15 @@
 #!/bin/bash
 
+# break on first failed command
+set -e 
+
 SCRIPT=$(readlink -f $0)
 SCRIPTPATH=`dirname ${SCRIPT}`
 
-rm -Rf CMakeFiles/ CMakeCache.txt && cmake -B ${SCRIPTPATH}/build -DCMAKE_CXX_COMPILER=clang++ .  && make
+BUILDPATH=${SCRIPTPATH}/build
+
+
+rm -rf CMakeFiles/ CMakeCache.txt 
+rm -rf ${BUILDPATH}/*
+
+cmake -B ${BUILDPATH} -DCMAKE_CXX_COMPILER=clang++ .  && make
