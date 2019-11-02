@@ -17,11 +17,8 @@ int main() {
 	std::cout << "Version: " << QMR_VERSION_STRING << std::endl;
 
 	mevent::Mdatevent testobject{};
-	mevent::Mdatevent testobject2 {mevent::IDClass::trigger,
-					  mevent::TrigIDClass::CmpReg,
-					  mevent::DataIDClass::Monitor1,
-					  0b0,
-					  0b0};
+	//testobject = mevent::Mdatevent			;
+	//(mevent::IDClass::trigger,		  mevent::TrigIDClass::CmpReg,					  mevent::DataIDClass::Monitor1,					  0b0,					  0b0);
 
 	//testobject2.printEvent();
 

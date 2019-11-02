@@ -36,7 +36,7 @@ uint64_t Lmfile::read64bit ( )
 uint32_t Lmfile::parsefileheader()
 {
   uint32_t fileHeaderLength;
-  // read first line and parse secondline with number of lines
+  // read first line and parse second line with number of lines
   std::string thisline;
   std::getline(ifs, thisline);
   //assert(thisline == ("mesytec psd listmode data"));

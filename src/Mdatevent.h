@@ -32,7 +32,6 @@ using AmplitudeClass = uint16_t; // 10 Bit used
 using PositionClass = uint16_t; // 10 Bit used
 
 
-
 struct eventLMH {
 	uint8_t Lo : 8;
 	uint8_t Mid : 8;
@@ -40,32 +39,37 @@ struct eventLMH {
 
 class Mdatevent {
 private:
+	//properties of neutron and trigger events
 	IDClass EventID;
+	TimestampClass EventTimestamp;
+
+	//properties of neutron events
+	ModIDClass EventModID;
+	SlotIDClass EventSlotID;
+	AmplitudeClass EventAmplitude;
+	PositionClass EventPosition;
+
+	//properties of trigger events
 	TrigIDClass EventTrigID;
 	DataIDClass EventDataID;
 	DataClass EventData;
-	TimestampClass EventTimestamp;
 
-	ModIDClass ModID;
-	SlotIDClass SlotID;
-	AmplitudeClass Amplitude;
-	PositionClass Position;
-
-	struct event { IDClass ID : 1;
-			 	  TrigIDClass TrigID : 3;
-				  DataIDClass DataID : 4;
-				  uint32_t Data : 21;
-				  uint32_t Timestamp : 19;};
 
 
 public:
 	Mdatevent();
-	Mdatevent(IDClass myid, TrigIDClass mytrigid, DataIDClass mydataid, DataClass mydata, TimestampClass mytimestamp);
+	Mdatevent(IDClass myid, TimestampClass mytimestamp,
+			ModIDClass EventModID, SlotIDClass EventSlotID, AmplitudeClass EventAmplitude, PositionClass EventPosition,
+			TrigIDClass mytrigid, DataIDClass mydataid, DataClass mydata);
+
+	Mdatevent neutronevent(IDClass myid, TimestampClass mytimestamp,
+			ModIDClass EventModID, SlotIDClass EventSlotID, AmplitudeClass EventAmplitude, PositionClass EventPosition);
+	Mdatevent triggernevent(IDClass myid, TimestampClass mytimestamp,
+			TrigIDClass mytrigid, DataIDClass mydataid, DataClass mydata);
+
 	virtual ~Mdatevent();
 	IDClass getEventID(void);
 	void printfullEvent();
-	//event getevent(triggerevent ev);
-	int pluseins(int a);
 };
 
 } /* namespace mevent */
