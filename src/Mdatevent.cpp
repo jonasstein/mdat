@@ -49,12 +49,82 @@ Mdatevent Mdatevent::triggernevent(TimestampClass mytimestamp,
 }
 
 
-void Mdatevent::printeventverbose(void){
-	printf("This could be an event VERBOSE \n");
+Mdatevent Mdatevent::importrawevent(char rawinput [6]) {
+
+	uint8_t LoWordA  = rawinput[0];
+	uint8_t LoWordB  = rawinput[1];
+	uint8_t MidWordA = rawinput[2];
+	uint8_t MidWordB = rawinput[3];
+	uint8_t HiWordA  = rawinput[4];
+	uint8_t HiWordB  = rawinput[5];
+
+	uint64_t fullevent = HiWordA  << 40 +
+			             HiWordB  << 32 +
+						 MidWordA << 24 +
+						 MidWordB << 16 +
+						 LoWordA  <<  8 +
+						 LoWordB;
+
+     u_int64_t ID =     (fullevent & 0b100000000000000000000000000000000000000000000000) >> 47;
+	 u_int64_t TrigID = (fullevent & 0b011100000000000000000000000000000000000000000000) >> 44;
+	 u_int64_t DataID = (fullevent & 0b000011110000000000000000000000000000000000000000) >> 40;
+	 u_int64_t DATA =   (fullevent & 0b000000001111111111111111111110000000000000000000) >> 19;
+	 u_int64_t TIMEST = (fullevent & 0b000000000000000000000000000001111111111111111111);
+
+
+
+	mevent::Mdatevent mynewevent{mevent::IDClass::trigger, mytimestamp,
+			0, 0, 0, 0,
+			mytrigid, mydataid, mydata};
+
+
+		return mynewevent;
 }
 
+
+
+
+void Mdatevent::printeventverbose(void){
+
+
+	if (this->EventID == IDClass::neutron){
+	printf("EventID %d (neutron event), ", this->EventID);
+    printf("EventTimestamp %d, ", this->EventTimestamp);
+
+	printf("EventModID %d, ", this->EventModID);
+	printf("EventSlotID %d, ", this->EventSlotID);
+	printf("EventAmplitude %d, ", this->EventAmplitude);
+	printf("EventPosition %d\n", this->EventPosition);
+	}
+
+	if (this->EventID == IDClass::trigger){
+	printf("EventID %d (trigger event), ", this->EventID);
+	printf("EventTimestamp %d, ", this->EventTimestamp);
+
+	printf("EventTrigID %d, ", this->EventTrigID);
+	printf("EventDataID %d, ", this->EventDataID);
+	printf("EventData %d\n", this->EventData);
+	}
+}
+
+
+
 void Mdatevent::printevent(void){
-	printf("This could be an event\n");
+	if (this->EventID == IDClass::neutron){
+		printf("%d, ", this->EventTimestamp);
+		printf("8, ");  // 0..7 are trigger events 8 are neutron events
+		printf("%d, ", this->EventModID);
+		printf("%d, ", this->EventSlotID);
+		printf("%d, ", this->EventAmplitude);
+		printf("%d\n", this->EventPosition);
+		}
+
+		if (this->EventID == IDClass::trigger){
+		printf("%d, ", this->EventTimestamp);
+		printf("%d, ", this->EventTrigID);
+		printf("%d, ", this->EventDataID);
+		printf("%d\n", this->EventData);
+		}
 }
 
 

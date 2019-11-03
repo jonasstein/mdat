@@ -66,11 +66,13 @@ public:
 			ModIDClass EventModID, SlotIDClass EventSlotID, AmplitudeClass EventAmplitude, PositionClass EventPosition);
 	Mdatevent triggernevent(TimestampClass mytimestamp,
 			TrigIDClass mytrigid, DataIDClass mydataid, DataClass mydata);
+	Mdatevent importrawevent(char rawinput [6]);
 
 	virtual ~Mdatevent();
 	IDClass getEventID(void);
 	void printeventverbose();
 	void printevent();
+
 };
 
 } /* namespace mevent */

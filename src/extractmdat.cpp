@@ -19,11 +19,12 @@ int main() {
 	mevent::Mdatevent testobject{};
 	testobject.triggernevent(0b1001, mevent::TrigIDClass::CmpReg, mevent::DataIDClass::Monitor1, 0b0);
 
-	//testobject.printEvent();
+	testobject.printeventverbose();
+	testobject.printevent();
 
 
-	mevent::IDClass TestID{mevent::IDClass::trigger};
-	std::cout<< mevent::to_underlying(TestID);
+	//mevent::IDClass TestID{mevent::IDClass::trigger};
+	//std::cout<< mevent::to_underlying(TestID);
 
 /*
 	TestID = ev.getEventID();
