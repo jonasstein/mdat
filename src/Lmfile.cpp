@@ -59,3 +59,7 @@ uint32_t Lmfile::parsefileheader()
 
 
 } /* namespace mevent */
+
+//readfileheader
+//buffer readbufferheader
+//buffer: uint16_t length
