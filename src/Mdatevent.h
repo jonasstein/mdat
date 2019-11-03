@@ -14,7 +14,7 @@ constexpr auto to_underlying(E e) noexcept
 
 
 enum class IDClass : bool { neutron = 0, trigger = 1 };
-enum class TrigIDClass : uint8_t{Timer1, Timer2, Timer3, Timer4,
+enum class TrigIDClass : uint8_t{Timer1 = 0, Timer2, Timer3, Timer4,
 	RearTTL1, RearTTL2,
 	CmpReg}; // "Compare Register" is used most often to trigger.
 
