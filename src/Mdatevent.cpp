@@ -2,6 +2,8 @@
 
 #include <iostream>     // std::cout
 #include <cstdint>      // int8_t
+#include "Bitslicer.h"
+
 
 namespace mevent {
 
@@ -39,7 +41,7 @@ Mdatevent Mdatevent::neutronevent(TimestampClass mytimestamp,
 }
 
 
-Mdatevent Mdatevent::triggernevent(TimestampClass mytimestamp,
+Mdatevent Mdatevent::triggerevent(TimestampClass mytimestamp,
 		TrigIDClass mytrigid, DataIDClass mydataid, DataClass mydata) {
 
 	mevent::Mdatevent mynewevent{mevent::IDClass::trigger, mytimestamp,
@@ -50,6 +52,7 @@ Mdatevent Mdatevent::triggernevent(TimestampClass mytimestamp,
 
 
 Mdatevent Mdatevent::importrawevent(char rawinput [6]) {
+
 
 	uint8_t LoWordA  = rawinput[0];
 	uint8_t LoWordB  = rawinput[1];
@@ -65,20 +68,17 @@ Mdatevent Mdatevent::importrawevent(char rawinput [6]) {
 						 LoWordA  <<  8 +
 						 LoWordB;
 
-     u_int64_t ID =     (fullevent & 0b100000000000000000000000000000000000000000000000) >> 47;
-	 u_int64_t TrigID = (fullevent & 0b011100000000000000000000000000000000000000000000) >> 44;
-	 u_int64_t DataID = (fullevent & 0b000011110000000000000000000000000000000000000000) >> 40;
-	 u_int64_t DATA =   (fullevent & 0b000000001111111111111111111110000000000000000000) >> 19;
-	 u_int64_t TIMEST = (fullevent & 0b000000000000000000000000000001111111111111111111);
+     u_int64_t myID        = (fullevent & 0b100000000000000000000000000000000000000000000000) >> 47;
+	 u_int64_t mytrigid    = (fullevent & 0b011100000000000000000000000000000000000000000000) >> 44;
+	 u_int64_t mydataid    = (fullevent & 0b000011110000000000000000000000000000000000000000) >> 40;
+	 u_int64_t mydata      = (fullevent & 0b000000001111111111111111111110000000000000000000) >> 19;
+	 u_int64_t mytimestamp = (fullevent & 0b000000000000000000000000000001111111111111111111);
 
 
 
-	mevent::Mdatevent mynewevent{mevent::IDClass::trigger, mytimestamp,
-			0, 0, 0, 0,
-			mytrigid, mydataid, mydata};
-
-
-		return mynewevent;
+	mevent::Mdatevent mynewevent{};
+	mynewevent.triggerevent(mytimestamp, mevent::TrigIDClass::Timer1 , mevent::DataIDClass::ADC1 , mydata);
+	return mynewevent;
 }
 
 

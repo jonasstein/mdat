@@ -23,4 +23,5 @@ message(STATUS, ${GTEST_BOTH_LIBRARIES})
 #add_executable(gtestqmrdump ../src/extractmdat.cpp)
 #target_link_libraries(gtestmevent GTest::GTest GTest::Main)
 
-add_test(NAME all COMMAND Mdatevent_test Bitslicer_test)
+add_test(NAME all COMMAND Mdatevent_test) 
+add_test(NAME Bitsclicer COMMAND Bitslicer_test)

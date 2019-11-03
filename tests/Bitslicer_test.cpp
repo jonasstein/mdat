@@ -5,30 +5,14 @@
 
 #include "../src/Bitslicer.h"
 
-
-TEST(CategoryTest, SpecificTest)
+TEST(CategoryTest, Bitsclicer)
 {
-    ASSERT_EQ(1, 1);
+	uint64_t testobject2 {bitslicer::getintbybitpattern(0b100101010001000100001000100001001010101001111010,
+			0b011100000000000000000000000000000000000000000000)};
+
+    ASSERT_EQ(testobject2, 0b001);
 }
 
-
-TEST(CategoryTest, ZeroTest)
-{
-    ASSERT_EQ(0, 0);
-}
-
-
-/*TEST(CategoryTest, Plustest)
-{
-	mevent::Mdatevent testobject2 {mevent::IDClass::trigger,
-					  mevent::TrigIDClass::CmpReg,
-					  mevent::DataIDClass::Monitor1,
-					  0b0,
-					  0b0} ;
-
-    ASSERT_EQ(testobject2.pluseins(1), 2);
-}
-*/
 
 int main(int argc, char **argv)
 {

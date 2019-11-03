@@ -64,7 +64,7 @@ public:
 
 	Mdatevent neutronevent(TimestampClass mytimestamp,
 			ModIDClass EventModID, SlotIDClass EventSlotID, AmplitudeClass EventAmplitude, PositionClass EventPosition);
-	Mdatevent triggernevent(TimestampClass mytimestamp,
+	Mdatevent triggerevent(TimestampClass mytimestamp,
 			TrigIDClass mytrigid, DataIDClass mydataid, DataClass mydata);
 	Mdatevent importrawevent(char rawinput [6]);
 
