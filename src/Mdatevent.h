@@ -14,8 +14,7 @@ constexpr auto to_underlying(E e) noexcept
 
 
 enum class IDClass : bool { neutron = 0, trigger = 1 };
-enum class TrigIDClass : uint8_t{ Source1 = 0, Source2, Source3, Source4,
-	Timer1, Timer2, Timer3, Timer4,
+enum class TrigIDClass : uint8_t{Timer1, Timer2, Timer3, Timer4,
 	RearTTL1, RearTTL2,
 	CmpReg}; // "Compare Register" is used most often to trigger.
 
@@ -69,9 +68,14 @@ public:
 	Mdatevent importrawevent(char rawinput [6]);
 
 	virtual ~Mdatevent();
-	IDClass getEventID(void);
+
+	IDClass getEventID(uint64_t rawinteger);
+	TrigIDClass getTrigID(uint64_t rawinteger);
+
 	void printeventverbose();
 	void printevent();
+
+
 
 };
 

@@ -27,16 +27,50 @@ Mdatevent::Mdatevent(IDClass myid, TimestampClass mytimestamp,
 Mdatevent::~Mdatevent() {
 }
 
-IDClass Mdatevent::getEventID(void){
-	return Mdatevent::EventID;
+IDClass Mdatevent::getEventID(uint64_t rawinteger){
+	mevent::IDClass myreturn;
+
+	switch(rawinteger) {
+	    case 0: {  myreturn = mevent::IDClass::neutron;
+	               break;
+	            }
+	    default: myreturn = mevent::IDClass::trigger;
 	}
+	return myreturn;
+}
+
+
+TrigIDClass Mdatevent::getTrigID(uint64_t rawinteger){
+	mevent::TrigIDClass myreturn;
+
+		switch(rawinteger) {
+		    case 1: {  myreturn = mevent::TrigIDClass::Timer1;
+		    		    		   break;}
+		    case 2: {  myreturn = mevent::TrigIDClass::Timer2;
+		    		    		   break;}
+		    case 3: {  myreturn = mevent::TrigIDClass::Timer3;
+		    		break;}
+		    case 4: {  myreturn = mevent::TrigIDClass::Timer4;
+		    		break;}
+		    case 5: {  myreturn = mevent::TrigIDClass::RearTTL1;
+		    		break;}
+		    case 6: {  myreturn = mevent::TrigIDClass::RearTTL2;
+		    		break;}
+		    default: {  myreturn = mevent::TrigIDClass::CmpReg;
+		    		break;}
+		            }
+
+		return myreturn;
+}
+
+
 
 Mdatevent Mdatevent::neutronevent(TimestampClass mytimestamp,
 		ModIDClass EventModID, SlotIDClass EventSlotID, AmplitudeClass EventAmplitude, PositionClass EventPosition) {
 
 	mevent::Mdatevent mynewevent{mevent::IDClass::neutron, mytimestamp,
 		EventModID, EventSlotID, EventAmplitude, EventPosition,
-		mevent::TrigIDClass::Source1,mevent::DataIDClass::Monitor1, 0};
+		mevent::TrigIDClass::Timer1,mevent::DataIDClass::Monitor1, 0};
 	return mynewevent;
 }
 
