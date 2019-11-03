@@ -1,6 +1,7 @@
 #include "Bitslicer.h"
 #include <cstdint>
-#include <math.h>
+#include <cmath>
+
 
 
 
