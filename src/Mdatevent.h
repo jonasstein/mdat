@@ -71,6 +71,7 @@ public:
 
 	IDClass getEventID(uint64_t rawinteger);
 	TrigIDClass getTrigID(uint64_t rawinteger);
+	DataIDClass getDataID(uint64_t rawinteger);
 
 	void printeventverbose();
 	void printevent();

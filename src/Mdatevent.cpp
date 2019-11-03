@@ -43,24 +43,49 @@ IDClass Mdatevent::getEventID(uint64_t rawinteger){
 TrigIDClass Mdatevent::getTrigID(uint64_t rawinteger){
 	mevent::TrigIDClass myreturn;
 
-		switch(rawinteger) {
-		    case 1: {  myreturn = mevent::TrigIDClass::Timer1;
-		    		    		   break;}
-		    case 2: {  myreturn = mevent::TrigIDClass::Timer2;
-		    		    		   break;}
-		    case 3: {  myreturn = mevent::TrigIDClass::Timer3;
-		    		break;}
-		    case 4: {  myreturn = mevent::TrigIDClass::Timer4;
-		    		break;}
-		    case 5: {  myreturn = mevent::TrigIDClass::RearTTL1;
-		    		break;}
-		    case 6: {  myreturn = mevent::TrigIDClass::RearTTL2;
-		    		break;}
-		    default: {  myreturn = mevent::TrigIDClass::CmpReg;
-		    		break;}
-		            }
+	switch(rawinteger) {
+	case 1: {  myreturn = mevent::TrigIDClass::Timer1;
+	break;}
+	case 2: {  myreturn = mevent::TrigIDClass::Timer2;
+	break;}
+	case 3: {  myreturn = mevent::TrigIDClass::Timer3;
+	break;}
+	case 4: {  myreturn = mevent::TrigIDClass::Timer4;
+	break;}
+	case 5: {  myreturn = mevent::TrigIDClass::RearTTL1;
+	break;}
+	case 6: {  myreturn = mevent::TrigIDClass::RearTTL2;
+	break;}
+	default: {  myreturn = mevent::TrigIDClass::CmpReg;
+	break;}
+	}
 
-		return myreturn;
+	return myreturn;
+}
+
+DataIDClass Mdatevent::getDataID(uint64_t rawinteger){
+	mevent::DataIDClass myreturn;
+
+	switch(rawinteger) {
+	case 0: {  myreturn = mevent::DataIDClass::Monitor1;
+	break;}
+	case 1: {  myreturn = mevent::DataIDClass::Monitor2;
+	break;}
+	case 2: {  myreturn = mevent::DataIDClass::Monitor3;
+	break;}
+	case 3: {  myreturn = mevent::DataIDClass::Monitor4;
+	break;}
+	case 4: {  myreturn = mevent::DataIDClass::RearTTL1;
+	break;}
+	case 5: {  myreturn = mevent::DataIDClass::RearTTL2;
+	break;}
+	case 6: {  myreturn = mevent::DataIDClass::ADC1;
+		break;}
+	default: {  myreturn = mevent::DataIDClass::ADC2;
+	break;}
+	}
+
+	return myreturn;
 }
 
 
