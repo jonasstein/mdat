@@ -36,6 +36,12 @@ struct eventLMH {
 	uint8_t Mid : 8;
 	uint8_t Hi : 8;};
 
+
+IDClass getEventID(uint64_t rawinteger);
+TrigIDClass getTrigID(uint64_t rawinteger);
+DataIDClass getDataID(uint64_t rawinteger);
+
+
 class Mdatevent {
 private:
 	//properties of neutron and trigger events
@@ -52,7 +58,6 @@ private:
 	TrigIDClass EventTrigID;
 	DataIDClass EventDataID;
 	DataClass EventData;
-
 
 
 public:
@@ -72,10 +77,6 @@ public:
 	void printeventverbose();
 	void printevent();
 };
-
-	static IDClass getEventID(uint64_t rawinteger);
-	static TrigIDClass getTrigID(uint64_t rawinteger);
-	static DataIDClass getDataID(uint64_t rawinteger);
 
 } /* namespace mevent */
 
