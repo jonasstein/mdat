@@ -23,6 +23,7 @@ target_link_libraries(mkhistogram Histolong)
 
 add_library(Bitslicer SHARED Bitslicer.cpp)
 add_library(Mdatevent SHARED Mdatevent.cpp)
+target_link_libraries(Mdatevent Bitslicer)
 add_library(Lmfile SHARED Lmfile.cpp)
 add_executable(qmrdump extractmdat.cpp)
-target_link_libraries(qmrdump Mdatevent Lmfile)
+target_link_libraries(qmrdump Mdatevent Lmfile Bitslicer)

@@ -20,12 +20,11 @@ Mdatevent::Mdatevent(IDClass myid, TimestampClass mytimestamp,
     : EventID(myid), EventTimestamp(mytimestamp), EventModID(0), EventSlotID(0),
       EventAmplitude(0), EventPosition(0), EventTrigID(mytrigid),
       EventDataID(mydataid), EventData(mydata) {
-  //	std::cout << "Constructor was called\n";
 }
 
 Mdatevent::~Mdatevent() {}
 
-IDClass Mdatevent::getEventID(uint64_t rawinteger) {
+IDClass getEventID(uint64_t rawinteger) {
   mevent::IDClass myreturn;
 
   switch (rawinteger) {
@@ -39,7 +38,7 @@ IDClass Mdatevent::getEventID(uint64_t rawinteger) {
   return myreturn;
 }
 
-TrigIDClass Mdatevent::getTrigID(uint64_t rawinteger) {
+TrigIDClass getTrigID(uint64_t rawinteger) {
   mevent::TrigIDClass myreturn;
 
   switch (rawinteger) {
@@ -76,7 +75,7 @@ TrigIDClass Mdatevent::getTrigID(uint64_t rawinteger) {
   return myreturn;
 }
 
-DataIDClass Mdatevent::getDataID(uint64_t rawinteger) {
+DataIDClass getDataID(uint64_t rawinteger) {
   mevent::DataIDClass myreturn;
 
   switch (rawinteger) {
@@ -163,20 +162,14 @@ Mdatevent Mdatevent::importrawevent(char rawinput[6]) {
   uint64_t fullevent = HiWordA << 40 + HiWordB << 32 + MidWordA << 24 + MidWordB
                                << 16 + LoWordA << 8 + LoWordB;
 
-  u_int64_t myID =
-      (fullevent & 0b100000000000000000000000000000000000000000000000) >> 47;
-  u_int64_t mytrigid =
-      (fullevent & 0b011100000000000000000000000000000000000000000000) >> 44;
-  u_int64_t mydataid =
-      (fullevent & 0b000011110000000000000000000000000000000000000000) >> 40;
-  u_int64_t mydata =
-      (fullevent & 0b000000001111111111111111111110000000000000000000) >> 19;
-  u_int64_t mytimestamp =
-      (fullevent & 0b000000000000000000000000000001111111111111111111);
+  IDClass myID        = getEventID(bitslicer::getintbybitpattern(fullevent, 0b100000000000000000000000000000000000000000000000));
+  TrigIDClass mytrigid = getTrigID(bitslicer::getintbybitpattern(fullevent, 0b011100000000000000000000000000000000000000000000));
+  DataIDClass mydataid = getDataID(bitslicer::getintbybitpattern(fullevent, 0b000011110000000000000000000000000000000000000000));
+  u_int64_t mydata               = bitslicer::getintbybitpattern(fullevent, 0b000000001111111111111111111110000000000000000000);
+  u_int64_t mytimestamp          = bitslicer::getintbybitpattern(fullevent, 0b000000000000000000000000000001111111111111111111);
 
   mevent::Mdatevent mynewevent{};
-  mynewevent.triggerevent(mytimestamp, mevent::TrigIDClass::Timer1,
-                          mevent::DataIDClass::ADC1, mydata);
+  mynewevent.triggerevent(mytimestamp, mytrigid, mydataid, mydata);
   return mynewevent;
 }
 
@@ -204,19 +197,19 @@ void Mdatevent::printeventverbose(void) {
 
 void Mdatevent::printevent(void) {
   if (this->EventID == IDClass::neutron) {
-    printf("%d, ", this->EventTimestamp);
-    printf("8, "); // 0..7 are trigger events 8 are neutron events
-    printf("%d, ", this->EventModID);
-    printf("%d, ", this->EventSlotID);
-    printf("%d, ", this->EventAmplitude);
-    printf("%d\n", this->EventPosition);
+	std::cout << static_cast<int>(EventTimestamp) << ", ";
+	std::cout << "8, "; // 0..7 are trigger events 8 are neutron events
+	std::cout << static_cast<int>(EventModID)<< ", ";
+	std::cout << static_cast<int>(EventSlotID)<< ", ";
+	std::cout << static_cast<int>(EventAmplitude)<< ", ";
+	std::cout << static_cast<int>(EventPosition)<< "\n";
   }
 
   if (this->EventID == IDClass::trigger) {
-    printf("%d, ", this->EventTimestamp);
-    printf("%d, ", this->EventTrigID);
-    printf("%d, ", this->EventDataID);
-    printf("%d\n", this->EventData);
+	  std::cout << static_cast<int>(EventTimestamp)<< ", ";;
+	  std::cout << static_cast<int>(EventTrigID)<< ", ";;
+	  std::cout << static_cast<int>(EventDataID)<< ", ";;
+	  std::cout << static_cast<int>(EventData)<< "\n";;
   }
 }
 
