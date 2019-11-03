@@ -183,22 +183,22 @@ Mdatevent Mdatevent::importrawevent(char rawinput[6]) {
 void Mdatevent::printeventverbose(void) {
 
   if (this->EventID == IDClass::neutron) {
-    printf("EventID %d (neutron event), ", this->EventID);
-    printf("EventTimestamp %d, ", this->EventTimestamp);
+    std::cout << "EventID: " << static_cast<int>(EventID) << " (neutron event) \n";
+    std::cout << "EventTimestamp: " << static_cast<int>(EventTimestamp) << "\n";
 
-    printf("EventModID %d, ", this->EventModID);
-    printf("EventSlotID %d, ", this->EventSlotID);
-    printf("EventAmplitude %d, ", this->EventAmplitude);
-    printf("EventPosition %d\n", this->EventPosition);
+    std::cout << "EventModID: " << static_cast<int>(EventModID) << "\n";
+    std::cout << "EventSlotID: " << static_cast<int>(EventSlotID) << "\n";
+    std::cout << "EventAmplitude: " << static_cast<int>(EventAmplitude) << "\n";
+    std::cout << "EventPosition: " << static_cast<int>(EventPosition) << "\n";
   }
 
   if (this->EventID == IDClass::trigger) {
-    printf("EventID %d (trigger event), ", this->EventID);
-    printf("EventTimestamp %d, ", this->EventTimestamp);
+	  std::cout << "EventID: " << static_cast<int>(EventID) << " (trigger event) \n";
+	  std::cout << "EventTimestamp: " << static_cast<int>(EventTimestamp) << "\n";
 
-    printf("EventTrigID %d, ", this->EventTrigID);
-    printf("EventDataID %d, ", this->EventDataID);
-    printf("EventData %d\n", this->EventData);
+	  std::cout << "EventTrigID: " << static_cast<int>(EventTrigID) << "\n";
+	  std::cout << "EventDataID: " << static_cast<int>(EventDataID) << "\n";
+	  std::cout << "EventData: " << static_cast<int>(EventData) << "\n";
   }
 }
 
