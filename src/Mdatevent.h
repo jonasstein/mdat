@@ -69,16 +69,13 @@ public:
 
 	virtual ~Mdatevent();
 
-	IDClass getEventID(uint64_t rawinteger);
-	TrigIDClass getTrigID(uint64_t rawinteger);
-	DataIDClass getDataID(uint64_t rawinteger);
-
 	void printeventverbose();
 	void printevent();
-
-
-
 };
+
+	static IDClass getEventID(uint64_t rawinteger);
+	static TrigIDClass getTrigID(uint64_t rawinteger);
+	static DataIDClass getDataID(uint64_t rawinteger);
 
 } /* namespace mevent */
 

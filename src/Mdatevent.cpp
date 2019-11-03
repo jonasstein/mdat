@@ -215,12 +215,6 @@ void Mdatevent::printevent(void) {
 
 } /* namespace mevent */
 
-// new neutronfromraw
-// new neutronfromdata
-// new triggerfromraw
-// new triggerfromdata
-// isneutron
-// istrigger
 
 /*
  * Neutron events
