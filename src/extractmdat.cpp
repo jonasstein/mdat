@@ -23,6 +23,8 @@ int main() {
 	testobject.printevent();
 
 
+	//	throw std::runtime_error{"Error 001: nothing"};
+
 	//mevent::IDClass TestID{mevent::IDClass::trigger};
 	//std::cout<< mevent::to_underlying(TestID);
 

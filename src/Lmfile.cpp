@@ -8,6 +8,9 @@
 
 
 namespace mevent {
+Lmbuffer::Lmbuffer()
+
+Lmbuffer::~Lmbuffer(){}
 
 
 Lmfile::Lmfile(std::string const mypath) : ifs ( mypath, std::ifstream::binary ), filesize ( 0 ),  firsttimestamp_ns ( 0 )
@@ -56,10 +59,19 @@ uint32_t Lmfile::parsefileheader()
   return(fileHeaderLength);
 }
 
+Lmbuffer parsenextbuffer(){
+	Lmbuffer::Lmbuffer buf{};
+
+	return buf;
+}
+
 
 
 } /* namespace mevent */
 
 //readfileheader
-//buffer readbufferheader
+//buffer::buffer init (40 bytes)
+//buffer.runid
+//...
 //buffer: uint16_t length
+//
