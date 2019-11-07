@@ -8,7 +8,7 @@
 
 
 namespace mevent {
-Lmbuffer::Lmbuffer()
+Lmbuffer::Lmbuffer(){}
 
 Lmbuffer::~Lmbuffer(){}
 
@@ -38,16 +38,22 @@ uint64_t Lmfile::read64bit ( )
 
 uint32_t Lmfile::parsefileheader()
 {
-  uint32_t fileHeaderLength;
   // read first line and parse second line with number of lines
   std::string thisline;
   std::getline(ifs, thisline);
-  //assert(thisline == ("mesytec psd listmode data"));
+
+  if (thisline != "mesytec psd listmode data")
+	  throw std::runtime_error{"Error 001: Listmode file header not found"};
+
+
 
   std::getline(ifs, thisline ); // header length: nnnnn lines
   int posi = thisline.find(": ");
   std::string sustri  = thisline.substr(posi+1,posi+4); // TODO  + 4 => EOL
+
+  uint32_t fileHeaderLength {0};
   fileHeaderLength = std::stoi (sustri,nullptr,10);
+
  // assert(fileHeaderLength==2); // we do not know about files <> 2 header lines yet. execute n-2 readlines here some day.
 
   // for n-1
@@ -59,12 +65,13 @@ uint32_t Lmfile::parsefileheader()
   return(fileHeaderLength);
 }
 
-Lmbuffer parsenextbuffer(){
-	Lmbuffer::Lmbuffer buf{};
+/*
 
+Lmbuffer parsebuffer(){  //40 char go in, buffer goes out
+	Lmbuffer::Lmbuffer buf;
 	return buf;
 }
-
+*/
 
 
 } /* namespace mevent */

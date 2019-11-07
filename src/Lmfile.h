@@ -25,7 +25,7 @@ private:
 public:
 	Lmbuffer();
 	virtual ~Lmbuffer();
-
+//	Lmbuffer parsebuffer();
 };
 
 
@@ -39,9 +39,7 @@ public:
 	Lmfile( const std::string mypath );
 	virtual ~Lmfile();
 	uint32_t parsefileheader();
-	Lmbuffer parsenextbuffer();
 	uint64_t read64bit();
-
 
 };
 

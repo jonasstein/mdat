@@ -162,11 +162,11 @@ Mdatevent Mdatevent::importrawevent(char rawinput[6]) {
   uint64_t fullevent = HiWordA << 40 + HiWordB << 32 + MidWordA << 24 + MidWordB
                                << 16 + LoWordA << 8 + LoWordB;
 
-  IDClass myID        = getEventID(bitslicer::getintbybitpattern(fullevent, 0b100000000000000000000000000000000000000000000000));
-  TrigIDClass mytrigid = getTrigID(bitslicer::getintbybitpattern(fullevent, 0b011100000000000000000000000000000000000000000000));
-  DataIDClass mydataid = getDataID(bitslicer::getintbybitpattern(fullevent, 0b000011110000000000000000000000000000000000000000));
-  u_int64_t mydata               = bitslicer::getintbybitpattern(fullevent, 0b000000001111111111111111111110000000000000000000);
-  u_int64_t mytimestamp          = bitslicer::getintbybitpattern(fullevent, 0b000000000000000000000000000001111111111111111111);
+  IDClass myID               = getEventID(bitslicer::getintbybitpattern(fullevent, 0b100000000000000000000000000000000000000000000000));
+  TrigIDClass mytrigid        = getTrigID(bitslicer::getintbybitpattern(fullevent, 0b011100000000000000000000000000000000000000000000));
+  DataIDClass mydataid        = getDataID(bitslicer::getintbybitpattern(fullevent, 0b000011110000000000000000000000000000000000000000));
+  DataClass mydata                      = bitslicer::getintbybitpattern(fullevent, 0b000000001111111111111111111110000000000000000000);
+  TimestampClass mytimestamp            = bitslicer::getintbybitpattern(fullevent, 0b000000000000000000000000000001111111111111111111);
 
   mevent::Mdatevent mynewevent{};
   mynewevent.triggerevent(mytimestamp, mytrigid, mydataid, mydata);
