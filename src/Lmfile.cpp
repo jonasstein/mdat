@@ -15,7 +15,7 @@ Lmbuffer::~Lmbuffer(){}
 Lmfile::Lmfile(std::string const mypath) : ifs ( mypath, std::ifstream::binary ), filesize ( 0 ),  firsttimestamp_ns ( 0 )
 {
   // "ate" placed cursor to EOF, we can read out the filesize now and go to start.
-  filesize = ifs.tellg();
+ // filesize = ifs.tellg();
 
   if (filesize < 134)
   	  throw std::runtime_error{error_003_filetoosmall};
