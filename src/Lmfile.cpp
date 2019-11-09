@@ -85,6 +85,10 @@ Lmbuffer parsebuffer(){  //40 char go in, buffer goes out
 
 void operator=() {
 }
+
+int& operator=() {
+	return int();
+}
 //readfileheader
 //buffer::buffer init (40 bytes)
 //buffer.runid
