@@ -3,21 +3,25 @@
 #include <string>
 #include <istream>
 #include <iostream>     // std::cout
-#include <filesystem>
-
+#include "errorcodes.h"
 
 
 namespace mevent {
-Lmbuffer::Lmbuffer(){}
+/*Lmbuffer::Lmbuffer(){}
 
 Lmbuffer::~Lmbuffer(){}
-
+*/
 
 Lmfile::Lmfile(std::string const mypath) : ifs ( mypath, std::ifstream::binary ), filesize ( 0 ),  firsttimestamp_ns ( 0 )
 {
-  //filesize = std::filesystem::file_size(mypath); // use this C++17 feature in future
+  // "ate" placed cursor to EOF, we can read out the filesize now and go to start.
+  filesize = ifs.tellg();
 
-}
+  if (filesize < 134)
+  	  throw std::runtime_error{error_003_filetoosmall};
+
+  ifs.seekg (0, ifs.beg);
+  }
 
 Lmfile::~Lmfile() {
 	//close file automatically
@@ -36,14 +40,16 @@ uint64_t Lmfile::read64bit ( )
 
 
 
-uint32_t Lmfile::parsefileheader()
+void Lmfile::parsefileheader()
 {
-  // read first line and parse second line with number of lines
+	// read first 2 lines of the file
+	// parse second line with length of header
+	// return length of header in number of lines
   std::string thisline;
   std::getline(ifs, thisline);
 
   if (thisline != "mesytec psd listmode data")
-	  throw std::runtime_error{"Error 001: Listmode file header not found"};
+	  throw std::runtime_error{error_001_noheader};
 
 
 
@@ -54,7 +60,8 @@ uint32_t Lmfile::parsefileheader()
   uint32_t fileHeaderLength {0};
   fileHeaderLength = std::stoi (sustri,nullptr,10);
 
- // assert(fileHeaderLength==2); // we do not know about files <> 2 header lines yet. execute n-2 readlines here some day.
+  if (fileHeaderLength != 2)
+  	  throw std::runtime_error{error_002_headernottwolines};
 
   // for n-1
   // read byte until \n
@@ -62,7 +69,7 @@ uint32_t Lmfile::parsefileheader()
 
   uint64_t sequenceRAW = Lmfile::read64bit ( );
   //assert(sequenceRAW == headersignature);
-  return(fileHeaderLength);
+
 }
 
 /*
@@ -76,6 +83,8 @@ Lmbuffer parsebuffer(){  //40 char go in, buffer goes out
 
 } /* namespace mevent */
 
+void operator=() {
+}
 //readfileheader
 //buffer::buffer init (40 bytes)
 //buffer.runid

@@ -7,7 +7,12 @@
 
 namespace mevent {
 
-class Lmbuffer{
+const uint64_t headersignature     = 0x00005555AAAAFFFF;
+const uint64_t datablocksignature  = 0x0000FFFF5555AAAA;
+const uint64_t filesignature       = 0xFFFFAAAA55550000;
+
+
+/*class Lmbuffer{
 private:
 	uint16_t bufferlengthinwords {0};
 	uint16_t buffertype {0};
@@ -27,18 +32,21 @@ public:
 	virtual ~Lmbuffer();
 //	Lmbuffer parsebuffer();
 };
+*/
 
+
+typedef int64_t filesize_t;
 
 class Lmfile {
 private:
 	std::ifstream ifs;
-	uintmax_t filesize = 0;
-	uint64_t firsttimestamp_ns = 0;
+	filesize_t filesize;
+	uint64_t firsttimestamp_ns {0};
 
 public:
 	Lmfile( const std::string mypath );
 	virtual ~Lmfile();
-	uint32_t parsefileheader();
+	void parsefileheader();
 	uint64_t read64bit();
 
 };
