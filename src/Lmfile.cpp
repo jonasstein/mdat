@@ -83,12 +83,6 @@ Lmbuffer parsebuffer(){  //40 char go in, buffer goes out
 
 } /* namespace mevent */
 
-void operator=() {
-}
-
-int& operator=() {
-	return int();
-}
 //readfileheader
 //buffer::buffer init (40 bytes)
 //buffer.runid
