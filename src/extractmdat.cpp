@@ -11,6 +11,7 @@
 #include "QMRConfig.h"
 #include "Mdatevent.h"
 #include "Lmfile.h"
+#include <filesystem>
 
 
 int main() {
@@ -22,6 +23,8 @@ int main() {
 	testobject.printeventverbose();
 	testobject.printevent();
 
+    const auto fsize = std::filesystem::file_size("test.dat");
+    std::cout << fsize << '\n';
 
 	//	throw std::runtime_error{"Error 001: nothing"};
 

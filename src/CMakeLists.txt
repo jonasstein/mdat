@@ -16,6 +16,8 @@ configure_file (
 	"QMRConfig.h"
   )
 
+
+
 add_library(Histolong SHARED histolong.cpp)
 add_executable(mkhistogram mkhistogram.cpp)
 target_link_libraries(mkhistogram Histolong)
@@ -26,4 +28,4 @@ add_library(Mdatevent SHARED Mdatevent.cpp)
 target_link_libraries(Mdatevent Bitslicer)
 add_library(Lmfile SHARED Lmfile.cpp)
 add_executable(qmrdump extractmdat.cpp)
-target_link_libraries(qmrdump Mdatevent Lmfile Bitslicer)
+target_link_libraries(qmrdump "stdc++fs" Mdatevent Lmfile Bitslicer)
