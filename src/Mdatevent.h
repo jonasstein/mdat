@@ -3,7 +3,8 @@
 
 #include <cstdint>       // int8_t
 #include <type_traits>
-
+#include <string>
+#include <sstream>
 
 namespace mevent {
 template <typename E>
@@ -29,12 +30,6 @@ using ModIDClass = uint8_t; // 3 Bit used
 using SlotIDClass = uint8_t; // 5 Bit used
 using AmplitudeClass = uint16_t; // 10 Bit used
 using PositionClass = uint16_t; // 10 Bit used
-
-
-struct eventLMH {
-	uint16_t Lo : 16;
-	uint16_t Mid : 16;
-	uint16_t Hi : 16;};
 
 
 IDClass getEventID(uint64_t rawinteger);
@@ -70,12 +65,13 @@ public:
 			ModIDClass EventModID, SlotIDClass EventSlotID, AmplitudeClass EventAmplitude, PositionClass EventPosition);
 	Mdatevent triggerevent(TimestampClass mytimestamp,
 			TrigIDClass mytrigid, DataIDClass mydataid, DataClass mydata);
-	Mdatevent importrawevent(char rawinput [6]);
+	//Mdatevent importrawevent(char rawinput [6]);
+	Mdatevent importevent(uint64_t sortedevent);
 
 	virtual ~Mdatevent();
 
-	void printeventverbose();
-	void printevent();
+	std::string printeventverbose();
+	std::string printevent();
 };
 
 } /* namespace mevent */
