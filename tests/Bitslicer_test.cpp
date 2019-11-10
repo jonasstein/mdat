@@ -5,6 +5,24 @@
 
 #include "../src/Bitslicer.h"
 
+TEST(Bitsclicer, byteswap)
+{
+    ASSERT_EQ(bitslicer::byteswap(0x00AA), 0xAA00);
+    ASSERT_EQ(bitslicer::byteswap(0xABCD), 0xCDAB);
+    ASSERT_EQ(bitslicer::byteswap(0xFFFF), 0xFFFF);
+    ASSERT_EQ(bitslicer::byteswap(0x0000), 0x0000);
+    ASSERT_EQ(bitslicer::byteswap(0x00FF), 0xFF00);
+    ASSERT_EQ(bitslicer::byteswap(0x0F0F), 0x0F0F);
+}
+
+
+TEST(Bitsclicer, LowMidHigh)
+{
+    ASSERT_EQ(bitslicer::LowMidHigh(0xAAAA, 0xBBBB, 0xCCCC), 0x0000CCCCBBBBAAAA);
+    ASSERT_EQ(bitslicer::LowMidHigh(0x00AA, 0x00BB, 0x00CC), 0x000000CC00BB00AA);
+}
+
+
 TEST(Bitsclicer, PatternA)
 {
 	uint64_t bitpattern = 0b100101010001000100001000100001001010101001111010;

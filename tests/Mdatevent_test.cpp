@@ -9,6 +9,15 @@
 
 TEST(CategoryTest, SpecificTest)
 {
+	mevent::Mdatevent newevent;
+
+
+	uint64_t Low = 0x2D00;
+	uint64_t Mid = 0x0100;
+	uint64_t High = 0x1500;
+
+//	newevent.importevent()
+
     ASSERT_EQ(1, 1);
 }
 

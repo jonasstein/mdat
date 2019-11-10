@@ -1,6 +1,7 @@
 #include "Lmfile.h"
 #include "Mdatevent.h"
 #include "errorcodes.h"
+#include "Bitslicer.h"
 
 #include <cstdint>      // int8_t
 #include <string>
@@ -12,28 +13,20 @@
 
 namespace mfile {
 
-uint16_t byteswap(uint16_t word){
-	return ((word & 0xff) << 8) | ((word & 0xff00) >> 8);
-}
-
-uint64_t LowMidHigh(uint16_t LowWord, uint16_t MidWord, uint16_t HighWord){
-	return ((static_cast<uint64_t> (HighWord)<< 32) + (static_cast<uint64_t> (MidWord)<<16) + (static_cast<uint64_t> (LowWord)));
-	}
-
 Lmbuffer::Lmbuffer(uint16_t const rawbuffer[20]){
-	bufferlengthinwords = byteswap(rawbuffer[0]);
-	buffertype = byteswap(rawbuffer[1]);
-	headerlengthinwords = byteswap(rawbuffer[2]);
-	buffernumber = byteswap(rawbuffer[3]);
-	runid = byteswap(rawbuffer[4]);
+	bufferlengthinwords = bitslicer::byteswap(rawbuffer[0]);
+	buffertype = bitslicer::byteswap(rawbuffer[1]);
+	headerlengthinwords = bitslicer::byteswap(rawbuffer[2]);
+	buffernumber = bitslicer::byteswap(rawbuffer[3]);
+	runid = bitslicer::byteswap(rawbuffer[4]);
 	//mcpdid
 	//status
 
-	uint16_t htsLow = byteswap(rawbuffer[6]);
-	uint16_t htsMid = byteswap(rawbuffer[7]);
-	uint16_t htsHigh = byteswap(rawbuffer[8]);
+	uint16_t htsLow = bitslicer::byteswap(rawbuffer[6]);
+	uint16_t htsMid = bitslicer::byteswap(rawbuffer[7]);
+	uint16_t htsHigh = bitslicer::byteswap(rawbuffer[8]);
 
-	headertimestamp = LowMidHigh(htsLow, htsMid, htsHigh);
+	headertimestamp = bitslicer::LowMidHigh(htsLow, htsMid, htsHigh);
 }
 
 
