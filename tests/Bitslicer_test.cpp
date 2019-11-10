@@ -7,18 +7,18 @@
 
 TEST(Bitsclicer, PatternA)
 {
-	uint64_t testobject2 {bitslicer::getintbybitpattern(0b100101010001000100001000100001001010101001111010,
-			0b011100000000000000000000000000000000000000000000)};
-
+	uint64_t bitpattern = 0b100101010001000100001000100001001010101001111010;
+	uint64_t cutpattern = 0b011100000000000000000000000000000000000000000000;
+	uint64_t testobject2 {bitslicer::getintbybitpattern(bitpattern, cutpattern)};
     ASSERT_EQ(testobject2, 0b001);
 }
 
 TEST(Bitsclicer, PatternB)
 {
-	uint64_t testobject2 {bitslicer::getintbybitpattern(0b100101010001000100001000100001001010101001111010,
-			0b000011110000000000000000000000000000000000000000)};
-
-    ASSERT_EQ(testobject2, 0b01010);
+	uint64_t bitpattern = 0b100101010001000100001000100001001010101001111010;
+	uint64_t cutpattern = 0b000011110000000000000000000000000000000000000000;
+	uint64_t testobject2 {bitslicer::getintbybitpattern(bitpattern, cutpattern)};
+    ASSERT_EQ(testobject2, 0b0101);
 }
 
 
