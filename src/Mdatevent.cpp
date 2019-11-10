@@ -3,9 +3,8 @@
 #include "Bitslicer.h"
 #include <cstdint>  // int8_t
 #include <iostream> // std::cout
-#include <string>
 #include <sstream>
-
+#include <string>
 
 namespace mevent {
 
@@ -22,8 +21,7 @@ Mdatevent::Mdatevent(IDClass myid, TimestampClass mytimestamp,
                      DataClass mydata)
     : EventID(myid), EventTimestamp(mytimestamp), EventModID(0), EventSlotID(0),
       EventAmplitude(0), EventPosition(0), EventTrigID(mytrigid),
-      EventDataID(mydataid), EventData(mydata) {
-}
+      EventDataID(mydataid), EventData(mydata) {}
 
 Mdatevent::~Mdatevent() {}
 
@@ -155,11 +153,16 @@ Mdatevent Mdatevent::triggerevent(TimestampClass mytimestamp,
 
 Mdatevent Mdatevent::importevent(uint64_t sortedevent) {
 
-  IDClass myID               = getEventID(bitslicer::getintbybitpattern(sortedevent, 0b100000000000000000000000000000000000000000000000));
-  TrigIDClass mytrigid        = getTrigID(bitslicer::getintbybitpattern(sortedevent, 0b011100000000000000000000000000000000000000000000));
-  DataIDClass mydataid        = getDataID(bitslicer::getintbybitpattern(sortedevent, 0b000011110000000000000000000000000000000000000000));
-  DataClass mydata                      = bitslicer::getintbybitpattern(sortedevent, 0b000000001111111111111111111110000000000000000000);
-  TimestampClass mytimestamp            = bitslicer::getintbybitpattern(sortedevent, 0b000000000000000000000000000001111111111111111111);
+  IDClass myID = getEventID(bitslicer::getintbybitpattern(
+      sortedevent, 0b100000000000000000000000000000000000000000000000));
+  TrigIDClass mytrigid = getTrigID(bitslicer::getintbybitpattern(
+      sortedevent, 0b011100000000000000000000000000000000000000000000));
+  DataIDClass mydataid = getDataID(bitslicer::getintbybitpattern(
+      sortedevent, 0b000011110000000000000000000000000000000000000000));
+  DataClass mydata = bitslicer::getintbybitpattern(
+      sortedevent, 0b000000001111111111111111111110000000000000000000);
+  TimestampClass mytimestamp = bitslicer::getintbybitpattern(
+      sortedevent, 0b000000000000000000000000000001111111111111111111);
 
   mevent::Mdatevent mynewevent{};
   mynewevent.triggerevent(mytimestamp, mytrigid, mydataid, mydata);
@@ -167,7 +170,7 @@ Mdatevent Mdatevent::importevent(uint64_t sortedevent) {
 }
 
 std::string Mdatevent::printeventverbose(void) {
-	   std::stringstream buffer;
+  std::stringstream buffer;
 
   if (this->EventID == IDClass::neutron) {
     buffer << "EventID: " << static_cast<int>(EventID) << " (neutron event) \n";
@@ -180,39 +183,42 @@ std::string Mdatevent::printeventverbose(void) {
   }
 
   if (this->EventID == IDClass::trigger) {
-	  buffer << "EventID: " << static_cast<int>(EventID) << " (trigger event) \n";
-	  buffer << "EventTimestamp: " << static_cast<int>(EventTimestamp) << "\n";
+    buffer << "EventID: " << static_cast<int>(EventID) << " (trigger event) \n";
+    buffer << "EventTimestamp: " << static_cast<int>(EventTimestamp) << "\n";
 
-	  buffer << "EventTrigID: " << static_cast<int>(EventTrigID) << "\n";
-	  buffer << "EventDataID: " << static_cast<int>(EventDataID) << "\n";
-	  buffer << "EventData: " << static_cast<int>(EventData) << "\n";
+    buffer << "EventTrigID: " << static_cast<int>(EventTrigID) << "\n";
+    buffer << "EventDataID: " << static_cast<int>(EventDataID) << "\n";
+    buffer << "EventData: " << static_cast<int>(EventData) << "\n";
   }
   return buffer.str();
 }
 
 std::string Mdatevent::printevent(void) {
-   std::stringstream buffer;
+  std::stringstream buffer;
 
   if (this->EventID == IDClass::neutron) {
-	  buffer << static_cast<int>(EventTimestamp) << ", ";
-	  buffer << "8, "; // 0..7 are trigger events 8 are neutron events
-	  buffer << static_cast<int>(EventModID)<< ", ";
-	  buffer << static_cast<int>(EventSlotID)<< ", ";
-	  buffer << static_cast<int>(EventAmplitude)<< ", ";
-	  buffer << static_cast<int>(EventPosition)<< "\n";
+    buffer << static_cast<int>(EventTimestamp) << ", ";
+    buffer << "8, "; // 0..7 are trigger events 8 are neutron events
+    buffer << static_cast<int>(EventModID) << ", ";
+    buffer << static_cast<int>(EventSlotID) << ", ";
+    buffer << static_cast<int>(EventAmplitude) << ", ";
+    buffer << static_cast<int>(EventPosition) << "\n";
   }
 
   if (this->EventID == IDClass::trigger) {
-	  buffer<< static_cast<int>(EventTimestamp)<< ", ";;
-	  buffer << static_cast<int>(EventTrigID)<< ", ";;
-	  buffer << static_cast<int>(EventDataID)<< ", ";;
-	  buffer << static_cast<int>(EventData)<< "\n";;
+    buffer << static_cast<int>(EventTimestamp) << ", ";
+    ;
+    buffer << static_cast<int>(EventTrigID) << ", ";
+    ;
+    buffer << static_cast<int>(EventDataID) << ", ";
+    ;
+    buffer << static_cast<int>(EventData) << "\n";
+    ;
   }
   return buffer.str();
 }
 
 } /* namespace mevent */
-
 
 /*
  * Neutron events

@@ -1,18 +1,16 @@
 #include "histolong.hpp"
+#include <algorithm> //std::min
 #include <cstdint>
 #include <fstream>  // std::ifstream
 #include <iostream> // std::cout
 #include <istream>
 #include <stdio.h>
 #include <string> // std::string, std::stoull
-#include <algorithm> //std::min
 
 using Channel_t = uint8_t;
 using Mode_t = uint8_t;
 using TimeStamp_t = uint64_t;
 using Counter_t = uint64_t;
-
-
 
 void printhelp() {
   std::cout << "mkhistogram by Jonas Stein (2016-2019) \n"
@@ -21,8 +19,6 @@ void printhelp() {
             << "Only ChMonitor 0..3 will be printed \n"
             << "mode = 1 infomode, 2 histogram" << std::endl;
 }
-
-
 
 int main(int argc, char *argv[]) {
 
@@ -35,25 +31,27 @@ int main(int argc, char *argv[]) {
 
   // read parameter
   std::string ArgThisProgram(argv[0]);
-  Channel_t ArgChDet = std::min(atoi(argv[1]),7);
-  Channel_t ArgChSync = 1; //strtoull(argv[2],NULL,10);
+  Channel_t ArgChDet = std::min(atoi(argv[1]), 7);
+  Channel_t ArgChSync = 1; // strtoull(argv[2],NULL,10);
 
-  Channel_t ArgChSemaphore = std::min(atoi(argv[3]),7);
-  Channel_t ArgChMonitor = std::min(atoi(argv[4]),7);
+  Channel_t ArgChSemaphore = std::min(atoi(argv[3]), 7);
+  Channel_t ArgChMonitor = std::min(atoi(argv[4]), 7);
   std::string ArgFilename(argv[5]);
   uint64_t ArgBins = atol(argv[6]);
-  Mode_t ArgMode = std::min(atoi(argv[7]), 2); // 1=get info about periods, 2=generate histogram
-
+  Mode_t ArgMode = std::min(
+      atoi(argv[7]), 2); // 1=get info about periods, 2=generate histogram
 
   const Mode_t INFOMODE = 1;
   const Mode_t HISTOGRAMMODE = 2;
 
-
   std::cerr << "Read file " << ArgFilename << std::endl;
-  std::cerr << "Generate histogram with " << static_cast<unsigned int>(ArgBins) << " bins" << std::endl;
-  std::cerr << "ChDet:" << static_cast<unsigned int>(ArgChDet) << " ChSync:" << static_cast<unsigned int>(ArgChSync)
+  std::cerr << "Generate histogram with " << static_cast<unsigned int>(ArgBins)
+            << " bins" << std::endl;
+  std::cerr << "ChDet:" << static_cast<unsigned int>(ArgChDet)
+            << " ChSync:" << static_cast<unsigned int>(ArgChSync)
             << " ChSemaphore:" << static_cast<unsigned int>(ArgChSemaphore)
-            << " ChMonitor:" << static_cast<unsigned int>(ArgChMonitor) << std::endl;
+            << " ChMonitor:" << static_cast<unsigned int>(ArgChMonitor)
+            << std::endl;
 
   std::ifstream ifs;
   ifs.open(ArgFilename, std::ifstream::in);
@@ -71,7 +69,6 @@ int main(int argc, char *argv[]) {
   // read line, if not comment,
   // if not SEMAPHORE read CURRENTts and printf
   // if SEMAPHORE then histo.print(); histo.reset()
-
 
   TimeStamp_t StartOffsetts = 0;
   TimeStamp_t CURRENTts = 0;
@@ -113,13 +110,17 @@ int main(int argc, char *argv[]) {
   ifs.clear(); // reset EOF flag
 
   if (SYNCtsQty < 2) {
-    std::cerr << "WARNING: Found only " << static_cast<unsigned int>(SYNCtsQty) << " SYNC signals on channel " << static_cast<unsigned int>(ArgChSync) << "\n"
+    std::cerr << "WARNING: Found only " << static_cast<unsigned int>(SYNCtsQty)
+              << " SYNC signals on channel "
+              << static_cast<unsigned int>(ArgChSync) << "\n"
               << "WARNING: Expected at least 2 SYNC signals." << std::endl;
   } else {
-    SYNCtsMEAN = SYNCtsSUM / (SYNCtsQty-1);
+    SYNCtsMEAN = SYNCtsSUM / (SYNCtsQty - 1);
 
-    std::cout << "# Start offset ts: " << static_cast<unsigned int>(StartOffsetts) << "\n"
-              << "# SYNC event found: " << static_cast<unsigned int>(SYNCtsQty) << "\n"
+    std::cout << "# Start offset ts: "
+              << static_cast<unsigned int>(StartOffsetts) << "\n"
+              << "# SYNC event found: " << static_cast<unsigned int>(SYNCtsQty)
+              << "\n"
               << "# avg SYNC period: " << static_cast<unsigned int>(SYNCtsMEAN)
               << " ns = " << (float)(SYNCtsMEAN) / 1000000 << " ms\n"
               << "# min SYNC period: " << static_cast<unsigned int>(MindSYNCts)
@@ -145,9 +146,10 @@ int main(int argc, char *argv[]) {
     while (ifs >> CURRENTts >> TrigID >> DataID >> Data) {
 
       if (CURRENTts < StartOffsetts) {
-        std::cerr << "ERROR: Event with timestamp " << static_cast<unsigned int>(CURRENTts)
-                  << " was earlier than the start time " << static_cast<unsigned int>(StartOffsetts)
-                  << std::endl;
+        std::cerr << "ERROR: Event with timestamp "
+                  << static_cast<unsigned int>(CURRENTts)
+                  << " was earlier than the start time "
+                  << static_cast<unsigned int>(StartOffsetts) << std::endl;
       };
       CURRENTts -= StartOffsetts;
 

@@ -1,53 +1,47 @@
 //#include "js_debug.cpp"
-#include <iostream>     // std::cout
 #include "histolong.hpp"
 #include <cstdint>
-//#define NDEBUG  // at the beginning of the code, before the inclusion of <assert.h> will disable all asserts
+#include <iostream> // std::cout
+//#define NDEBUG  // at the beginning of the code, before the inclusion of
+//<assert.h> will disable all asserts
 #include <assert.h>
 
-
-histogram::histogram(const uint64_t setmaxbuckets, const uint64_t setbinwidth)
-{
+histogram::histogram(const uint64_t setmaxbuckets, const uint64_t setbinwidth) {
   maxbuckets = setmaxbuckets;
   binwidth = setbinwidth;
   fullperiod_ns = binwidth * maxbuckets;
 }
 
-histogram::~histogram()
-{}
+histogram::~histogram() {}
 
-void histogram::put(uint64_t &Eventts)
-{
-	uint64_t timeOnHistoScale;
+void histogram::put(uint64_t &Eventts) {
+  uint64_t timeOnHistoScale;
   uint64_t index = 0;
-  timeOnHistoScale = Eventts % (maxbuckets*binwidth);
-  index = (uint64_t) ((timeOnHistoScale * maxbuckets) / fullperiod_ns);
+  timeOnHistoScale = Eventts % (maxbuckets * binwidth);
+  index = (uint64_t)((timeOnHistoScale * maxbuckets) / fullperiod_ns);
   buckets[index]++;
 }
 
-void histogram::reset()
-{
-  for (uint64_t n=0; n< maxbuckets; n++){
-    buckets[n]=0;
-   }
-}
-
-void histogram::printheader()
-{
-  for( uint64_t a = 0; a < maxbuckets; a++ ){
-   if (a < maxbuckets-1)
-   {
-     std::cout << a * binwidth << ",";
-   }else std::cout << a * binwidth << std::endl;
+void histogram::reset() {
+  for (uint64_t n = 0; n < maxbuckets; n++) {
+    buckets[n] = 0;
   }
 }
 
-void histogram::print()
-{
-  for( uint64_t a = 0; a < maxbuckets; a++ ){
-   if (a < maxbuckets-1)
-   {
-     std::cout << buckets[a] << ",";
-   }else std::cout << buckets[a] << std::endl;
+void histogram::printheader() {
+  for (uint64_t a = 0; a < maxbuckets; a++) {
+    if (a < maxbuckets - 1) {
+      std::cout << a * binwidth << ",";
+    } else
+      std::cout << a * binwidth << std::endl;
+  }
+}
+
+void histogram::print() {
+  for (uint64_t a = 0; a < maxbuckets; a++) {
+    if (a < maxbuckets - 1) {
+      std::cout << buckets[a] << ",";
+    } else
+      std::cout << buckets[a] << std::endl;
   }
 }
