@@ -32,9 +32,9 @@ using PositionClass = uint16_t; // 10 Bit used
 
 
 struct eventLMH {
-	uint8_t Lo : 8;
-	uint8_t Mid : 8;
-	uint8_t Hi : 8;};
+	uint16_t Lo : 16;
+	uint16_t Mid : 16;
+	uint16_t Hi : 16;};
 
 
 IDClass getEventID(uint64_t rawinteger);

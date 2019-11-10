@@ -5,14 +5,12 @@
 #include <cstdint>
 #include <fstream>
 
-namespace mevent {
+namespace mfile {
 
-const uint64_t headersignature     = 0x00005555AAAAFFFF;
-const uint64_t datablocksignature  = 0x0000FFFF5555AAAA;
-const uint64_t filesignature       = 0xFFFFAAAA55550000;
+uint16_t byteswap(uint16_t word);
+uint64_t LowMidHigh(uint16_t Low, uint16_t Mid, uint16_t High);
 
-
-/*class Lmbuffer{
+class Lmbuffer{
 private:
 	uint16_t bufferlengthinwords {0};
 	uint16_t buffertype {0};
@@ -28,29 +26,42 @@ private:
 	uint64_t parameter3 {0};
 
 public:
-	Lmbuffer();
+	Lmbuffer(uint16_t const rawbuffer[20]);
 	virtual ~Lmbuffer();
-//	Lmbuffer parsebuffer();
+	Lmbuffer parsebuffer();
 };
-*/
+
 
 
 typedef int64_t filesize_t;
+
+const uint64_t headersignature     = 0x00005555AAAAFFFF;
+const uint64_t datablocksignature  = 0x0000FFFF5555AAAA;
+const uint64_t filesignature       = 0xFFFFAAAA55550000;
 
 class Lmfile {
 private:
 	std::ifstream ifs;
 	filesize_t filesize;
 	uint64_t firsttimestamp_ns {0};
+	uint8_t verbositylevel {0};
+	void readheadersignature();
+	void readdatablocksignature();
+	void readfilesignature();
+	uint64_t read64bit();
+
 
 public:
 	Lmfile( const std::string mypath );
 	virtual ~Lmfile();
+    void convertlistmodefile();
 	void parsefileheader();
-	uint64_t read64bit();
+    void parsedatablock();
+    void setverbositylevel(uint8_t vlevel);
+
 
 };
 
-} /* namespace mevent */
+} /* namespace mfile */
 
 #endif /* LMFILE_H_ */

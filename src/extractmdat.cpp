@@ -8,35 +8,58 @@
 
 #include <iostream>
 #include <string>
+#include <sstream>      // std::stringstream
 #include "QMRConfig.h"
 #include "Mdatevent.h"
 #include "Lmfile.h"
+#include "errorcodes.h"
 
 
-int main() {
-	std::cout << "Version: " << QMR_VERSION_STRING << std::endl;
-
-	mevent::Mdatevent testobject{};
-	testobject.triggerevent(0b1001, mevent::TrigIDClass::CmpReg, mevent::DataIDClass::Monitor1, 0b0);
-
-	testobject.printeventverbose();
-	testobject.printevent();
-
-
-	//	throw std::runtime_error{"Error 001: nothing"};
-
-	//mevent::IDClass TestID{mevent::IDClass::trigger};
-	//std::cout<< mevent::to_underlying(TestID);
-
-/*
-	TestID = ev.getEventID();
-	if (IDClass::trigger == TestID) {
-		std::cout<< "This was a trigger\n";
-	}
-	else
-		{
-		std::cout<< "This was a neutron\n";
-		};
-*/
-	return 0;
+// true if file exists
+bool fileExists(const std::string& file) {
+   // struct stat buf;
+   //return (stat(file.c_str(), &buf) == 0);
+    return true;
 }
+
+void printhelp(){
+	std::cout << "Version: " << QMR_VERSION_STRING << "\n"
+	          << "Usage: dumpmdat <filename> \n\n";
+    fprintf(stdout, "dumpmdat was compiled at %s on %s \n", __TIME__, __DATE__);
+  }
+
+int main(int argc, char *argv[]){
+    std::stringstream msgerr;                               // make cout thread save
+
+    if (argc != 2)
+    {
+        fprintf(stderr, error_004_arguments);
+        fprintf(stderr, "\nExpected 1, got %d. Stopped\n", argc-1);
+        printhelp();
+        exit(3);
+    }
+    else  {
+        std::string ArgFilename(argv[1]);
+        int verbosity = 1;
+
+        if(!fileExists(ArgFilename))
+        {
+            fprintf(stderr, "Error: File not found: %s \n", ArgFilename.c_str());
+            return(EXIT_FAILURE);
+        }
+        else {
+
+        	mfile::Lmfile* limo;
+            limo = new mfile::Lmfile(ArgFilename);
+            /*   limo->setverbositylevel(verbosity);
+
+            msgerr << "# size (Bytes): " << limo->getfilesize() << std::endl ;
+            limo->convertlistmodefile();
+            std::cerr << "# Number of Events: " << limo->getNumberOfEvents() << std::endl;
+
+            delete(limo);
+            */
+            return(EXIT_SUCCESS);
+          }
+      }
+  }

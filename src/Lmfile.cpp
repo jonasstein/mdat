@@ -1,25 +1,56 @@
 #include "Lmfile.h"
-#include <fstream>      // std::ifstream
-#include <string>
-#include <istream>
-#include <iostream>     // std::cout
+#include "Mdatevent.h"
 #include "errorcodes.h"
 
+#include <cstdint>      // int8_t
+#include <string>
+#include <fstream>      // std::ifstream
+#include <istream>
+#include <iostream>     // std::cout
 
-namespace mevent {
-/*Lmbuffer::Lmbuffer(){}
+
+
+namespace mfile {
+
+uint16_t byteswap(uint16_t word){
+	return ((word & 0xff) << 8) | ((word & 0xff00) >> 8);
+}
+
+uint64_t LowMidHigh(uint16_t LowWord, uint16_t MidWord, uint16_t HighWord){
+	return ((static_cast<uint64_t> (HighWord)<< 32) + (static_cast<uint64_t> (MidWord)<<16) + (static_cast<uint64_t> (LowWord)));
+	}
+
+Lmbuffer::Lmbuffer(uint16_t const rawbuffer[20]){
+	bufferlengthinwords = byteswap(rawbuffer[0]);
+	buffertype = byteswap(rawbuffer[1]);
+	headerlengthinwords = byteswap(rawbuffer[2]);
+	buffernumber = byteswap(rawbuffer[3]);
+	runid = byteswap(rawbuffer[4]);
+	//mcpdid
+	//status
+
+	uint16_t htsLow = byteswap(rawbuffer[6]);
+	uint16_t htsMid = byteswap(rawbuffer[7]);
+	uint16_t htsHigh = byteswap(rawbuffer[8]);
+
+	headertimestamp = LowMidHigh(htsLow, htsMid, htsHigh);
+}
+
 
 Lmbuffer::~Lmbuffer(){}
-*/
 
-Lmfile::Lmfile(std::string const mypath) : ifs ( mypath, std::ifstream::binary ), filesize ( 0 ),  firsttimestamp_ns ( 0 )
+
+
+
+Lmfile::Lmfile(std::string const mypath) : ifs ( mypath, std::ifstream::ate | std::ifstream::binary ), filesize ( 0 ),  firsttimestamp_ns ( 0 )
 {
   // "ate" placed cursor to EOF, we can read out the filesize now and go to start.
- // filesize = ifs.tellg();
+  filesize = ifs.tellg();
 
-  if (filesize < 134)
+  if (filesize < 134){
+	  std::cerr << "Size of file: " << filesize << " Bytes. \n";
   	  throw std::runtime_error{error_003_filetoosmall};
-
+  }
   ifs.seekg (0, ifs.beg);
   }
 
@@ -32,12 +63,22 @@ uint64_t Lmfile::read64bit ( )
 {
   uint64_t sequenceRAW = 0;
   ifs.read ( reinterpret_cast<char *> ( &sequenceRAW ),8 );
-  // nb: little endian!
-
- // return __builtin_bswap64 ( sequenceRAW );
-  return 0; //FIXME
+  return sequenceRAW;
 }
 
+void Lmfile::convertlistmodefile()
+{
+  Lmfile::parsefileheader();
+  bool fileEOF=false;
+
+  /*
+  while (fileEOF == false)
+  {
+    Lmfile::parsedatablock();
+    fileEOF = Lmfile::EOFahead();
+  };
+  */
+}
 
 
 void Lmfile::parsefileheader()
@@ -51,26 +92,51 @@ void Lmfile::parsefileheader()
   if (thisline != "mesytec psd listmode data")
 	  throw std::runtime_error{error_001_noheader};
 
-
-
   std::getline(ifs, thisline ); // header length: nnnnn lines
-  int posi = thisline.find(": ");
-  std::string sustri  = thisline.substr(posi+1,posi+4); // TODO  + 4 => EOL
+  int numberofheaderlines = thisline.find(": ");
+  std::string sustri  = thisline.substr(numberofheaderlines+1,numberofheaderlines+4); // TODO  + 4 => EOL
 
-  uint32_t fileHeaderLength {0};
-  fileHeaderLength = std::stoi (sustri,nullptr,10);
+  uint32_t fileHeaderLength = std::stoi (sustri,nullptr,10);
 
   if (fileHeaderLength != 2)
   	  throw std::runtime_error{error_002_headernottwolines};
 
-  // for n-1
-  // read byte until \n
-  // or std::getline(ifs, thisline);
+  // for fileHeaderLength-1
+  //     std::getline(ifs, thisline);
 
-  uint64_t sequenceRAW = Lmfile::read64bit ( );
-  //assert(sequenceRAW == headersignature);
+  Lmfile::readheadersignature();
+
+  std::cout << "\n Position: " << ifs.tellg() << " \n \n";
 
 }
+
+void parsedatablock();
+
+
+void Lmfile::setverbositylevel(uint8_t vlevel){
+	verbositylevel = vlevel;
+		}
+
+
+void Lmfile::readheadersignature(){
+	  uint64_t sequenceRAW = Lmfile::read64bit ( );
+	  if (headersignature!=sequenceRAW)
+	  throw std::runtime_error{error_005_noheadersig};
+	}
+
+void Lmfile::readdatablocksignature(){
+	  uint64_t sequenceRAW = Lmfile::read64bit ( );
+	  if (datablocksignature!=sequenceRAW)
+	  throw std::runtime_error{error_006_nodatasig};
+}
+
+void Lmfile::readfilesignature(){
+	  uint64_t sequenceRAW = Lmfile::read64bit ( );
+	  if (filesignature!=sequenceRAW)
+	  throw std::runtime_error{error_007_noeofsig};
+}
+
+
 
 /*
 
@@ -81,9 +147,8 @@ Lmbuffer parsebuffer(){  //40 char go in, buffer goes out
 */
 
 
-} /* namespace mevent */
+} /* namespace mfile */
 
-//readfileheader
 //buffer::buffer init (40 bytes)
 //buffer.runid
 //...
