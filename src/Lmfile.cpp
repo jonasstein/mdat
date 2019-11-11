@@ -55,7 +55,7 @@ uint64_t Lmfile::read64bit() {
 
 void Lmfile::convertlistmodefile() {
   Lmfile::parsefileheader();
-  bool fileEOF = false;
+  //bool fileEOF = false;
 
   /*
   while (fileEOF == false)
