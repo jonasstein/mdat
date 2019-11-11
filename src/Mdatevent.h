@@ -65,8 +65,7 @@ public:
 			ModIDClass EventModID, SlotIDClass EventSlotID, AmplitudeClass EventAmplitude, PositionClass EventPosition);
 	Mdatevent triggerevent(TimestampClass mytimestamp,
 			TrigIDClass mytrigid, DataIDClass mydataid, DataClass mydata);
-	//Mdatevent importrawevent(char rawinput [6]);
-	Mdatevent importevent(uint64_t sortedevent);
+	void importevent(uint64_t sortedevent);
 
 	virtual ~Mdatevent();
 

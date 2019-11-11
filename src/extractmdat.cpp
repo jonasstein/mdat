@@ -13,6 +13,7 @@
 #include <iostream>
 #include <sstream> // std::stringstream
 #include <string>
+#include <filesystem>
 
 // true if file exists
 bool fileExists(const std::string &file) {
@@ -28,6 +29,8 @@ void printhelp() {
 }
 
 int main(int argc, char *argv[]) {
+
+  std::cout << std::filesystem::exists("Lmfile.cpp");
   std::stringstream msgerr; // make cout thread save
 
   if (argc != 2) {

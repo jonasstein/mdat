@@ -4,6 +4,8 @@
 //#include <string>     // std::string, std::stoull
 
 #include "../src/Mdatevent.h"
+#include "../src/Bitslicer.h"
+
 
 //const std::string testFileName = "samples/180sec_2chan_5kHz_pm_4kHz_FM_4Hz_Trigger1Hz.mdat";
 
@@ -11,14 +13,16 @@ TEST(CategoryTest, SpecificTest)
 {
 	mevent::Mdatevent newevent;
 
+	uint16_t Low = bitslicer::byteswap(0x5429);
+	uint16_t Mid = bitslicer::byteswap(0x003C);
+	uint16_t High = bitslicer::byteswap(0xF000);
 
-	uint64_t Low = 0x2D00;
-	uint64_t Mid = 0x0100;
-	uint64_t High = 0x1500;
+	uint64_t sorted = 0b100000000000000000000000000000000000000000000000;
+			//bitslicer::LowMidHigh(Low,Mid,High);
 
-//	newevent.importevent()
+    newevent.importevent(sorted);
 
-    ASSERT_EQ(1, 1);
+    ASSERT_EQ(newevent.printevent(), "test");
 }
 
 

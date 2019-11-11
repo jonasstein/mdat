@@ -151,22 +151,17 @@ Mdatevent Mdatevent::triggerevent(TimestampClass mytimestamp,
   return mynewevent;
 }
 
-Mdatevent Mdatevent::importevent(uint64_t sortedevent) {
-
-  IDClass myID = getEventID(bitslicer::getintbybitpattern(
+void Mdatevent::importevent(uint64_t sortedevent) {
+	this->EventID = getEventID(bitslicer::getintbybitpattern(
       sortedevent, 0b100000000000000000000000000000000000000000000000));
-  TrigIDClass mytrigid = getTrigID(bitslicer::getintbybitpattern(
+	this->EventTrigID = getTrigID(bitslicer::getintbybitpattern(
       sortedevent, 0b011100000000000000000000000000000000000000000000));
-  DataIDClass mydataid = getDataID(bitslicer::getintbybitpattern(
+	this->EventDataID = getDataID(bitslicer::getintbybitpattern(
       sortedevent, 0b000011110000000000000000000000000000000000000000));
-  DataClass mydata = bitslicer::getintbybitpattern(
+	this->EventData = bitslicer::getintbybitpattern(
       sortedevent, 0b000000001111111111111111111110000000000000000000);
-  TimestampClass mytimestamp = bitslicer::getintbybitpattern(
+	this->EventTimestamp = bitslicer::getintbybitpattern(
       sortedevent, 0b000000000000000000000000000001111111111111111111);
-
-  mevent::Mdatevent mynewevent{};
-  mynewevent.triggerevent(mytimestamp, mytrigid, mydataid, mydata);
-  return mynewevent;
 }
 
 std::string Mdatevent::printeventverbose(void) {
@@ -204,7 +199,6 @@ std::string Mdatevent::printevent(void) {
     buffer << static_cast<int>(EventAmplitude) << ", ";
     buffer << static_cast<int>(EventPosition) << "\n";
   }
-
   if (this->EventID == IDClass::trigger) {
     buffer << static_cast<int>(EventTimestamp) << ", ";
     ;

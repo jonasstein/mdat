@@ -12,4 +12,8 @@ BUILDPATH=${SCRIPTPATH}/build
 rm -rf CMakeFiles/ CMakeCache.txt 
 rm -rf ${BUILDPATH}/*
 
-cmake -B ${BUILDPATH} -DCMAKE_CXX_COMPILER=clang++ .  && make
+cmake -B ${BUILDPATH} -DCMAKE_CXX_COMPILER=clang++ .  && make && \
+${SCRIPTPATH}/tests/Bitslicer_test && \
+${SCRIPTPATH}/tests/Lmfile_test && \
+${SCRIPTPATH}/tests/Mdatevent_test  
+
