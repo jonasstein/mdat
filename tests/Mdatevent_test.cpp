@@ -26,8 +26,10 @@ TEST(CategoryTest, SpecificTest)
 }
 
 
-TEST(CategoryTest, ZeroTest)
+TEST(Mevent, creator)
 {
+	mevent::Mdatevent newevent;
+
     ASSERT_EQ(0, 0);
 }
 

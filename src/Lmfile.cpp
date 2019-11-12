@@ -8,6 +8,8 @@
 #include <iostream> // std::cout
 #include <istream>
 #include <string>
+#include <filesystem>
+
 
 namespace mfile {
 
@@ -32,9 +34,8 @@ Lmbuffer::~Lmbuffer() {}
 Lmfile::Lmfile(std::string const mypath)
     : ifs(mypath, std::ifstream::ate | std::ifstream::binary), filesize(0),
       firsttimestamp_ns(0) {
-  // "ate" placed cursor to EOF, we can read out the filesize now and go to
-  // start.
-  filesize = ifs.tellg();
+
+  filesize = std::filesystem::file_size(mypath);
 
   if (filesize < 134) {
     std::cerr << "Size of file: " << filesize << " Bytes. \n";
@@ -94,7 +95,7 @@ void Lmfile::parsefileheader() {
   std::cout << "\n Position: " << ifs.tellg() << " \n \n";
 }
 
-void parsedatablock();
+void parsedatablock() {};
 
 void Lmfile::setverbositylevel(uint8_t vlevel) { verbositylevel = vlevel; }
 

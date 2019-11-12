@@ -15,12 +15,6 @@
 #include <string>
 #include <filesystem>
 
-// true if file exists
-bool fileExists(const std::string &file) {
-  // struct stat buf;
-  // return (stat(file.c_str(), &buf) == 0);
-  return true;
-}
 
 void printhelp() {
   std::cout << "Version: " << QMR_VERSION_STRING << "\n"
@@ -30,7 +24,7 @@ void printhelp() {
 
 int main(int argc, char *argv[]) {
 
-  std::cout << std::filesystem::exists("Lmfile.cpp");
+
   std::stringstream msgerr; // make cout thread save
 
   if (argc != 2) {
@@ -42,11 +36,9 @@ int main(int argc, char *argv[]) {
     std::string ArgFilename(argv[1]);
     int verbosity = 1;
 
-    if (!fileExists(ArgFilename)) {
-      fprintf(stderr, "Error: File not found: %s \n", ArgFilename.c_str());
-      return (EXIT_FAILURE);
+    if (!std::filesystem::exists(ArgFilename)) {
+    	throw std::runtime_error{error_008_filenotfound};
     } else {
-
       mfile::Lmfile *limo;
       limo = new mfile::Lmfile(ArgFilename);
       /*   limo->setverbositylevel(verbosity);

@@ -10,5 +10,6 @@ constexpr char error_004_arguments[] = "Error 004: Wrong number of arguments.";
 constexpr char error_005_noheadersig[] = "Error 005: Expected header signature after the file header. Broken file format.";
 constexpr char error_006_nodatasig[] = "Error 006: Expected data block signature after data block. Broken file format.";
 constexpr char error_007_noeofsig[] = "Error 007: Expected file signature at the end of the list mode file. Broken file format.";
+constexpr char error_008_filenotfound[] = "Error 008: File not found.";
 
 #endif /* SRC_ERRORCODES_H_ */
