@@ -19,7 +19,7 @@ Lmbuffer::Lmbuffer(uint16_t const rawbuffer[20]) {
   headerlengthinwords = bitslicer::byteswap(rawbuffer[2]);
   buffernumber = bitslicer::byteswap(rawbuffer[3]);
   runid = bitslicer::byteswap(rawbuffer[4]);
-  // mcpdid
+  //mcpdid
   // status
 
   uint16_t htsLow = bitslicer::byteswap(rawbuffer[6]);
@@ -54,11 +54,14 @@ uint64_t Lmfile::read64bit() {
   return sequenceRAW;
 }
 
+void Lmfile::printposition(){
+	std::cout << ifs.tellg();
+}
+
 void Lmfile::convertlistmodefile() {
   Lmfile::parsefileheader();
-  //bool fileEOF = false;
 
-  /*
+  /*bool fileEOF = false;
   while (fileEOF == false)
   {
     Lmfile::parsedatablock();
@@ -91,13 +94,9 @@ void Lmfile::parsefileheader() {
   //     std::getline(ifs, thisline);
 
   Lmfile::readheadersignature();
-
-  std::cout << "\n Position: " << ifs.tellg() << " \n \n";
 }
 
 void parsedatablock() {};
-
-void Lmfile::setverbositylevel(uint8_t vlevel) { verbositylevel = vlevel; }
 
 void Lmfile::readheadersignature() {
   uint64_t sequenceRAW = Lmfile::read64bit();
@@ -115,6 +114,14 @@ void Lmfile::readfilesignature() {
   uint64_t sequenceRAW = Lmfile::read64bit();
   if (filesignature != sequenceRAW)
     throw std::runtime_error{error_007_noeofsig};
+}
+
+void Lmfile::setverbosity(bool beverbose){
+	this->verbose = beverbose;
+}
+
+bool Lmfile::getverbosity(){
+	return this->verbose;
 }
 
 /*

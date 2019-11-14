@@ -34,22 +34,23 @@ int main(int argc, char *argv[]) {
     exit(3);
   } else {
     std::string ArgFilename(argv[1]);
-    int verbosity = 1;
 
     if (!std::filesystem::exists(ArgFilename)) {
     	throw std::runtime_error{error_008_filenotfound};
     } else {
       mfile::Lmfile *limo;
       limo = new mfile::Lmfile(ArgFilename);
-      /*   limo->setverbositylevel(verbosity);
 
-      msgerr << "# size (Bytes): " << limo->getfilesize() << std::endl ;
+      limo->setverbosity(true);
       limo->convertlistmodefile();
-      std::cerr << "# Number of Events: " << limo->getNumberOfEvents() <<
-      std::endl;
+
+     // msgerr << "# size (Bytes): " << limo->getfilesize() << std::endl ;
+    //  limo->convertlistmodefile();
+    //  std::cerr << "# Number of Events: " << limo->getNumberOfEvents() <<
+    //  std::endl;
 
       delete(limo);
-      */
+
       return (EXIT_SUCCESS);
     }
   }

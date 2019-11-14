@@ -2,7 +2,7 @@
 #define LMFILE_H_
 
 #include <string>
-#include <cstdint>
+#include <cstdint>  // int8_t
 #include <fstream>
 
 namespace mfile {
@@ -49,15 +49,19 @@ private:
 	void readdatablocksignature();
 	void readfilesignature();
 	uint64_t read64bit();
+	bool verbose;
 
 
 public:
 	Lmfile( const std::string mypath );
 	virtual ~Lmfile();
     void convertlistmodefile();
+    void printposition();
 	void parsefileheader();
     void parsedatablock();
-    void setverbositylevel(uint8_t vlevel);
+    void setverbosity(bool beverbose);
+    bool getverbosity();
+
 
 
 };

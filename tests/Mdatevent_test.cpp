@@ -13,9 +13,9 @@ TEST(CategoryTest, SpecificTest)
 {
 	mevent::Mdatevent newevent;
 
-	uint16_t Low = bitslicer::byteswap(0x5429);
-	uint16_t Mid = bitslicer::byteswap(0x003C);
-	uint16_t High = bitslicer::byteswap(0xF000);
+	uint16_t Low = bitslicer::byteswap(0x0075);
+	uint16_t Mid = bitslicer::byteswap(0x0001);
+	uint16_t High = bitslicer::byteswap(0x0015);
 
 	uint64_t sorted = 0b100000000000000000000000000000000000000000000000;
 			//bitslicer::LowMidHigh(Low,Mid,High);
@@ -29,7 +29,6 @@ TEST(CategoryTest, SpecificTest)
 TEST(Mevent, creator)
 {
 	mevent::Mdatevent newevent;
-
     ASSERT_EQ(0, 0);
 }
 
