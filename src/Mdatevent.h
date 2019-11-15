@@ -24,24 +24,22 @@ enum class DataIDClass : uint8_t { Monitor1 = 0, Monitor2, Monitor3, Monitor4,
 	ADC1, ADC2}; // Data source
 
 using DataClass = uint32_t;      // 21 bit needed
-using TimestampClass = uint64_t; // 48 bit offset from the header, 19 bit time in the event
-
+using TimestampClass = uint64_t; // 3x16 = 48 bit offset from the header
 using ModIDClass = uint8_t; // 3 Bit used
 using SlotIDClass = uint8_t; // 5 Bit used
 using AmplitudeClass = uint16_t; // 10 Bit used
 using PositionClass = uint16_t; // 10 Bit used
 
-
 IDClass getEventID(uint64_t rawinteger);
 TrigIDClass getTrigID(uint64_t rawinteger);
 DataIDClass getDataID(uint64_t rawinteger);
-
 
 class Mdatevent {
 private:
 	//properties of neutron and trigger events
 	IDClass EventID;
-	TimestampClass EventTimestamp;
+	TimestampClass BufferTimestamp_ns;
+	TimestampClass FullEventTimestamp_ns;
 
 	//properties of neutron events
 	ModIDClass EventModID;
@@ -57,15 +55,18 @@ private:
 
 public:
 	Mdatevent();
-	Mdatevent(IDClass myid, TimestampClass mytimestamp,
+	Mdatevent(uint64_t sortedevent, TimestampClass myBufferTimestamp_ns);
+
+/*	Mdatevent(IDClass myid, TimestampClass myFullEventTimestamp_ns,
 			ModIDClass EventModID, SlotIDClass EventSlotID, AmplitudeClass EventAmplitude, PositionClass EventPosition,
 			TrigIDClass mytrigid, DataIDClass mydataid, DataClass mydata);
+
 
 	Mdatevent neutronevent(TimestampClass mytimestamp,
 			ModIDClass EventModID, SlotIDClass EventSlotID, AmplitudeClass EventAmplitude, PositionClass EventPosition);
 	Mdatevent triggerevent(TimestampClass mytimestamp,
 			TrigIDClass mytrigid, DataIDClass mydataid, DataClass mydata);
-	void importevent(uint64_t sortedevent);
+*/
 
 	virtual ~Mdatevent();
 

@@ -9,41 +9,45 @@
 
 //const std::string testFileName = "samples/180sec_2chan_5kHz_pm_4kHz_FM_4Hz_Trigger1Hz.mdat";
 
-TEST(CategoryTest, SpecificTest)
+TEST(importraw, trigger_0xffff)
 {
-	mevent::Mdatevent newevent;
+	uint64_t sorted = 0b100000000000000000000000000000000000000000000000 + 0xffff;
+	mevent::TimestampClass myBuffertime_ns {0x000000};
+	mevent::Mdatevent newevent(sorted, myBuffertime_ns);
+	ASSERT_EQ(newevent.printevent(), "6553500, 6, 0, 0\n");
+}
 
-	uint16_t Low = bitslicer::byteswap(0x0075);
-	uint16_t Mid = bitslicer::byteswap(0x0001);
-	uint16_t High = bitslicer::byteswap(0x0015);
+TEST(importraw, neutron_0xffff)
+{
+	uint64_t sorted = 0b000000000000000000000000000000000000000000000000 + 0xffff;
+	mevent::TimestampClass myBuffertime_ns {0x000000};
+	mevent::Mdatevent newevent(sorted, myBuffertime_ns);
+    ASSERT_EQ(newevent.printevent(), "6553500, 8, 0, 0\n");
+}
 
-	uint64_t sorted = 0b100000000000000000000000000000000000000000000000;
-			//bitslicer::LowMidHigh(Low,Mid,High);
-
-    newevent.importevent(sorted);
-
-    ASSERT_EQ(newevent.printevent(), "test");
+TEST(importraw, trigger_addoffset)
+{
+	uint64_t sorted = 0b100000000000000000000000000000000000000000000000 + 0x1000;
+	mevent::TimestampClass myBuffertime_ns {0xefff * 100};
+	mevent::Mdatevent newevent(sorted, myBuffertime_ns);
+    ASSERT_EQ(newevent.printevent(), "6553500, 6, 0, 0\n");
 }
 
 
-TEST(Mevent, creator)
+
+TEST(importraw, trigger_realraw)
 {
-	mevent::Mdatevent newevent;
-    ASSERT_EQ(0, 0);
+	uint16_t Low = bitslicer::byteswap(0x407E);
+	uint16_t Mid = bitslicer::byteswap(0x0008);
+	uint16_t High  = bitslicer::byteswap(0xF000);
+
+
+	uint64_t sorted = bitslicer::LowMidHigh(Low,Mid,High);
+	mevent::TimestampClass myBuffertime_ns {0x000000};
+	mevent::Mdatevent newevent(sorted, myBuffertime_ns);
+    ASSERT_EQ(newevent.printevent(), "6553500, 6, 0, 0\n");
 }
 
-
-/*TEST(CategoryTest, Plustest)
-{
-	mevent::Mdatevent testobject2 {mevent::IDClass::trigger,
-					  mevent::TrigIDClass::CmpReg,
-					  mevent::DataIDClass::Monitor1,
-					  0b0,
-					  0b0} ;
-
-    ASSERT_EQ(testobject2.pluseins(1), 2);
-}
-*/
 
 int main(int argc, char **argv)
 {

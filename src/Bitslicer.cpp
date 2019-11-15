@@ -9,9 +9,15 @@ uint16_t byteswap(uint16_t word) {
 }
 
 uint64_t LowMidHigh(uint16_t LowWord, uint16_t MidWord, uint16_t HighWord) {
-  return ((static_cast<uint64_t>(HighWord) << 32) +
-          (static_cast<uint64_t>(MidWord) << 16) +
-          (static_cast<uint64_t>(LowWord)));
+	uint64_t High64 = static_cast<uint64_t>(HighWord);
+	High64 = High64 << 32;
+
+	uint64_t Mid64 = static_cast<uint64_t>(MidWord);
+	Mid64 = Mid64 << 16;
+
+	uint64_t Low64 = static_cast<uint64_t>(LowWord);
+
+  return (High64 + Mid64 + Low64);
 }
 
 uint64_t getintbybitpattern(uint64_t pattern, uint64_t cutpattern) {
