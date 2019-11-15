@@ -14,7 +14,7 @@ TEST(importraw, trigger_0xffff)
 	uint64_t sorted = 0b100000000000000000000000000000000000000000000000 + 0xffff;
 	mevent::TimestampClass myBuffertime_ns {0x000000};
 	mevent::Mdatevent newevent(sorted, myBuffertime_ns);
-	ASSERT_EQ(newevent.printevent(), "6553500, 6, 0, 0\n");
+	ASSERT_EQ(newevent.printevent(), "6553500, 7, 0, 0\n");
 }
 
 TEST(importraw, neutron_0xffff)
@@ -30,22 +30,22 @@ TEST(importraw, trigger_addoffset)
 	uint64_t sorted = 0b100000000000000000000000000000000000000000000000 + 0x1000;
 	mevent::TimestampClass myBuffertime_ns {0xefff * 100};
 	mevent::Mdatevent newevent(sorted, myBuffertime_ns);
-    ASSERT_EQ(newevent.printevent(), "6553500, 6, 0, 0\n");
+    ASSERT_EQ(newevent.printevent(), "6553500, 7, 0, 0\n");
 }
 
 
 
 TEST(importraw, trigger_realraw)
 {
-	uint16_t Low = bitslicer::byteswap(0x407E);
-	uint16_t Mid = bitslicer::byteswap(0x0008);
-	uint16_t High  = bitslicer::byteswap(0xF000);
+	uint16_t Low = 0x407E;//bitslicer::byteswap(0x407E);
+	uint16_t Mid = 0x0008;//bitslicer::byteswap(0x0008);
+	uint16_t High  = 0xF000; //bitslicer::byteswap(0xF000);
 
 
 	uint64_t sorted = bitslicer::LowMidHigh(Low,Mid,High);
 	mevent::TimestampClass myBuffertime_ns {0x000000};
 	mevent::Mdatevent newevent(sorted, myBuffertime_ns);
-    ASSERT_EQ(newevent.printevent(), "6553500, 6, 0, 0\n");
+    ASSERT_EQ(newevent.printevent(), "1651000, 7, 0, 1\n");
 }
 
 
