@@ -34,12 +34,11 @@ TEST(importraw, trigger_addoffset)
 }
 
 
-
 TEST(importraw, trigger_realraw)
 {
-	uint16_t Low = 0x407E;//bitslicer::byteswap(0x407E);
-	uint16_t Mid = 0x0008;//bitslicer::byteswap(0x0008);
-	uint16_t High  = 0xF000; //bitslicer::byteswap(0xF000);
+	uint16_t Low = 0x407E;
+	uint16_t Mid = 0x0008;
+	uint16_t High  = 0xF000;
 
 
 	uint64_t sorted = bitslicer::LowMidHigh(Low,Mid,High);

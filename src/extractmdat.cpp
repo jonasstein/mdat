@@ -28,7 +28,7 @@ int main(int argc, char *argv[]) {
   std::stringstream msgerr; // make cout thread save
 
   if (argc != 2) {
-    fprintf(stderr, error_004_arguments);
+    fprintf(stderr, "%s\n", error_004_arguments.c_str());
     fprintf(stderr, "\nExpected 1, got %d. Stopped\n", argc - 1);
     printhelp();
     exit(3);
