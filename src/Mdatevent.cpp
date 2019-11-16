@@ -20,24 +20,40 @@ Mdatevent::Mdatevent(uint64_t sortedevent, TimestampClass myBufferTimestamp_ns) 
 
 	this->EventID = getEventID(bitslicer::getintbybitpattern(
       sortedevent, 0b100000000000000000000000000000000000000000000000));
+
+	if (IDClass::trigger == this->EventID){
+
 	this->EventTrigID = getTrigID(bitslicer::getintbybitpattern(
-      sortedevent, 0b011100000000000000000000000000000000000000000000));
+			sortedevent, 0b011100000000000000000000000000000000000000000000));
 	this->EventDataID = getDataID(bitslicer::getintbybitpattern(
       sortedevent, 0b000011110000000000000000000000000000000000000000));
 	this->EventData = bitslicer::getintbybitpattern(
       sortedevent, 0b000000001111111111111111111110000000000000000000);
 
-	TimestampClass time19bit_ns = 100 * bitslicer::getintbybitpattern(
-			sortedevent, 0b000000000000000000000000000001111111111111111111);
-
-	this->BufferTimestamp_ns =myBufferTimestamp_ns;
-	this->FullEventTimestamp_ns = myBufferTimestamp_ns + time19bit_ns;
-
 	this->EventModID = 0;
 	this->EventSlotID = 0;
 	this->EventAmplitude = 0;
-	this->EventSlotID = 0;
 	this->EventPosition =0;
+	}
+	else{
+		this->EventTrigID = TrigIDClass::Timer1;
+		this->EventDataID = DataIDClass::ADC2;
+		this->EventData = 0;
+
+		this->EventModID = bitslicer::getintbybitpattern(
+			      sortedevent, 0b011100000000000000000000000000000000000000000000);
+		this->EventSlotID = bitslicer::getintbybitpattern(
+			      sortedevent, 0b000011111000000000000000000000000000000000000000);
+		this->EventAmplitude = bitslicer::getintbybitpattern(
+			      sortedevent, 0b000000000111111111100000000000000000000000000000);
+		this->EventPosition = bitslicer::getintbybitpattern(
+			      sortedevent, 0b000000000000000000011111111110000000000000000000);
+	}
+
+	TimestampClass time19bit_ns = 100 * bitslicer::getintbybitpattern(
+			sortedevent, 0b000000000000000000000000000001111111111111111111);
+	this->BufferTimestamp_ns =myBufferTimestamp_ns;
+	this->FullEventTimestamp_ns = myBufferTimestamp_ns + time19bit_ns;
 }
 
 
