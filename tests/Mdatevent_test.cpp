@@ -47,6 +47,18 @@ TEST(importraw, trigger_realraw)
     ASSERT_EQ(newevent.printevent(), "1651000, 7, 0, 1\n");
 }
 
+TEST(importraw, neutron_raw)
+{
+	uint16_t Low = 0x407E;
+	uint16_t Mid = 0x0008;
+	uint16_t High  = 0x1000;
+
+	uint64_t sorted = bitslicer::LowMidHigh(Low,Mid,High);
+	mevent::TimestampClass myBuffertime_ns {0x000000};
+	mevent::Mdatevent newevent(sorted, myBuffertime_ns);
+    ASSERT_EQ(newevent.printevent(), "1651000, 8, 1, 0\n");
+}
+
 
 int main(int argc, char **argv)
 {
