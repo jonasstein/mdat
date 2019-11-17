@@ -3,13 +3,12 @@
 #include "Mdatevent.h"
 #include "errorcodes.h"
 
-#include <cstdint>  // int8_t
+#include <cstdint> // int8_t
+#include <filesystem>
 #include <fstream>  // std::ifstream
 #include <iostream> // std::cout
 #include <istream>
 #include <string>
-#include <filesystem>
-
 
 namespace mfile {
 
@@ -19,7 +18,7 @@ Lmbuffer::Lmbuffer(uint16_t const rawbuffer[20]) {
   headerlengthinwords = bitslicer::byteswap(rawbuffer[2]);
   buffernumber = bitslicer::byteswap(rawbuffer[3]);
   runid = bitslicer::byteswap(rawbuffer[4]);
-  //mcpdid
+  // mcpdid
   // status
 
   uint16_t htsLow = bitslicer::byteswap(rawbuffer[6]);
@@ -54,27 +53,23 @@ uint64_t Lmfile::read64bit() {
   return sequenceRAW;
 }
 
-uint64_t Lmfile::getsortedevent(){
-  uint16_t Low {0};
-  uint16_t Mid {0};
-  uint16_t High {0};
+uint64_t Lmfile::getsortedevent() {
+  uint16_t Low{0};
+  uint16_t Mid{0};
+  uint16_t High{0};
 
   ifs.read(reinterpret_cast<char *>(&Low), 2);
   ifs.read(reinterpret_cast<char *>(&Mid), 2);
   ifs.read(reinterpret_cast<char *>(&High), 2);
 
-  return bitslicer::LowMidHigh(Low,Mid,High);
+  return bitslicer::LowMidHigh(Low, Mid, High);
 }
 
-
-void Lmfile::printposition(){
-	std::cout << ifs.tellg();
-}
+void Lmfile::printposition() { std::cout << ifs.tellg(); }
 
 void Lmfile::convertlistmodefile() {
-	this->jumpbehindfileheader();
-	uint64_t mysig = this->read64bit();
-
+  this->jumpbehindfileheader();
+  uint64_t mysig = this->read64bit();
 
   /*bool fileEOF = false;
   while (fileEOF == false)
@@ -131,14 +126,11 @@ void Lmfile::readfilesignature() {
     throw std::runtime_error{error_007_noeofsig};
 }
 
-void Lmfile::setverbosity(uint8_t myverbositylevel){
-	this->verbositylevel = myverbositylevel;
+void Lmfile::setverbosity(uint8_t myverbositylevel) {
+  this->verbositylevel = myverbositylevel;
 }
 
-uint8_t Lmfile::getverbosity(){
-	return this->verbositylevel;
-}
-
+uint8_t Lmfile::getverbosity() { return this->verbositylevel; }
 
 /*
 
