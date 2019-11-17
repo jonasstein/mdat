@@ -23,7 +23,7 @@ void printhelp() {
 
 int main(int argc, char *argv[]) {
 
-  std::stringstream msgerr; // make cout thread save
+  std::stringstream msgerr; // thread save cout
 
   if (argc != 2) {
     fprintf(stderr, "%s\n", error_004_arguments.c_str());

@@ -17,7 +17,7 @@ private:
   uint16_t runid{0};
   uint8_t mcpdid{0};
   uint8_t status{0};
-  uint64_t headertimestamp{0};
+  uint64_t headertimestamp_ns{0}; //FIXME use timeclass here
   uint64_t parameter0{0};
   uint64_t parameter1{0};
   uint64_t parameter2{0};
@@ -26,9 +26,10 @@ private:
 public:
   Lmbuffer(std::vector<uint16_t> rawbuffer);
   virtual ~Lmbuffer();
-  Lmbuffer getbufferlengthinwords();
-  Lmbuffer getheadertimestamp();
-  Lmbuffer getrunid();
+  uint16_t getbufferlengthinwords();
+  uint16_t getheaderlengthinwords();
+  uint64_t getheadertimestamp_ns(); //FIXME use timeclass here
+  uint16_t getrunid();
 };
 
 typedef int64_t filesize_t;
@@ -42,10 +43,10 @@ class Lmfile {
 private:
   std::ifstream ifs;
   filesize_t filesize;
-  uint64_t firsttimestamp_ns{0};
+  uint64_t firsttimestamp_ns{0}; //FIXME use timeclass here
   uint8_t verbositylevel{0};
   void readheadersignature();
-  void readdatablocksignature();
+  void readbuffersignature();
   void readfilesignature();
   uint64_t read64bit();
 
@@ -53,7 +54,7 @@ public:
   Lmfile(const std::string mypath, uint8_t verbositylevel);
   virtual ~Lmfile();
   void convertlistmodefile();
-  void printposition();
+  filesize_t getposition();
   std::vector<uint16_t> getbufferheader();
   void jumpbehindfileheader();
   void parsedatablock();
@@ -61,6 +62,7 @@ public:
   uint8_t getverbosity();
   uint64_t getsortedevent();
   filesize_t getfilesize();
+  filesize_t getbytestillEOF();
   /*
    *signature_t getsignature()
    * getbufferheader()

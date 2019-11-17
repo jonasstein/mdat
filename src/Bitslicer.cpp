@@ -8,6 +8,14 @@ uint16_t byteswap(uint16_t word) {
   return ((word & 0xff) << 8) | ((word & 0xff00) >> 8);
 }
 
+uint64_t byteswap64(uint64_t value) {
+	uint64_t partA = value & 0xffff000000000000;
+	uint64_t partB = value & 0x0000ffff00000000;
+	uint64_t partC = value & 0x00000000ffff0000;
+	uint64_t partD = value & 0x000000000000ffff;
+	return ((partA >> 48) + (partB >> 16) + (partC << 16) + (partD << 48 )) ;
+}
+
 uint64_t LowMidHigh(uint16_t LowWord, uint16_t MidWord, uint16_t HighWord) {
   uint64_t High64 = static_cast<uint64_t>(HighWord);
   High64 = High64 << 32;

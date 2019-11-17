@@ -15,6 +15,11 @@ TEST(Bitsclicer, byteswap)
     ASSERT_EQ(bitslicer::byteswap(0x0F0F), 0x0F0F);
 }
 
+TEST(Bitsclicer, byteswap64)
+{
+    ASSERT_EQ(bitslicer::byteswap64(0x0000111122223333), 0x3333222211110000);
+    ASSERT_EQ(bitslicer::byteswap64(0xaaaa5555ffff0000), 0x0000ffff5555aaaa);
+}
 
 TEST(Bitsclicer, LowMidHigh)
 {
