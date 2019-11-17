@@ -3,12 +3,10 @@
 
 #include <cstdint>
 
-namespace bitslicer{
+namespace bitslicer {
 uint16_t byteswap(uint16_t word);
 uint64_t LowMidHigh(uint16_t LowWord, uint16_t MidWord, uint16_t HighWord);
 uint64_t getintbybitpattern(uint64_t pattern, uint64_t cutpattern);
-}
-
-
+} // namespace bitslicer
 
 #endif /* SRC_BITSLICER_H_ */
