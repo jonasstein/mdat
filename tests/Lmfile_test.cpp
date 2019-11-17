@@ -7,20 +7,13 @@
 
 //const std::string testFileName = "samples/180sec_2chan_5kHz_pm_4kHz_FM_4Hz_Trigger1Hz.mdat";
 
-
-
-
-/*TEST(CategoryTest, Plustest)
+TEST(lmfile, set_read_verbosity)
 {
-	mevent::Mdatevent testobject2 {mevent::IDClass::trigger,
-					  mevent::TrigIDClass::CmpReg,
-					  mevent::DataIDClass::Monitor1,
-					  0b0,
-					  0b0} ;
-
-    ASSERT_EQ(testobject2.pluseins(1), 2);
+//	uint64_t sorted = 0b100000000000000000000000000000000000000000000000;
+//	mevent::TimestampClass myBuffertime_ns {0x0 * 100};
+//	mevent::set
 }
-*/
+
 
 int main(int argc, char **argv)
 {

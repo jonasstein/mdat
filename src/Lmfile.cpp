@@ -31,9 +31,9 @@ Lmbuffer::Lmbuffer(uint16_t const rawbuffer[20]) {
 
 Lmbuffer::~Lmbuffer() {}
 
-Lmfile::Lmfile(std::string const mypath)
+Lmfile::Lmfile(std::string const mypath, uint8_t myverbositylevel)
     : ifs(mypath, std::ifstream::ate | std::ifstream::binary), filesize(0),
-      firsttimestamp_ns(0) {
+      firsttimestamp_ns(0), verbositylevel(myverbositylevel) {
 
   filesize = std::filesystem::file_size(mypath);
 
@@ -54,12 +54,27 @@ uint64_t Lmfile::read64bit() {
   return sequenceRAW;
 }
 
+uint64_t Lmfile::getsortedevent(){
+  uint16_t Low {0};
+  uint16_t Mid {0};
+  uint16_t High {0};
+
+  ifs.read(reinterpret_cast<char *>(&Low), 2);
+  ifs.read(reinterpret_cast<char *>(&Mid), 2);
+  ifs.read(reinterpret_cast<char *>(&High), 2);
+
+  return bitslicer::LowMidHigh(Low,Mid,High);
+}
+
+
 void Lmfile::printposition(){
 	std::cout << ifs.tellg();
 }
 
 void Lmfile::convertlistmodefile() {
-  Lmfile::parsefileheader();
+	this->jumpbehindfileheader();
+	uint64_t mysig = this->read64bit();
+
 
   /*bool fileEOF = false;
   while (fileEOF == false)
@@ -70,7 +85,7 @@ void Lmfile::convertlistmodefile() {
   */
 }
 
-void Lmfile::parsefileheader() {
+void Lmfile::jumpbehindfileheader() {
   // read first 2 lines of the file
   // parse second line with length of header
   // return length of header in number of lines
@@ -81,11 +96,11 @@ void Lmfile::parsefileheader() {
     throw std::runtime_error{error_001_noheader};
 
   std::getline(ifs, thisline); // header length: nnnnn lines
-  int numberofheaderlines = thisline.find(": ");
+  uint64_t numberofheaderlines = thisline.find(": ");
   std::string sustri = thisline.substr(
       numberofheaderlines + 1, numberofheaderlines + 4); // TODO  + 4 => EOL
 
-  uint32_t fileHeaderLength = std::stoi(sustri, nullptr, 10);
+  uint64_t fileHeaderLength = std::stoi(sustri, nullptr, 10);
 
   if (fileHeaderLength != 2)
     throw std::runtime_error{error_002_headernottwolines};
@@ -96,7 +111,7 @@ void Lmfile::parsefileheader() {
   Lmfile::readheadersignature();
 }
 
-void parsedatablock() {};
+void parsedatablock() {}
 
 void Lmfile::readheadersignature() {
   uint64_t sequenceRAW = Lmfile::read64bit();
@@ -116,13 +131,14 @@ void Lmfile::readfilesignature() {
     throw std::runtime_error{error_007_noeofsig};
 }
 
-void Lmfile::setverbosity(bool beverbose){
-	this->verbose = beverbose;
+void Lmfile::setverbosity(uint8_t myverbositylevel){
+	this->verbositylevel = myverbositylevel;
 }
 
-bool Lmfile::getverbosity(){
-	return this->verbose;
+uint8_t Lmfile::getverbosity(){
+	return this->verbositylevel;
 }
+
 
 /*
 

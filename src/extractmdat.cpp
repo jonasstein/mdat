@@ -39,9 +39,8 @@ int main(int argc, char *argv[]) {
     	throw std::runtime_error{error_008_filenotfound};
     } else {
       mfile::Lmfile *limo;
-      limo = new mfile::Lmfile(ArgFilename);
+      limo = new mfile::Lmfile(ArgFilename, 0);
 
-      limo->setverbosity(true);
       limo->convertlistmodefile();
 
      // msgerr << "# size (Bytes): " << limo->getfilesize() << std::endl ;
