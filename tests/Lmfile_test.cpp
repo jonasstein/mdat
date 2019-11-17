@@ -5,7 +5,7 @@
 
 #include "../src/Lmfile.h"
 
-//const std::string testFileName = "samples/180sec_2chan_5kHz_pm_4kHz_FM_4Hz_Trigger1Hz.mdat";
+const std::string testFileName = "../tests/39events.mdat";
 
 TEST(lmfile, set_read_verbosity)
 {

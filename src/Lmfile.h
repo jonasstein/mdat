@@ -6,7 +6,6 @@
 #include <string>
 #include <vector>
 
-
 namespace mfile {
 
 class Lmbuffer {
@@ -61,7 +60,7 @@ public:
   void setverbosity(uint8_t beverbose);
   uint8_t getverbosity();
   uint64_t getsortedevent();
-
+  filesize_t getfilesize();
   /*
    *signature_t getsignature()
    * getbufferheader()

@@ -11,7 +11,6 @@
 #include <string>
 #include <vector>
 
-
 namespace mfile {
 
 Lmbuffer::Lmbuffer(std::vector<uint16_t> rawbuffer) {
@@ -73,10 +72,7 @@ void Lmfile::convertlistmodefile() {
   this->jumpbehindfileheader();
   this->readheadersignature();
 
-
   this->readdatablocksignature();
-
-
 
   /*bool fileEOF = false;
   while (fileEOF == false)
@@ -87,15 +83,15 @@ void Lmfile::convertlistmodefile() {
   */
 }
 
-std::vector<uint16_t> Lmfile::getbufferheader(){
-	std::vector<uint16_t> mybuf(20);
-	uint16_t aword{0};
+std::vector<uint16_t> Lmfile::getbufferheader() {
+  std::vector<uint16_t> mybuf(20);
+  uint16_t aword{0};
 
-	for(int k=0; k<mybuf.size(); ++k){
-		  ifs.read(reinterpret_cast<char *>(&aword), 2);
-		  mybuf[k]=aword;
-	}
-	return mybuf;
+  for (int k = 0; k < mybuf.size(); ++k) {
+    ifs.read(reinterpret_cast<char *>(&aword), 2);
+    mybuf[k] = aword;
+  }
+  return mybuf;
 }
 
 void Lmfile::jumpbehindfileheader() {
@@ -120,7 +116,6 @@ void Lmfile::jumpbehindfileheader() {
 
   // for fileHeaderLength-1
   //     std::getline(ifs, thisline);
-
 }
 
 void parsedatablock() {}
@@ -149,6 +144,7 @@ void Lmfile::setverbosity(uint8_t myverbositylevel) {
 
 uint8_t Lmfile::getverbosity() { return this->verbositylevel; }
 
+filesize_t Lmfile::getfilesize() { return this->filesize; }
 
 } /* namespace mfile */
 
