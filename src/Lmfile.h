@@ -4,11 +4,10 @@
 #include <cstdint> // int8_t
 #include <fstream>
 #include <string>
+#include <vector>
+
 
 namespace mfile {
-
-uint16_t byteswap(uint16_t word);
-uint64_t LowMidHigh(uint16_t Low, uint16_t Mid, uint16_t High);
 
 class Lmbuffer {
 private:
@@ -26,9 +25,11 @@ private:
   uint64_t parameter3{0};
 
 public:
-  Lmbuffer(uint16_t const rawbuffer[20]);
+  Lmbuffer(std::vector<uint16_t> rawbuffer);
   virtual ~Lmbuffer();
-  Lmbuffer parsebuffer();
+  Lmbuffer getbufferlengthinwords();
+  Lmbuffer getheadertimestamp();
+  Lmbuffer getrunid();
 };
 
 typedef int64_t filesize_t;
@@ -54,6 +55,7 @@ public:
   virtual ~Lmfile();
   void convertlistmodefile();
   void printposition();
+  std::vector<uint16_t> getbufferheader();
   void jumpbehindfileheader();
   void parsedatablock();
   void setverbosity(uint8_t beverbose);
@@ -61,7 +63,6 @@ public:
   uint64_t getsortedevent();
 
   /*
-   * 6 byte getnextevent()
    *signature_t getsignature()
    * getbufferheader()
    * uint8_t getfileheaderlength()

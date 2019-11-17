@@ -9,10 +9,12 @@
 #include <iostream> // std::cout
 #include <istream>
 #include <string>
+#include <vector>
+
 
 namespace mfile {
 
-Lmbuffer::Lmbuffer(uint16_t const rawbuffer[20]) {
+Lmbuffer::Lmbuffer(std::vector<uint16_t> rawbuffer) {
   bufferlengthinwords = bitslicer::byteswap(rawbuffer[0]);
   buffertype = bitslicer::byteswap(rawbuffer[1]);
   headerlengthinwords = bitslicer::byteswap(rawbuffer[2]);
@@ -69,7 +71,12 @@ void Lmfile::printposition() { std::cout << ifs.tellg(); }
 
 void Lmfile::convertlistmodefile() {
   this->jumpbehindfileheader();
-  uint64_t mysig = this->read64bit();
+  this->readheadersignature();
+
+
+  this->readdatablocksignature();
+
+
 
   /*bool fileEOF = false;
   while (fileEOF == false)
@@ -78,6 +85,17 @@ void Lmfile::convertlistmodefile() {
     fileEOF = Lmfile::EOFahead();
   };
   */
+}
+
+std::vector<uint16_t> Lmfile::getbufferheader(){
+	std::vector<uint16_t> mybuf(20);
+	uint16_t aword{0};
+
+	for(int k=0; k<mybuf.size(); ++k){
+		  ifs.read(reinterpret_cast<char *>(&aword), 2);
+		  mybuf[k]=aword;
+	}
+	return mybuf;
 }
 
 void Lmfile::jumpbehindfileheader() {
@@ -103,7 +121,6 @@ void Lmfile::jumpbehindfileheader() {
   // for fileHeaderLength-1
   //     std::getline(ifs, thisline);
 
-  Lmfile::readheadersignature();
 }
 
 void parsedatablock() {}
@@ -132,13 +149,6 @@ void Lmfile::setverbosity(uint8_t myverbositylevel) {
 
 uint8_t Lmfile::getverbosity() { return this->verbositylevel; }
 
-/*
-
-Lmbuffer parsebuffer(){  //40 char go in, buffer goes out
-        Lmbuffer::Lmbuffer buf;
-        return buf;
-}
-*/
 
 } /* namespace mfile */
 
