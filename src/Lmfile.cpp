@@ -98,21 +98,15 @@ void Lmfile::convertlistmodefile() {
   while (getbytestillEOF() > (40+8+8)){
 	  bhwords = this->getbufferheader();
 
-	  mfile::Lmbuffer *mybuffer;
-	  mybuffer = new mfile::Lmbuffer(bhwords);
-
-	  numberofevents = (mybuffer-> getbufferlengthinwords() - mybuffer->getheaderlengthinwords())/3;
+	  mfile::Lmbuffer mybuffer{bhwords};
+	  numberofevents = (mybuffer.getbufferlengthinwords() - mybuffer.getheaderlengthinwords())/3;
 
 	  for (uint16_t i = 0; i < numberofevents; i++) {
 
-		  bufferoffset_ns = mybuffer->getheadertimestamp_ns;
-
-		  mevent::Mdatevent *myevent;
-		  myevent = new mevent::Mdatevent(this->getsortedevent(), bufferoffset_ns);
-		    delete myevent;
+		  bufferoffset_ns = mybuffer.getheadertimestamp_ns();
+		  mevent::Mdatevent myevent = mevent::Mdatevent(this->getsortedevent(), bufferoffset_ns);
 	  	  }
 	  this->readbuffersignature();
-	  delete mybuffer;
   }
   readfilesignature();
 }
