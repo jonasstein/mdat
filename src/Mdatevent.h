@@ -66,18 +66,6 @@ public:
   Mdatevent();
   Mdatevent(uint64_t sortedevent, TimestampClass myBufferTimestamp_ns);
 
-  /*	Mdatevent(IDClass myid, TimestampClass myFullEventTimestamp_ns,
-                          ModIDClass EventModID, SlotIDClass EventSlotID,
-     AmplitudeClass EventAmplitude, PositionClass EventPosition, TrigIDClass
-     mytrigid, DataIDClass mydataid, DataClass mydata);
-
-
-          Mdatevent neutronevent(TimestampClass mytimestamp,
-                          ModIDClass EventModID, SlotIDClass EventSlotID,
-     AmplitudeClass EventAmplitude, PositionClass EventPosition); Mdatevent
-     triggerevent(TimestampClass mytimestamp, TrigIDClass mytrigid, DataIDClass
-     mydataid, DataClass mydata);
-  */
 
   virtual ~Mdatevent();
 

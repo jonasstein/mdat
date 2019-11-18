@@ -14,11 +14,11 @@
 namespace mfile {
 
 Lmbuffer::Lmbuffer(std::vector<uint16_t> rawbuffer) {
-  bufferlengthinwords = bitslicer::byteswap(rawbuffer[0]);
-  buffertype = bitslicer::byteswap(rawbuffer[1]);
-  headerlengthinwords = bitslicer::byteswap(rawbuffer[2]);
-  buffernumber = bitslicer::byteswap(rawbuffer[3]);
-  runid = bitslicer::byteswap(rawbuffer[4]);
+	this->bufferlengthinwords = bitslicer::byteswap(rawbuffer[0]);
+	this->buffertype = bitslicer::byteswap(rawbuffer[1]);
+	this->headerlengthinwords = bitslicer::byteswap(rawbuffer[2]);
+	this->buffernumber = bitslicer::byteswap(rawbuffer[3]);
+	this->runid = bitslicer::byteswap(rawbuffer[4]);
   // mcpdid
   // status
 
@@ -26,7 +26,7 @@ Lmbuffer::Lmbuffer(std::vector<uint16_t> rawbuffer) {
   uint16_t htsMid = bitslicer::byteswap(rawbuffer[7]);
   uint16_t htsHigh = bitslicer::byteswap(rawbuffer[8]);
 
-  headertimestamp_ns = bitslicer::LowMidHigh(htsLow, htsMid, htsHigh) * 100;
+  this->headertimestamp_ns = bitslicer::LowMidHigh(htsLow, htsMid, htsHigh) * 100;
 }
 
 Lmbuffer::~Lmbuffer() {}
@@ -40,7 +40,7 @@ uint16_t Lmbuffer::getheaderlengthinwords(){
 }
 
 
-uint64_t Lmbuffer::getheadertimestamp_ns(){
+mevent::TimestampClass Lmbuffer::getheadertimestamp_ns(){
 	return this->headertimestamp_ns;
 }
 
@@ -93,7 +93,7 @@ void Lmfile::convertlistmodefile() {
   std::cerr << "\n getposition:" << this->getposition() << "\n" << std::endl;
   std::vector<uint16_t> bhwords;
   uint16_t numberofevents {0};
-
+  mevent::TimestampClass bufferoffset_ns {0};
 
   while (getbytestillEOF() > (40+8+8)){
 	  bhwords = this->getbufferheader();
@@ -105,7 +105,8 @@ void Lmfile::convertlistmodefile() {
 
 	  for (uint16_t i = 0; i < numberofevents; i++) {
 
-		  mevent::Mdatevent newevent(this->getsortedevent(), mybuffer->getheadertimestamp_ns);
+		  bufferoffset_ns = mybuffer->getheadertimestamp_ns;
+		  mevent::Mdatevent newevent(this->getsortedevent(), bufferoffset_ns);
 		    delete newevent;
 	  	  }
 	  this->readbuffersignature();

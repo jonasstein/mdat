@@ -16,9 +16,8 @@ Mdatevent::Mdatevent()
 
 Mdatevent::Mdatevent(uint64_t sortedevent,
                      TimestampClass myBufferTimestamp_ns) {
-  using Timestamp19Class = uint64_t; // 19 bit time in the event
 
-  this->EventID = getEventID(bitslicer::getintbybitpattern(
+	this->EventID = getEventID(bitslicer::getintbybitpattern(
       sortedevent, 0b100000000000000000000000000000000000000000000000));
 
   if (IDClass::trigger == this->EventID) {
@@ -49,24 +48,12 @@ Mdatevent::Mdatevent(uint64_t sortedevent,
         sortedevent, 0b000000000000000000011111111110000000000000000000);
   }
 
-  TimestampClass time19bit_ns =
-      100 *
-      bitslicer::getintbybitpattern(
+  TimestampClass time19bit_ns = 100 * bitslicer::getintbybitpattern(
           sortedevent, 0b000000000000000000000000000001111111111111111111);
   this->BufferTimestamp_ns = myBufferTimestamp_ns;
   this->FullEventTimestamp_ns = myBufferTimestamp_ns + time19bit_ns;
 }
 
-/*
-Mdatevent::Mdatevent(IDClass myid, TimestampClass myBufferTimestamp,
-                     ModIDClass EventModID, SlotIDClass EventSlotID,
-                     AmplitudeClass EventAmplitude, PositionClass EventPosition,
-                     TrigIDClass mytrigid, DataIDClass mydataid,
-                     DataClass mydata)
-    : EventID(myid), EventTimestamp(myBufferTimestamp), EventModID(0),
-EventSlotID(0), EventAmplitude(0), EventPosition(0), EventTrigID(mytrigid),
-      EventDataID(mydataid), EventData(mydata) {}
-*/
 
 Mdatevent::~Mdatevent() {}
 
@@ -162,41 +149,6 @@ DataIDClass getDataID(uint64_t rawinteger) {
   return myreturn;
 }
 
-/*Mdatevent Mdatevent::neutronevent(TimestampClass mytimestamp,
-                                  ModIDClass EventModID,
-                                  SlotIDClass EventSlotID,
-                                  AmplitudeClass EventAmplitude,
-                                  PositionClass EventPosition) {
-
-  mevent::Mdatevent mynewevent{mevent::IDClass::neutron,
-                               mytimestamp,
-                               EventModID,
-                               EventSlotID,
-                               EventAmplitude,
-                               EventPosition,
-                               mevent::TrigIDClass::Timer1,
-                               mevent::DataIDClass::Monitor1,
-                               0};
-  return mynewevent;
-}
-
-
-Mdatevent Mdatevent::triggerevent(TimestampClass mytimestamp,
-                                  TrigIDClass mytrigid, DataIDClass mydataid,
-                                  DataClass mydata) {
-
-  mevent::Mdatevent mynewevent{mevent::IDClass::trigger,
-                               mytimestamp,
-                               0,
-                               0,
-                               0,
-                               0,
-                               mytrigid,
-                               mydataid,
-                               mydata};
-  return mynewevent;
-}
-*/
 
 std::string Mdatevent::printeventverbose(void) {
   std::stringstream buffer;

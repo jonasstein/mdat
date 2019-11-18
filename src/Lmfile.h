@@ -5,6 +5,7 @@
 #include <fstream>
 #include <string>
 #include <vector>
+#include "Mdatevent.h"
 
 namespace mfile {
 
@@ -17,7 +18,7 @@ private:
   uint16_t runid{0};
   uint8_t mcpdid{0};
   uint8_t status{0};
-  uint64_t headertimestamp_ns{0}; //FIXME use timeclass here
+  mevent::TimestampClass headertimestamp_ns{0};
   uint64_t parameter0{0};
   uint64_t parameter1{0};
   uint64_t parameter2{0};
@@ -28,7 +29,7 @@ public:
   virtual ~Lmbuffer();
   uint16_t getbufferlengthinwords();
   uint16_t getheaderlengthinwords();
-  uint64_t getheadertimestamp_ns(); //FIXME use timeclass here
+  mevent::TimestampClass getheadertimestamp_ns();
   uint16_t getrunid();
 };
 
@@ -43,7 +44,7 @@ class Lmfile {
 private:
   std::ifstream ifs;
   filesize_t filesize;
-  uint64_t firsttimestamp_ns{0}; //FIXME use timeclass here
+  mevent::TimestampClass firsttimestamp_ns{0};
   uint8_t verbositylevel{0};
   void readheadersignature();
   void readbuffersignature();
@@ -63,11 +64,6 @@ public:
   uint64_t getsortedevent();
   filesize_t getfilesize();
   filesize_t getbytestillEOF();
-  /*
-   *signature_t getsignature()
-   * getbufferheader()
-   * uint8_t getfileheaderlength()
-   */
 };
 
 } /* namespace mfile */
