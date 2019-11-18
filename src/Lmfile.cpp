@@ -106,8 +106,10 @@ void Lmfile::convertlistmodefile() {
 	  for (uint16_t i = 0; i < numberofevents; i++) {
 
 		  bufferoffset_ns = mybuffer->getheadertimestamp_ns;
-		  mevent::Mdatevent newevent(this->getsortedevent(), bufferoffset_ns);
-		    delete newevent;
+
+		  mevent::Mdatevent *myevent;
+		  myevent = new mevent::Mdatevent(this->getsortedevent(), bufferoffset_ns);
+		    delete myevent;
 	  	  }
 	  this->readbuffersignature();
 	  delete mybuffer;
