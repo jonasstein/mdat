@@ -180,15 +180,15 @@ std::string Mdatevent::printevent(void) {
   std::stringstream buffer;
 
   if (this->EventID == IDClass::neutron) {
-    buffer << static_cast<uint64_t>(FullEventTimestamp_ns) << ", ";
-    buffer << "8, "; // 0..7 are trigger events 8 are neutron events
-    buffer << static_cast<uint64_t>(EventModID) << ", ";
+    buffer << static_cast<uint64_t>(FullEventTimestamp_ns) << " ";
+    buffer << "8 "; // 0..7 are trigger events 8 are neutron events
+    buffer << static_cast<uint64_t>(EventModID) << " ";
     buffer << static_cast<uint64_t>(EventSlotID);
   }
   if (this->EventID == IDClass::trigger) {
-    buffer << static_cast<uint64_t>(FullEventTimestamp_ns) << ", ";
-    buffer << static_cast<uint64_t>(EventTrigID) << ", ";
-    buffer << static_cast<uint64_t>(EventDataID) << ", ";
+    buffer << static_cast<uint64_t>(FullEventTimestamp_ns) << " ";
+    buffer << static_cast<uint64_t>(EventTrigID) << " ";
+    buffer << static_cast<uint64_t>(EventDataID) << " ";
     buffer << static_cast<uint64_t>(EventData);
   }
   return buffer.str();

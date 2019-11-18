@@ -147,22 +147,22 @@ void Lmfile::jumpbehindfileheader() {
   }
 }
 
-
 void Lmfile::readheadersignature() {
+  const signature_t headersignature = 0x00005555AAAAFFFF;
   uint64_t sequenceRAW = Lmfile::read64bit();
   if (headersignature != sequenceRAW)
     throw std::runtime_error{error_005_noheadersig};
 }
 
 void Lmfile::readbuffersignature() {
+	const signature_t buffersignature = 0x0000FFFF5555AAAA;
   uint64_t sequenceRAW = Lmfile::read64bit();
-//  std::cerr << "\n sequenceRAW: " << std::hex << sequenceRAW << "\n" << std::endl;
-
-  if (datablocksignature != sequenceRAW)
+  if (buffersignature != sequenceRAW)
     throw std::runtime_error{error_006_nodatasig};
 }
 
 void Lmfile::readfilesignature() {
+  const signature_t filesignature = 0xFFFFAAAA55550000;
   uint64_t sequenceRAW = Lmfile::read64bit();
   if (filesignature != sequenceRAW)
     throw std::runtime_error{error_007_noeofsig};

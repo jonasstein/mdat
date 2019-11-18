@@ -36,9 +36,7 @@ public:
 typedef int64_t filesize_t;
 typedef uint64_t signature_t;
 
-const signature_t headersignature = 0x00005555AAAAFFFF;
-const signature_t datablocksignature = 0x0000FFFF5555AAAA;
-const signature_t filesignature = 0xFFFFAAAA55550000;
+
 
 class Lmfile {
 private:
