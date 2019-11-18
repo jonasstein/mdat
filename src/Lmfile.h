@@ -18,7 +18,7 @@ private:
   uint16_t runid{0};
   uint8_t mcpdid{0};
   uint8_t status{0};
-  mevent::TimestampClass headertimestamp_ns{0};
+  TimestampClass headertimestamp_ns{0};
   uint64_t parameter0{0};
   uint64_t parameter1{0};
   uint64_t parameter2{0};
@@ -29,7 +29,7 @@ public:
   virtual ~Lmbuffer();
   uint16_t getbufferlengthinwords();
   uint16_t getheaderlengthinwords();
-  mevent::TimestampClass getheadertimestamp_ns();
+  TimestampClass getheadertimestamp_ns();
   uint16_t getrunid();
 };
 
@@ -44,7 +44,7 @@ class Lmfile {
 private:
   std::ifstream ifs;
   filesize_t filesize;
-  mevent::TimestampClass firsttimestamp_ns{0};
+  TimestampClass firsttimestamp_ns{0};
   uint8_t verbositylevel{0};
   void readheadersignature();
   void readbuffersignature();
@@ -58,7 +58,6 @@ public:
   filesize_t getposition();
   std::vector<uint16_t> getbufferheader();
   void jumpbehindfileheader();
-  void parsedatablock();
   void setverbosity(uint8_t beverbose);
   uint8_t getverbosity();
   uint64_t getsortedevent();

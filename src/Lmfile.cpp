@@ -19,8 +19,8 @@ Lmbuffer::Lmbuffer(std::vector<uint16_t> rawbuffer) {
 	this->headerlengthinwords = bitslicer::byteswap(rawbuffer[2]);
 	this->buffernumber = bitslicer::byteswap(rawbuffer[3]);
 	this->runid = bitslicer::byteswap(rawbuffer[4]);
-  // mcpdid
-  // status
+	this->mcpdid = (bitslicer::byteswap(rawbuffer[5]) & (0xFF00)) >> 8 ;
+    this->status = bitslicer::byteswap(rawbuffer[5]) & (0x00FF);
 
   uint16_t htsLow = bitslicer::byteswap(rawbuffer[6]);
   uint16_t htsMid = bitslicer::byteswap(rawbuffer[7]);
@@ -40,7 +40,7 @@ uint16_t Lmbuffer::getheaderlengthinwords(){
 }
 
 
-mevent::TimestampClass Lmbuffer::getheadertimestamp_ns(){
+TimestampClass Lmbuffer::getheadertimestamp_ns(){
 	return this->headertimestamp_ns;
 }
 
@@ -81,7 +81,7 @@ uint64_t Lmfile::getsortedevent() {
   ifs.read(reinterpret_cast<char *>(&Mid), 2);
   ifs.read(reinterpret_cast<char *>(&High), 2);
 
-  return bitslicer::LowMidHigh(Low, Mid, High);
+  return bitslicer::LowMidHigh(bitslicer::byteswap(Low), bitslicer::byteswap(Mid), bitslicer::byteswap(High));
 }
 
 filesize_t Lmfile::getposition() { return ifs.tellg(); }
@@ -93,31 +93,34 @@ void Lmfile::convertlistmodefile() {
   std::cerr << "\n getposition:" << this->getposition() << "\n" << std::endl;
   std::vector<uint16_t> bhwords;
   uint16_t numberofevents {0};
-  mevent::TimestampClass bufferoffset_ns {0};
+  TimestampClass bufferoffset_ns {0};
 
   while (getbytestillEOF() > (40+8+8)){
 	  bhwords = this->getbufferheader();
 
 	  mfile::Lmbuffer mybuffer{bhwords};
 	  numberofevents = (mybuffer.getbufferlengthinwords() - mybuffer.getheaderlengthinwords())/3;
+	  bufferoffset_ns = mybuffer.getheadertimestamp_ns();
 
 	  for (uint16_t i = 0; i < numberofevents; i++) {
-
-		  bufferoffset_ns = mybuffer.getheadertimestamp_ns();
+//		  std::cerr << "Event i: " << i << " of " << numberofevents << "\n" << std::endl;
 		  mevent::Mdatevent myevent = mevent::Mdatevent(this->getsortedevent(), bufferoffset_ns);
+		  std::cerr << myevent.printeventverbose() << std::endl;
 	  	  }
 	  this->readbuffersignature();
   }
-  readfilesignature();
+  this->readfilesignature();
 }
 
 std::vector<uint16_t> Lmfile::getbufferheader() {
-  std::vector<uint16_t> mybuf(20);
+  std::vector<uint16_t> mybuf(21);
   uint16_t aword{0};
 
   for (int i = 0; i < mybuf.size(); ++i) {
     ifs.read(reinterpret_cast<char *>(&aword), 2);
     mybuf[i] = aword;
+//    std::cerr << "\n event: " << i << " / " << std::dec << mybuf.size() << std::endl;
+//    std::cerr << " content: " << std::hex << aword << "\n" << std::endl;
   }
   return mybuf;
 }
@@ -146,20 +149,17 @@ void Lmfile::jumpbehindfileheader() {
   }
 }
 
-void parsedatablock() {}
 
 void Lmfile::readheadersignature() {
   uint64_t sequenceRAW = Lmfile::read64bit();
-//	uint64_t sequenceRAW ;
-//	ifs >> sequenceRAW ;
-  std::cerr << "\n sequenceRAW: "<< sequenceRAW << "\n" << std::endl;
-
   if (headersignature != sequenceRAW)
     throw std::runtime_error{error_005_noheadersig};
 }
 
 void Lmfile::readbuffersignature() {
   uint64_t sequenceRAW = Lmfile::read64bit();
+//  std::cerr << "\n sequenceRAW: " << std::hex << sequenceRAW << "\n" << std::endl;
+
   if (datablocksignature != sequenceRAW)
     throw std::runtime_error{error_006_nodatasig};
 }
@@ -183,9 +183,3 @@ filesize_t Lmfile::getbytestillEOF(){
 }
 
 } /* namespace mfile */
-
-// buffer::buffer init (40 bytes)
-// buffer.runid
-//...
-// buffer: uint16_t length
-//

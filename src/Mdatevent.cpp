@@ -1,5 +1,5 @@
 #include "Mdatevent.h"
-
+#include "Globaltypes.h"
 #include "Bitslicer.h"
 #include <cstdint>  // int8_t
 #include <iostream> // std::cout
@@ -154,24 +154,24 @@ std::string Mdatevent::printeventverbose(void) {
   std::stringstream buffer;
 
   if (this->EventID == IDClass::neutron) {
-    buffer << "EventID: " << static_cast<int>(EventID) << " (neutron event) \n";
-    buffer << "FullEventTimestamp: " << static_cast<int>(FullEventTimestamp_ns)
-           << "\n";
+    buffer << "EventID: " << static_cast<uint64_t>(EventID) << " (neutron event) \n";
+    buffer << "FullEventTimestamp: " << static_cast<uint64_t>(FullEventTimestamp_ns)
+           << " ns\n";
 
-    buffer << "EventModID: " << static_cast<int>(EventModID) << "\n";
-    buffer << "EventSlotID: " << static_cast<int>(EventSlotID) << "\n";
-    buffer << "EventAmplitude: " << static_cast<int>(EventAmplitude) << "\n";
-    buffer << "EventPosition: " << static_cast<int>(EventPosition) << "\n";
+    buffer << "EventModID: " << static_cast<uint64_t>(EventModID) << "\n";
+    buffer << "EventSlotID: " << static_cast<uint64_t>(EventSlotID) << "\n";
+    buffer << "EventAmplitude: " << static_cast<uint64_t>(EventAmplitude) << "\n";
+    buffer << "EventPosition: " << static_cast<uint64_t>(EventPosition) << "\n";
   }
 
   if (this->EventID == IDClass::trigger) {
-    buffer << "EventID: " << static_cast<int>(EventID) << " (trigger event) \n";
-    buffer << "FullEventTimestamp: " << static_cast<int>(FullEventTimestamp_ns)
-           << "\n";
+    buffer << "EventID: " << static_cast<uint64_t>(EventID) << " (trigger event) \n";
+    buffer << "FullEventTimestamp: " << static_cast<uint64_t>(FullEventTimestamp_ns)
+           << " ns\n";
 
-    buffer << "EventTrigID: " << static_cast<int>(EventTrigID) << "\n";
-    buffer << "EventDataID: " << static_cast<int>(EventDataID) << "\n";
-    buffer << "EventData: " << static_cast<int>(EventData) << "\n";
+    buffer << "EventTrigID: " << static_cast<uint64_t>(EventTrigID) << "\n";
+    buffer << "EventDataID: " << static_cast<uint64_t>(EventDataID) << "\n";
+    buffer << "EventData: " << static_cast<uint64_t>(EventData) << "\n";
   }
   return buffer.str();
 }
@@ -180,18 +180,16 @@ std::string Mdatevent::printevent(void) {
   std::stringstream buffer;
 
   if (this->EventID == IDClass::neutron) {
-    buffer << static_cast<int>(FullEventTimestamp_ns) << ", ";
+    buffer << static_cast<uint64_t>(FullEventTimestamp_ns) << ", ";
     buffer << "8, "; // 0..7 are trigger events 8 are neutron events
-    buffer << static_cast<int>(EventModID) << ", ";
-    buffer << static_cast<int>(EventSlotID) << "\n";
-    // buffer << static_cast<int>(EventAmplitude)  // unused
-    // buffer << static_cast<int>(EventPosition) // unused
+    buffer << static_cast<uint64_t>(EventModID) << ", ";
+    buffer << static_cast<uint64_t>(EventSlotID) << "\n";
   }
   if (this->EventID == IDClass::trigger) {
-    buffer << static_cast<int>(FullEventTimestamp_ns) << ", ";
-    buffer << static_cast<int>(EventTrigID) << ", ";
-    buffer << static_cast<int>(EventDataID) << ", ";
-    buffer << static_cast<int>(EventData) << "\n";
+    buffer << static_cast<uint64_t>(FullEventTimestamp_ns) << ", ";
+    buffer << static_cast<uint64_t>(EventTrigID) << ", ";
+    buffer << static_cast<uint64_t>(EventDataID) << ", ";
+    buffer << static_cast<uint64_t>(EventData) << "\n";
   }
   return buffer.str();
 }

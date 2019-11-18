@@ -8,7 +8,6 @@ set(QMR_VERSION
         ${QMR_VERSION_MAJOR}.${QMR_VERSION_MINOR}.${QMR_VERSION_PATCH})
 
 
-
 # configure a header file to pass some of the CMake settings
 # to the source code
 configure_file (
@@ -17,16 +16,16 @@ configure_file (
   )
 
 
-
 add_library(Histolong SHARED histolong.cpp)
 add_executable(mkhistogram mkhistogram.cpp)
 target_link_libraries(mkhistogram Histolong)
 
 
+add_library(Globaltypes SHARED Globaltypes.cpp)
 add_library(Bitslicer SHARED Bitslicer.cpp)
 add_library(Mdatevent SHARED Mdatevent.cpp)
-target_link_libraries(Mdatevent Bitslicer)
 add_library(Lmfile SHARED Lmfile.cpp)
-target_link_libraries(Lmfile Bitslicer Mdatevent)
+target_link_libraries(Mdatevent Bitslicer Globaltypes)
+target_link_libraries(Lmfile Bitslicer Mdatevent Globaltypes)
 add_executable(qmrdump extractmdat.cpp)
 target_link_libraries(qmrdump Mdatevent Lmfile Bitslicer)

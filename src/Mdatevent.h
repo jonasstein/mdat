@@ -1,6 +1,7 @@
 #ifndef SRC_MDATEVENT_H_
 #define SRC_MDATEVENT_H_
 
+#include "Globaltypes.h"
 #include <cstdint> // int8_t
 #include <sstream>
 #include <string>
@@ -34,7 +35,6 @@ enum class DataIDClass : uint8_t {
 }; // Data source
 
 using DataClass = uint32_t;      // 21 bit needed
-using TimestampClass = uint64_t; // 3x16 = 48 bit offset from the header
 using ModIDClass = uint8_t;      // 3 Bit used
 using SlotIDClass = uint8_t;     // 5 Bit used
 using AmplitudeClass = uint16_t; // 10 Bit used
