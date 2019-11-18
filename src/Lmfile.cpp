@@ -103,9 +103,9 @@ void Lmfile::convertlistmodefile() {
 	  bufferoffset_ns = mybuffer.getheadertimestamp_ns();
 
 	  for (uint16_t i = 0; i < numberofevents; i++) {
-//		  std::cerr << "Event i: " << i << " of " << numberofevents << "\n" << std::endl;
 		  mevent::Mdatevent myevent = mevent::Mdatevent(this->getsortedevent(), bufferoffset_ns);
-		  std::cerr << myevent.printeventverbose() << std::endl;
+//		  std::cout << myevent.printeventverbose() << std::endl;
+		  std::cout << myevent.printevent() << std::endl;
 	  	  }
 	  this->readbuffersignature();
   }
@@ -119,8 +119,6 @@ std::vector<uint16_t> Lmfile::getbufferheader() {
   for (int i = 0; i < mybuf.size(); ++i) {
     ifs.read(reinterpret_cast<char *>(&aword), 2);
     mybuf[i] = aword;
-//    std::cerr << "\n event: " << i << " / " << std::dec << mybuf.size() << std::endl;
-//    std::cerr << " content: " << std::hex << aword << "\n" << std::endl;
   }
   return mybuf;
 }
