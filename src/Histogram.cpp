@@ -6,18 +6,6 @@
 
 namespace histo {
 
-std::string vectortostring(std::vector<A> const & v){
-std::stringstream ss;
-for (auto&& i : v)
-{
-  if(i != 0) ss << ",";
-  ss << v[i];
-}
-return ss.str();
-}
-
-
-
 Histogram::Histogram(uint64_t setNumberOfBins,TimestampClass setbinwidth_ns)
 : NumberOfBins (setNumberOfBins), binwidth_ns (setbinwidth_ns){
 	frequency.resize(setNumberOfBins);
