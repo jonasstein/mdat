@@ -9,7 +9,7 @@ namespace histo {
 
 template<typename T, typename A>
 
-std::string vectortostring(std::vector<A> const & v);
+std::string vectortostring(std::vector<T,A> const & v);
 
 class Histogram {
 private:
