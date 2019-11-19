@@ -17,6 +17,7 @@ configure_file (
 
 
 add_library(Histolong SHARED histolong.cpp)
+add_library(Histogram SHARED Histogram.cpp)
 add_executable(mkhistogram mkhistogram.cpp)
 target_link_libraries(mkhistogram Histolong)
 
