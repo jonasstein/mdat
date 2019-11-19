@@ -63,7 +63,8 @@ int main (int argc, char *argv[])
     std::ifstream ifs;
     ifs.open (ArgFilename, std::ifstream::in);
 
-    if (!ifs) {
+    if (!ifs)
+    {
         std::cerr << "ERROR: Could not open file." << std::endl;
         exit (1);
     }

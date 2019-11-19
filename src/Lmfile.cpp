@@ -77,7 +77,9 @@ Lmfile::Lmfile (std::string const mypath, uint8_t myverbositylevel)
     ifs.seekg (0, ifs.beg);
 }
 
-Lmfile::~Lmfile (){ }
+Lmfile::~Lmfile ()
+{
+}
 
 uint64_t Lmfile::read64bit ()
 {
