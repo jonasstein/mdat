@@ -69,7 +69,7 @@ IDClass getEventID(uint64_t rawinteger) {
     default:
         myreturn = mevent::IDClass::trigger;
     }
-    return myreturn;
+    return(myreturn);
 }
 
 TrigIDClass getTrigID(uint64_t rawinteger) {
@@ -105,8 +105,7 @@ TrigIDClass getTrigID(uint64_t rawinteger) {
         break;
     }
     }
-
-    return myreturn;
+    return(myreturn);
 }
 
 DataIDClass getDataID(uint64_t rawinteger) {
@@ -146,8 +145,7 @@ DataIDClass getDataID(uint64_t rawinteger) {
         break;
     }
     }
-
-    return myreturn;
+    return(myreturn);
 }
 
 std::string Mdatevent::printeventverbose(void) {
@@ -177,7 +175,7 @@ std::string Mdatevent::printeventverbose(void) {
         buffer << "EventDataID: " << static_cast<uint64_t>(EventDataID) << "\n";
         buffer << "EventData: " << static_cast<uint64_t>(EventData) << "\n";
     }
-    return buffer.str();
+    return(buffer.str());
 }
 
 std::string Mdatevent::printevent(void) {
@@ -195,7 +193,7 @@ std::string Mdatevent::printevent(void) {
         buffer << static_cast<uint64_t>(EventDataID) << " ";
         buffer << static_cast<uint64_t>(EventData);
     }
-    return buffer.str();
+    return(buffer.str());
 }
 
 } /* namespace mevent */
