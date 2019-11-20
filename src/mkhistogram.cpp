@@ -1,4 +1,5 @@
-#include "histolong.hpp"
+#include "Histogram.h"
+#include "Globaltypes.h"
 #include <algorithm> //std::min
 #include <cstdint>
 #include <fstream> // std::ifstream
@@ -163,11 +164,8 @@ int main (int argc, char *argv[])
 
         LastSYNCts = 0; // set time t0
 
-        histogram *histoDet;
-        histoDet = new histogram (ArgBins, SYNCtsMEAN / ArgBins);
-
-        histogram *histoMon;
-        histoMon = new histogram (ArgBins, SYNCtsMEAN / ArgBins);
+        histo::Histogram histoDet(ArgBins, SYNCtsMEAN / ArgBins);
+        histo::Histogram histoMon(ArgBins, SYNCtsMEAN / ArgBins);
 
         while (ifs >> CURRENTts >> TrigID >> DataID >> Data)
         {
@@ -188,14 +186,14 @@ int main (int argc, char *argv[])
             if ((7 == TrigID) && (DataID == ArgChDet))
             { // found a detector event
                 buffer = (CURRENTts - LastSYNCts);
-                histoDet->put (buffer);
+                histoDet.put(buffer);
             }
 
             if ((7 == TrigID) && (DataID == ArgChMonitor) &&
                 (ArgChMonitor < 4))
             { // found a monitor event
                 buffer = (CURRENTts - LastSYNCts);
-                histoMon->put (buffer);
+                histoMon.put(buffer);
             }
 
             if ((7 == TrigID) && (DataID == ArgChSync))
@@ -208,30 +206,30 @@ int main (int argc, char *argv[])
               // histogram/new scan)
                 if (FirstPrintOut)
                 {
-                    histoDet->printheader ();
+                	std::cout << histo::vectortostring(histoDet.getbins()) << std::endl;
                     if (ArgChMonitor < 4)
                     {
-                        histoMon->printheader ();
+                    	std::cout << histo::vectortostring(histoMon.getbins()) << std::endl;
                     } // suppress output of empty monitor histograms
                     FirstPrintOut = false;
                 }
-                histoDet->print ();
-                histoDet->reset ();
+                std::cout << histo::vectortostring(histoDet.getfrequency()) << std::endl;
+                histoDet.clear();
                 if (ArgChMonitor < 4)
                 {
-                    histoMon->printheader ();
-                    histoMon->reset ();
+                	std::cout << histo::vectortostring(histoMon.getbins()) << std::endl;
+                    histoMon.clear();
                 }
             }
         }
 
-        histoDet->print ();
-        delete (histoDet);
+        std::cout << histo::vectortostring(histoDet.getfrequency()) << std::endl;
+
         if (ArgChMonitor < 4)
         {
-            histoMon->printheader ();
+        	std::cout << histo::vectortostring(histoMon.getbins()) << std::endl;
         } // suppress output of empty monitor histograms
-        delete (histoMon);
+
     }
 
     ifs.close ();
