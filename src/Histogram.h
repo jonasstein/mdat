@@ -4,23 +4,11 @@
 #include <cstdint> // int8_t
 #include <sstream>
 #include <vector>
+#include <iostream> // std::cout
+
 
 namespace histo {
 
-template <typename T, typename A>
-
-std::string vectortostring(std::vector<T, A> const &v) {
-    std::stringstream ss;
-
-    ss << v[0];
-    if (v.size() > 1) {
-        for (auto i = 1; i < v.size(); i++) {
-            ss << ",";
-            ss << v[i];
-        }
-    }
-    return ss.str();
-}
 
 class Histogram {
   private:
@@ -37,6 +25,8 @@ class Histogram {
     void clear();
     std::vector<uint64_t> getfrequency();
     std::vector<TimestampClass> getbins();
+    std::string frequencystring();
+    std::string binsstring();
 };
 
 } /* namespace histo */

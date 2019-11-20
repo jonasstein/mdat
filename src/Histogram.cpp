@@ -35,4 +35,30 @@ void Histogram::clear() {
 std::vector<uint64_t> Histogram::getfrequency() { return frequency; }
 std::vector<TimestampClass> Histogram::getbins() { return bins; }
 
+std::string Histogram::frequencystring(){
+	auto v=frequency;
+	    std::stringstream ss;
+	    ss << v[0];
+	    if (v.size() > 1) {
+	        for (auto i = 1; i < v.size(); i++) {
+	            ss << ",";
+	            ss << v[i];
+	        }
+	    }
+	    return ss.str();
+	}
+
+
+std::string Histogram::binsstring(){
+	auto v=bins;
+	    std::stringstream ss;
+	    ss << v[0];
+	    if (v.size() > 1) {
+	        for (auto i = 1; i < v.size(); i++) {
+	            ss << ",";
+	            ss << v[i];
+	        }
+	    }
+	    return ss.str();
+	}
 } /* namespace histo */

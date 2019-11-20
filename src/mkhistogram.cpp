@@ -10,7 +10,6 @@
 
 using Channel_t = uint8_t;
 using Mode_t = uint8_t;
-using TimeStamp_t = uint64_t;
 using Counter_t = uint64_t;
 
 void printhelp() {
@@ -72,18 +71,18 @@ int main(int argc, char *argv[]) {
     // if not SEMAPHORE read CURRENTts and printf
     // if SEMAPHORE then histo.print(); histo.reset()
 
-    TimeStamp_t StartOffsetts = 0;
-    TimeStamp_t CURRENTts = 0;
+    TimestampClass StartOffsetts = 0;
+    TimestampClass CURRENTts = 0;
     uint16_t TrigID = 0;
     uint16_t DataID = 0;
     uint16_t Data = 0;
 
-    TimeStamp_t SYNCtsSUM = 0;
+    TimestampClass SYNCtsSUM = 0;
     Counter_t SYNCtsQty = 0;
-    TimeStamp_t SYNCtsMEAN = 0;
-    TimeStamp_t LastSYNCts = 0;
-    TimeStamp_t MindSYNCts = 0xffff'ffff'ffff'ffff;
-    TimeStamp_t MaxdSYNCts = 0;
+    TimestampClass SYNCtsMEAN = 0;
+    TimestampClass LastSYNCts = 0;
+    TimestampClass MindSYNCts = 0xffff'ffff'ffff'ffff;
+    TimestampClass MaxdSYNCts = 0;
 
     bool FirstPrintOut = true;
 
@@ -143,8 +142,9 @@ int main(int argc, char *argv[]) {
         histo::Histogram histoDet(ArgBins, SYNCtsMEAN / ArgBins);
         histo::Histogram histoMon(ArgBins, SYNCtsMEAN / ArgBins);
 
-        while (ifs >> CURRENTts >> TrigID >> DataID >> Data) {
 
+
+        while (ifs >> CURRENTts >> TrigID >> DataID >> Data) {
             if (CURRENTts < StartOffsetts) {
                 std::cerr << "ERROR: Event with timestamp "
                           << static_cast<unsigned int>(CURRENTts)
@@ -154,7 +154,7 @@ int main(int argc, char *argv[]) {
             };
             CURRENTts -= StartOffsetts;
 
-            TimeStamp_t buffer = 0;
+            TimestampClass buffer = 0;
 
             if ((7 == TrigID) &&
                 (DataID == ArgChDet)) { // found a detector event
@@ -176,30 +176,28 @@ int main(int argc, char *argv[]) {
                 (DataID == ArgChSemaphore)) { // found a SEMAPHORE event (new
                                               // histogram/new scan)
                 if (FirstPrintOut) {
-                    std::cout << histo::vectortostring(histoDet.getbins())
+                    std::cout << histoDet.binsstring()
                               << std::endl;
                     if (ArgChMonitor < 4) {
-                        std::cout << histo::vectortostring(histoMon.getbins())
-                                  << std::endl;
+                        std::cout << histoMon.binsstring() << std::endl;
                     } // suppress output of empty monitor histograms
                     FirstPrintOut = false;
                 }
-                std::cout << histo::vectortostring(histoDet.getfrequency())
-                          << std::endl;
+                std::cout << histoDet.frequencystring() << std::endl;
+
                 histoDet.clear();
+
                 if (ArgChMonitor < 4) {
-                    std::cout << histo::vectortostring(histoMon.getbins())
-                              << std::endl;
+                    std::cout << histoMon.binsstring() << std::endl;
                     histoMon.clear();
                 }
             }
         }
 
-        std::cout << histo::vectortostring(histoDet.getfrequency())
-                  << std::endl;
+        std::cout << histoDet.frequencystring() << std::endl;
 
         if (ArgChMonitor < 4) {
-            std::cout << histo::vectortostring(histoMon.getbins()) << std::endl;
+            std::cout << histoMon.binsstring() << std::endl;
         } // suppress output of empty monitor histograms
     }
 
