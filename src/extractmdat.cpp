@@ -22,7 +22,7 @@ void printhelp() {
 
 int main(int argc, char *argv[]) {
 
-    std::stringstream msgerr; // thread save cout
+    std::stringstream msgerr(); // thread save cout
 
     if (argc != 2) {
         fprintf(stderr, "%s\n", error_004_arguments.c_str());
@@ -35,18 +35,15 @@ int main(int argc, char *argv[]) {
         if (!std::filesystem::exists(ArgFilename)) {
             throw std::runtime_error{error_008_filenotfound};
         } else {
-            mfile::Lmfile *limo;
-            limo = new mfile::Lmfile(ArgFilename, 0);
+            mfile::Lmfile limo (ArgFilename, 0);
 
-            limo->convertlistmodefile();
+            limo.convertlistmodefile();
 
             // msgerr << "# size (Bytes): " <<
             // limo->getfilesize() << std::endl ;
             //  limo->convertlistmodefile();
             //  std::cerr << "# Number of Events: " <<
             //  limo->getNumberOfEvents() << std::endl;
-
-            delete (limo);
 
             return (EXIT_SUCCESS);
         }

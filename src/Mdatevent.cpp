@@ -59,93 +59,68 @@ Mdatevent::Mdatevent(uint64_t sortedevent,
 Mdatevent::~Mdatevent() {}
 
 IDClass getEventID(uint64_t rawinteger) {
-    mevent::IDClass myreturn;
-
     switch (rawinteger) {
     case 0: {
-        myreturn = mevent::IDClass::neutron;
-        break;
+    	return(mevent::IDClass::neutron);
     }
     default:
-        myreturn = mevent::IDClass::trigger;
+    	return(mevent::IDClass::trigger);
     }
-    return(myreturn);
 }
 
 TrigIDClass getTrigID(uint64_t rawinteger) {
-    mevent::TrigIDClass myreturn;
-
     switch (rawinteger) {
     case 1: {
-        myreturn = mevent::TrigIDClass::Timer1;
-        break;
+    	return(mevent::TrigIDClass::Timer1);
     }
     case 2: {
-        myreturn = mevent::TrigIDClass::Timer2;
-        break;
+    	return(mevent::TrigIDClass::Timer2);
     }
     case 3: {
-        myreturn = mevent::TrigIDClass::Timer3;
-        break;
+    	return(mevent::TrigIDClass::Timer3);
     }
     case 4: {
-        myreturn = mevent::TrigIDClass::Timer4;
-        break;
+    	return(mevent::TrigIDClass::Timer4);
     }
     case 5: {
-        myreturn = mevent::TrigIDClass::RearTTL1;
-        break;
+    	return(mevent::TrigIDClass::RearTTL1);
     }
     case 6: {
-        myreturn = mevent::TrigIDClass::RearTTL2;
-        break;
+    	return(mevent::TrigIDClass::RearTTL2);
     }
     default: {
-        myreturn = mevent::TrigIDClass::CmpReg;
-        break;
+    	return(mevent::TrigIDClass::CmpReg);
     }
     }
-    return(myreturn);
 }
 
 DataIDClass getDataID(uint64_t rawinteger) {
-    mevent::DataIDClass myreturn;
-
     switch (rawinteger) {
     case 0: {
-        myreturn = mevent::DataIDClass::Monitor1;
-        break;
+    	return(mevent::DataIDClass::Monitor1);
     }
     case 1: {
-        myreturn = mevent::DataIDClass::Monitor2;
-        break;
+    	return(mevent::DataIDClass::Monitor2);
     }
     case 2: {
-        myreturn = mevent::DataIDClass::Monitor3;
-        break;
+    	return(mevent::DataIDClass::Monitor3);
     }
     case 3: {
-        myreturn = mevent::DataIDClass::Monitor4;
-        break;
+    	return(mevent::DataIDClass::Monitor4);
     }
     case 4: {
-        myreturn = mevent::DataIDClass::RearTTL1;
-        break;
+    	return(mevent::DataIDClass::RearTTL1);
     }
     case 5: {
-        myreturn = mevent::DataIDClass::RearTTL2;
-        break;
+    	return(mevent::DataIDClass::RearTTL2);
     }
     case 6: {
-        myreturn = mevent::DataIDClass::ADC1;
-        break;
+    	return(mevent::DataIDClass::ADC1);
     }
     default: {
-        myreturn = mevent::DataIDClass::ADC2;
-        break;
+    	return(mevent::DataIDClass::ADC2);
     }
     }
-    return(myreturn);
 }
 
 std::string Mdatevent::printeventverbose(void) {

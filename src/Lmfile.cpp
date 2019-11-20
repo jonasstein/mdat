@@ -33,18 +33,18 @@ Lmbuffer::Lmbuffer(std::vector<uint16_t> rawbuffer) {
 Lmbuffer::~Lmbuffer() {}
 
 uint16_t Lmbuffer::getbufferlengthinwords() {
-    return this->bufferlengthinwords;
+    return(this->bufferlengthinwords);
 }
 
 uint16_t Lmbuffer::getheaderlengthinwords() {
-    return this->headerlengthinwords;
+    return(this->headerlengthinwords);
 }
 
 TimestampClass Lmbuffer::getheadertimestamp_ns() {
-    return this->headertimestamp_ns;
+    return(this->headertimestamp_ns);
 }
 
-uint16_t Lmbuffer::getrunid() { return this->runid; }
+uint16_t Lmbuffer::getrunid() { return(this->runid); }
 
 Lmfile::Lmfile(std::string const mypath, uint8_t myverbositylevel)
     : ifs(mypath, std::ifstream::ate | std::ifstream::binary), filesize(0),
@@ -64,7 +64,7 @@ Lmfile::~Lmfile() {}
 uint64_t Lmfile::read64bit() {
     uint64_t sequenceRAW = 0;
     ifs.read(reinterpret_cast<char *>(&sequenceRAW), 8);
-    return bitslicer::byteswap64(sequenceRAW);
+    return(bitslicer::byteswap64(sequenceRAW));
 }
 
 uint64_t Lmfile::getsortedevent() {
@@ -76,12 +76,12 @@ uint64_t Lmfile::getsortedevent() {
     ifs.read(reinterpret_cast<char *>(&Mid), 2);
     ifs.read(reinterpret_cast<char *>(&High), 2);
 
-    return bitslicer::LowMidHigh(bitslicer::byteswap(Low),
+    return(bitslicer::LowMidHigh(bitslicer::byteswap(Low),
                                  bitslicer::byteswap(Mid),
-                                 bitslicer::byteswap(High));
+                                 bitslicer::byteswap(High)));
 }
 
-filesize_t Lmfile::getposition() { return ifs.tellg(); }
+filesize_t Lmfile::getposition() { return(ifs.tellg()); }
 
 void Lmfile::convertlistmodefile() {
     this->jumpbehindfileheader();
@@ -119,7 +119,7 @@ std::vector<uint16_t> Lmfile::getbufferheader() {
         ifs.read(reinterpret_cast<char *>(&aword), 2);
         mybuf[i] = aword;
     }
-    return mybuf;
+    return(mybuf);
 }
 
 void Lmfile::jumpbehindfileheader() {
@@ -170,9 +170,9 @@ void Lmfile::setverbosity(uint8_t myverbositylevel) {
     this->verbositylevel = myverbositylevel;
 }
 
-uint8_t Lmfile::getverbosity() { return this->verbositylevel; }
+uint8_t Lmfile::getverbosity() { return(this->verbositylevel); }
 
-filesize_t Lmfile::getfilesize() { return this->filesize; }
+filesize_t Lmfile::getfilesize() { return(this->filesize); }
 
 filesize_t Lmfile::getbytestillEOF() { return (this->filesize - ifs.tellg()); }
 

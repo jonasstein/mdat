@@ -66,8 +66,7 @@ int main(int argc, char *argv[]) {
               << " ChMonitor:" << static_cast<unsigned int>(ArgChMonitor)
               << std::endl;
 
-    std::ifstream ifs;
-    ifs.open(ArgFilename, std::ifstream::in);
+    std::ifstream ifs (ArgFilename, std::ifstream::in);
 
     if (!ifs) {
         std::cerr << "ERROR: Could not open file." << std::endl;
