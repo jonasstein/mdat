@@ -7,21 +7,13 @@
 #include <string>
 #include <type_traits>
 
-namespace mevent
-{
-template <typename E>
-constexpr auto to_underlying (E e) noexcept
-{
-    return static_cast<std::underlying_type_t<E>> (e);
+namespace mevent {
+template <typename E> constexpr auto to_underlying(E e) noexcept {
+    return static_cast<std::underlying_type_t<E>>(e);
 }
 
-enum class IDClass : bool
-{
-    neutron = 0,
-    trigger = 1
-};
-enum class TrigIDClass : uint8_t
-{
+enum class IDClass : bool { neutron = 0, trigger = 1 };
+enum class TrigIDClass : uint8_t {
     Timer1 = 1,
     Timer2,
     Timer3,
@@ -31,8 +23,7 @@ enum class TrigIDClass : uint8_t
     CmpReg
 }; // "Compare Register" is used most often to trigger.
 
-enum class DataIDClass : uint8_t
-{
+enum class DataIDClass : uint8_t {
     Monitor1 = 0,
     Monitor2,
     Monitor3,
@@ -43,19 +34,18 @@ enum class DataIDClass : uint8_t
     ADC2
 }; // Data source
 
-using DataClass = uint32_t; // 21 bit needed
-using ModIDClass = uint8_t; // 3 Bit used
-using SlotIDClass = uint8_t; // 5 Bit used
+using DataClass = uint32_t;      // 21 bit needed
+using ModIDClass = uint8_t;      // 3 Bit used
+using SlotIDClass = uint8_t;     // 5 Bit used
 using AmplitudeClass = uint16_t; // 10 Bit used
-using PositionClass = uint16_t; // 10 Bit used
+using PositionClass = uint16_t;  // 10 Bit used
 
-IDClass getEventID (uint64_t rawinteger);
-TrigIDClass getTrigID (uint64_t rawinteger);
-DataIDClass getDataID (uint64_t rawinteger);
+IDClass getEventID(uint64_t rawinteger);
+TrigIDClass getTrigID(uint64_t rawinteger);
+DataIDClass getDataID(uint64_t rawinteger);
 
-class Mdatevent
-{
-    private:
+class Mdatevent {
+  private:
     // properties of neutron and trigger events
     IDClass EventID;
     TimestampClass BufferTimestamp_ns;
@@ -72,15 +62,14 @@ class Mdatevent
     DataIDClass EventDataID;
     DataClass EventData;
 
-    public:
-    Mdatevent ();
-    Mdatevent (uint64_t sortedevent, TimestampClass myBufferTimestamp_ns);
+  public:
+    Mdatevent();
+    Mdatevent(uint64_t sortedevent, TimestampClass myBufferTimestamp_ns);
 
+    virtual ~Mdatevent();
 
-    virtual ~Mdatevent ();
-
-    std::string printeventverbose ();
-    std::string printevent ();
+    std::string printeventverbose();
+    std::string printevent();
 };
 
 } /* namespace mevent */

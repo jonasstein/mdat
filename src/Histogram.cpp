@@ -4,28 +4,22 @@
 #include <sstream>
 #include <vector>
 
-namespace histo
-{
+namespace histo {
 
-Histogram::Histogram (uint64_t setNumberOfBins, TimestampClass setbinwidth_ns)
-: NumberOfBins (setNumberOfBins), binwidth_ns (setbinwidth_ns)
-{
-    frequency.resize (setNumberOfBins);
-    bins.reserve (setNumberOfBins);
+Histogram::Histogram(uint64_t setNumberOfBins, TimestampClass setbinwidth_ns)
+    : NumberOfBins(setNumberOfBins), binwidth_ns(setbinwidth_ns) {
+    frequency.resize(setNumberOfBins);
+    bins.reserve(setNumberOfBins);
     switchingperiod = setNumberOfBins * setbinwidth_ns;
 
-    for (auto i = 0; i < bins.size (); ++i)
-    {
+    for (auto i = 0; i < bins.size(); ++i) {
         bins[i] = i * setbinwidth_ns;
     }
 }
 
-Histogram::~Histogram ()
-{
-}
+Histogram::~Histogram() {}
 
-void Histogram::put (TimestampClass &Event)
-{
+void Histogram::put(TimestampClass &Event) {
     TimestampClass timeOnHistoScale;
     uint64_t index = 0;
     timeOnHistoScale = Event % (NumberOfBins * binwidth_ns);
@@ -33,19 +27,12 @@ void Histogram::put (TimestampClass &Event)
     frequency[index]++;
 }
 
-void Histogram::clear ()
-{
-    bins.clear ();
-    frequency.clear ();
+void Histogram::clear() {
+    bins.clear();
+    frequency.clear();
 }
 
-std::vector<uint64_t> Histogram::getfrequency ()
-{
-    return frequency;
-}
-std::vector<TimestampClass> Histogram::getbins ()
-{
-    return bins;
-}
+std::vector<uint64_t> Histogram::getfrequency() { return frequency; }
+std::vector<TimestampClass> Histogram::getbins() { return bins; }
 
 } /* namespace histo */
