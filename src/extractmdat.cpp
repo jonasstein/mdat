@@ -35,7 +35,7 @@ int main(int argc, char *argv[]) {
         if (!std::filesystem::exists(ArgFilename)) {
             throw std::runtime_error{error_008_filenotfound};
         } else {
-            mfile::Lmfile limo (ArgFilename, 0);
+            mfile::Lmfile limo(ArgFilename, 0);
 
             limo.convertlistmodefile();
 

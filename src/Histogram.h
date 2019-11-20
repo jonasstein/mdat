@@ -1,14 +1,12 @@
 #ifndef HISTOGRAM_H_
 #define HISTOGRAM_H_
 #include "Globaltypes.h"
-#include <cstdint> // int8_t
+#include <cstdint>  // int8_t
+#include <iostream> // std::cout
 #include <sstream>
 #include <vector>
-#include <iostream> // std::cout
-
 
 namespace histo {
-
 
 class Histogram {
   private:

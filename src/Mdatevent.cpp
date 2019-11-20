@@ -61,35 +61,35 @@ Mdatevent::~Mdatevent() {}
 IDClass getEventID(uint64_t rawinteger) {
     switch (rawinteger) {
     case 0: {
-    	return(mevent::IDClass::neutron);
+        return (mevent::IDClass::neutron);
     }
     default:
-    	return(mevent::IDClass::trigger);
+        return (mevent::IDClass::trigger);
     }
 }
 
 TrigIDClass getTrigID(uint64_t rawinteger) {
     switch (rawinteger) {
     case 1: {
-    	return(mevent::TrigIDClass::Timer1);
+        return (mevent::TrigIDClass::Timer1);
     }
     case 2: {
-    	return(mevent::TrigIDClass::Timer2);
+        return (mevent::TrigIDClass::Timer2);
     }
     case 3: {
-    	return(mevent::TrigIDClass::Timer3);
+        return (mevent::TrigIDClass::Timer3);
     }
     case 4: {
-    	return(mevent::TrigIDClass::Timer4);
+        return (mevent::TrigIDClass::Timer4);
     }
     case 5: {
-    	return(mevent::TrigIDClass::RearTTL1);
+        return (mevent::TrigIDClass::RearTTL1);
     }
     case 6: {
-    	return(mevent::TrigIDClass::RearTTL2);
+        return (mevent::TrigIDClass::RearTTL2);
     }
     default: {
-    	return(mevent::TrigIDClass::CmpReg);
+        return (mevent::TrigIDClass::CmpReg);
     }
     }
 }
@@ -97,28 +97,28 @@ TrigIDClass getTrigID(uint64_t rawinteger) {
 DataIDClass getDataID(uint64_t rawinteger) {
     switch (rawinteger) {
     case 0: {
-    	return(mevent::DataIDClass::Monitor1);
+        return (mevent::DataIDClass::Monitor1);
     }
     case 1: {
-    	return(mevent::DataIDClass::Monitor2);
+        return (mevent::DataIDClass::Monitor2);
     }
     case 2: {
-    	return(mevent::DataIDClass::Monitor3);
+        return (mevent::DataIDClass::Monitor3);
     }
     case 3: {
-    	return(mevent::DataIDClass::Monitor4);
+        return (mevent::DataIDClass::Monitor4);
     }
     case 4: {
-    	return(mevent::DataIDClass::RearTTL1);
+        return (mevent::DataIDClass::RearTTL1);
     }
     case 5: {
-    	return(mevent::DataIDClass::RearTTL2);
+        return (mevent::DataIDClass::RearTTL2);
     }
     case 6: {
-    	return(mevent::DataIDClass::ADC1);
+        return (mevent::DataIDClass::ADC1);
     }
     default: {
-    	return(mevent::DataIDClass::ADC2);
+        return (mevent::DataIDClass::ADC2);
     }
     }
 }
@@ -150,7 +150,7 @@ std::string Mdatevent::printeventverbose(void) {
         buffer << "EventDataID: " << static_cast<uint64_t>(EventDataID) << "\n";
         buffer << "EventData: " << static_cast<uint64_t>(EventData) << "\n";
     }
-    return(buffer.str());
+    return (buffer.str());
 }
 
 std::string Mdatevent::printevent(void) {
@@ -168,7 +168,7 @@ std::string Mdatevent::printevent(void) {
         buffer << static_cast<uint64_t>(EventDataID) << " ";
         buffer << static_cast<uint64_t>(EventData);
     }
-    return(buffer.str());
+    return (buffer.str());
 }
 
 } /* namespace mevent */

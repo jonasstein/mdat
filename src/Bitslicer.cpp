@@ -5,7 +5,7 @@
 namespace bitslicer {
 
 uint16_t byteswap(uint16_t word) {
-    return(((word & 0xff) << 8) | ((word & 0xff00) >> 8));
+    return (((word & 0xff) << 8) | ((word & 0xff00) >> 8));
 }
 
 uint64_t byteswap64(uint64_t value) {
