@@ -38,7 +38,9 @@ std::vector<TimestampClass> Histogram::getbins() { return (bins); }
 std::string Histogram::frequencystring() {
     auto v = frequency;
     std::stringstream ss{""};
-    ss << v[0];
+
+    if (v.size() > 0) ss << v[0];
+
     if (v.size() > 1) {
         for (auto i = 1; i < v.size(); i++) {
             ss << ",";
