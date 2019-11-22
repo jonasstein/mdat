@@ -41,10 +41,10 @@ int main(int argc, char *argv[]) {
 
     // read parameter
     std::string ArgThisProgram(argv[0]);
-    const Channel_t ArgChDet { std::min(atoi(argv[1]), 7)};
-    const Channel_t ArgChSync = {std::min(atoi(argv[2]), 7)};
-    const Channel_t ArgChSemaphore { std::min(atoi(argv[3]), 7)};
-    const Channel_t ArgChMonitor = {std::min(atoi(argv[4]), 7)};
+    constexpr Channel_t ArgChDet { std::min(atoi(argv[1]), 7)};
+    constexpr Channel_t ArgChSync = {std::min(atoi(argv[2]), 7)};
+    constexpr Channel_t ArgChSemaphore { std::min(atoi(argv[3]), 7)};
+    constexpr Channel_t ArgChMonitor = {std::min(atoi(argv[4]), 7)};
     std::string ArgFilename(argv[5]);
     uint64_t argbins = atol(argv[6]);
     Mode_t ArgMode = std::min(
