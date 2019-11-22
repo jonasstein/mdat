@@ -41,10 +41,10 @@ int main(int argc, char *argv[]) {
 
     // read parameter
     std::string ArgThisProgram(argv[0]);
-    Channel_t ArgChDet = std::min(atoi(argv[1]), 7);
-    Channel_t ArgChSync = std::min(atoi(argv[2]), 7);
-    Channel_t ArgChSemaphore = std::min(atoi(argv[3]), 7);
-    Channel_t ArgChMonitor = std::min(atoi(argv[4]), 7);
+    const Channel_t ArgChDet { std::min(atoi(argv[1]), 7)};
+    const Channel_t ArgChSync = {std::min(atoi(argv[2]), 7)};
+    const Channel_t ArgChSemaphore { std::min(atoi(argv[3]), 7)};
+    const Channel_t ArgChMonitor = {std::min(atoi(argv[4]), 7)};
     std::string ArgFilename(argv[5]);
     uint64_t argbins = atol(argv[6]);
     Mode_t ArgMode = std::min(
@@ -86,7 +86,7 @@ int main(int argc, char *argv[]) {
     TimestampClass currentts_ns = 0;
     uint16_t trigid = 0;
     uint16_t dataid = 0;
-    uint16_t Data = 0;
+    uint16_t data = 0;
 
     TimestampClass SYNCtsSUM = 0;
     Counter_t SYNCtsQty = 0;
@@ -98,7 +98,7 @@ int main(int argc, char *argv[]) {
     bool FirstPrintOut{true};
 
     // calculate mean time between SYNC
-    while (ifs >> currentts_ns >> trigid >> dataid >> Data) {
+    while (ifs >> currentts_ns >> trigid >> dataid >> data) {
         if (0 == StartOffset_ns) {
             StartOffset_ns = currentts_ns;
         }
@@ -154,7 +154,11 @@ int main(int argc, char *argv[]) {
         histo::Histogram histoDet(argbins, avg_sync_ns / argbins);
         histo::Histogram histoMon(argbins, avg_sync_ns / argbins);
 
-        while (ifs >> currentts_ns >> trigid >> dataid >> Data) {
+        std::cout << histoDet.binsstring() << std::endl;
+
+        std::cout << "Print Binning works"<< std::endl;
+
+        while (ifs >> currentts_ns >> trigid >> dataid >> data) {
             if (currentts_ns < StartOffset_ns) {
                 std::cerr << "ERROR: Event with timestamp "
                           << static_cast<unsigned int>(currentts_ns)
