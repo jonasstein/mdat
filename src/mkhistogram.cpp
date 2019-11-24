@@ -8,8 +8,8 @@
 #include <stdio.h>
 #include <string> // std::string, std::stoull
 
-using Channel_t = uint16_t;
-using Mode_t = uint16_t;
+using Channel_t = uint32_t;
+using Mode_t = uint32_t;
 using Counter_t = uint64_t;
 
 enum class Modeselector_t : uint16_t { infomode = 1, histogrammode = 2 };
@@ -21,7 +21,9 @@ void printhelp() {
                  "<ChSemaphore> <ChMonitor> "
                  "<filename> <bins> <mode> \n"
               << "Only ChMonitor 0..3 will be printed \n"
-              << "mode = 1 infomode, 2 histogram" << std::endl;
+              << "mode = 1 infomode, 2 histogram \n"
+			  << "The monitor channel will be disabled automatically, if ChMonitor > 3."
+			  << std::endl;
 }
 
 double milliseconds(TimestampClass time_ns) {
@@ -41,14 +43,13 @@ int main(int argc, char *argv[]) {
 
     // read parameter
     std::string ArgThisProgram(argv[0]);
-    constexpr Channel_t ArgChDet { std::min(atoi(argv[1]), 7)};
-    constexpr Channel_t ArgChSync = {std::min(atoi(argv[2]), 7)};
-    constexpr Channel_t ArgChSemaphore { std::min(atoi(argv[3]), 7)};
-    constexpr Channel_t ArgChMonitor = {std::min(atoi(argv[4]), 7)};
+    const Channel_t ArgChDet{std::min(atoi(argv[1]), 7)};
+    const Channel_t ArgChSync = {std::min(atoi(argv[2]), 7)};
+    const Channel_t ArgChSemaphore{std::min(atoi(argv[3]), 7)};
+    const Channel_t ArgChMonitor = {std::min(atoi(argv[4]), 7)};
     std::string ArgFilename(argv[5]);
-    uint64_t argbins = atol(argv[6]);
-    Mode_t ArgMode = std::min(
-        atoi(argv[7]), 2); // 1=get info about periods, 2=generate histogram
+    const uint64_t argbins = atoll(argv[6]);
+    const Mode_t ArgMode = std::min(atoi(argv[7]), 2);
 
     switch (ArgMode) {
     case 1:
@@ -57,6 +58,8 @@ int main(int argc, char *argv[]) {
     case 2:
         mode = Modeselector_t::histogrammode;
     }
+
+    const bool MonitorStatisticEnabled{ArgChMonitor < 4};
 
     std::cerr << "Read file " << ArgFilename << std::endl;
     std::cerr << "Generate histogram with "
@@ -94,8 +97,6 @@ int main(int argc, char *argv[]) {
     TimestampClass lastsync_ns = 0;
     TimestampClass MindSYNC_ns = 0xffff'ffff'ffff'ffff;
     TimestampClass MaxdSYNC_ns = 0;
-
-    bool FirstPrintOut{true};
 
     // calculate mean time between SYNC
     while (ifs >> currentts_ns >> trigid >> dataid >> data) {
@@ -155,8 +156,7 @@ int main(int argc, char *argv[]) {
         histo::Histogram histoMon(argbins, avg_sync_ns / argbins);
 
         std::cout << histoDet.binsstring() << std::endl;
-
-        std::cout << "Print Binning works"<< std::endl;
+        std::cout << "Print Binning works" << std::endl;
 
         while (ifs >> currentts_ns >> trigid >> dataid >> data) {
             if (currentts_ns < StartOffset_ns) {
@@ -171,44 +171,27 @@ int main(int argc, char *argv[]) {
             TimestampClass timesincesync_ns = currentts_ns - lastsync_ns;
 
             if (7 == trigid) {
-                switch (dataid) {
-                case ArgChDet:
+                if (ArgChDet == dataid)
                     histoDet.put(timesincesync_ns); // found a detector event
-                    break;
-                case ArgChMonitor:
+                else if (ArgChMonitor == dataid)
                     histoMon.put(timesincesync_ns); // found a monitor event
-                    break;
-                case ArgChSync:
+                else if (ArgChSync == dataid)
                     lastsync_ns = currentts_ns; // found a SYNC event
-                    break;
-                case ArgChSemaphore:
-                    // found a SEMAPHORE event start next histogram
-                    if (FirstPrintOut) {
-                        std::cout << histoDet.binsstring() << std::endl;
-                        if (ArgChMonitor < 4) {
-                            // FIXME ^^ two cout?!
-                            std::cout << histoMon.binsstring() << std::endl;
-                        } // suppress output of empty monitor histograms
-                        FirstPrintOut = false;
-                    }
+                else if (ArgChSemaphore == dataid) {
                     std::cout << histoDet.frequencystring() << std::endl;
-                    histoDet.clear();
-
-                    if (ArgChMonitor < 4) {
-                        std::cout << histoMon.binsstring() << std::endl;
-                        histoMon.clear();
+                    std::cout << "Print Binning 2 works" << std::endl;
+                    if (MonitorStatisticEnabled) {
+                        std::cout << histoMon.frequencystring() << std::endl;
                     }
-                    break;
+
+                    histoDet.clear();
+                    histoMon.clear();
                 }
-            }
+            } // end of if (7 == trigid)
 
         } // end of while
 
-        std::cout << histoDet.frequencystring() << std::endl;
 
-        if (ArgChMonitor < 4) {
-            std::cout << histoMon.binsstring() << std::endl;
-        } // suppress output of empty monitor histograms
     }
 
     ifs.close();
