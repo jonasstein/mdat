@@ -9,6 +9,7 @@
 *.lo
 *.o
 *.obj
+*.so
 
 # Precompiled Headers
 *.gch
@@ -30,9 +31,13 @@
 *.lib
 
 # Executables
-*.exe
-*.out
-*.app
+src/qmrdump
+src/mkhistogram
+tests/Mdatevent_test
+tests/Bitslicer_test
+tests/Histogram_test
+tests/Lmfile_test
+
 
 # CMake related files
 CMakeLists.txt.user
