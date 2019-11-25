@@ -1,4 +1,4 @@
-#include "Globaltypes.h"
+#include "Timestamps.h"
 #include "Histogram.h"
 #include <algorithm> //std::min
 #include <cstdint>
@@ -26,10 +26,7 @@ void printhelp() {
 			  << std::endl;
 }
 
-double milliseconds(TimestampClass time_ns) {
-    double a = time_ns / 1000000;
-    return (a);
-}
+
 
 int main(int argc, char *argv[]) {
 
@@ -77,14 +74,6 @@ int main(int argc, char *argv[]) {
         exit(1);
     }
 
-    // read .csv, read line, if not comment,
-    // if SYNC, then save new SYNC, inc SYNCcounter
-    // calculate mean(SYNC(k))
-    // go to start of file
-    // read line, if not comment,
-    // if not SEMAPHORE read CURRENTts and printf
-    // if SEMAPHORE then histo.print(); histo.reset()
-
     TimestampClass StartOffset_ns = 0;
     TimestampClass currentts_ns = 0;
     uint16_t trigid = 0;
@@ -103,7 +92,7 @@ int main(int argc, char *argv[]) {
         if (0 == StartOffset_ns) {
             StartOffset_ns = currentts_ns;
         }
-        currentts_ns -= StartOffset_ns;
+        currentts_ns = currentts_ns - StartOffset_ns;
 
         if ((7 == trigid) && (dataid == ArgChSync)) { // found a SYNC event
             if (lastsync_ns > 0) {
@@ -140,11 +129,11 @@ int main(int argc, char *argv[]) {
             << "# SYNC event found: " << static_cast<unsigned int>(SYNCtsQty)
             << "\n"
             << "# avg SYNC period: " << static_cast<unsigned int>(avg_sync_ns)
-            << " ns = " << milliseconds(avg_sync_ns) << " ms\n"
+            << " ns = " << integermilliseconds(avg_sync_ns) << " ms\n"
             << "# min SYNC period: " << static_cast<unsigned int>(MindSYNC_ns)
-            << " ns = " << milliseconds(MindSYNC_ns) << " ms\n"
+            << " ns = " << integermilliseconds(MindSYNC_ns) << " ms\n"
             << "# max SYNC period: " << static_cast<unsigned int>(MaxdSYNC_ns)
-            << " ns = " << milliseconds(MaxdSYNC_ns) << " ms" << std::endl;
+            << " ns = " << integermilliseconds(MaxdSYNC_ns) << " ms" << std::endl;
     }
 
     if (Modeselector_t::histogrammode == mode) {
@@ -156,7 +145,7 @@ int main(int argc, char *argv[]) {
         histo::Histogram histoMon(argbins, avg_sync_ns / argbins);
 
         std::cout << histoDet.binsstring() << std::endl;
-        std::cout << "Print Binning works" << std::endl;
+        TimestampClass timesincesync_ns {0};
 
         while (ifs >> currentts_ns >> trigid >> dataid >> data) {
             if (currentts_ns < StartOffset_ns) {
@@ -168,7 +157,7 @@ int main(int argc, char *argv[]) {
             };
 
             currentts_ns = currentts_ns - StartOffset_ns;
-            TimestampClass timesincesync_ns = currentts_ns - lastsync_ns;
+            timesincesync_ns = currentts_ns - lastsync_ns;
 
             if (7 == trigid) {
                 if (ArgChDet == dataid)
@@ -179,11 +168,9 @@ int main(int argc, char *argv[]) {
                     lastsync_ns = currentts_ns; // found a SYNC event
                 else if (ArgChSemaphore == dataid) {
                     std::cout << histoDet.frequencystring() << std::endl;
-                    std::cout << "Print Binning 2 works" << std::endl;
                     if (MonitorStatisticEnabled) {
                         std::cout << histoMon.frequencystring() << std::endl;
                     }
-
                     histoDet.clear();
                     histoMon.clear();
                 }

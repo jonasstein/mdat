@@ -1,6 +1,6 @@
 #ifndef HISTOGRAM_H_
 #define HISTOGRAM_H_
-#include "Globaltypes.h"
+#include "Timestamps.h"
 #include <cstdint>  // int8_t
 #include <iostream> // std::cout
 #include <sstream>

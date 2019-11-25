@@ -5,7 +5,7 @@
 
 #include "../src/Mdatevent.h"
 #include "../src/Bitslicer.h"
-#include "../src/Globaltypes.h"
+#include "../src/Timestamps.h"
 
 
 //const std::string testFileName = "samples/180sec_2chan_5kHz_pm_4kHz_FM_4Hz_Trigger1Hz.mdat";

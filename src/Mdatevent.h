@@ -1,7 +1,7 @@
 #ifndef SRC_MDATEVENT_H_
 #define SRC_MDATEVENT_H_
 
-#include "Globaltypes.h"
+#include "Timestamps.h"
 #include <cstdint> // int8_t
 #include <sstream>
 #include <string>

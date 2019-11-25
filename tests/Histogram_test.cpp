@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 #include "../src/Histogram.h"
-#include "../src/Globaltypes.h"
+#include "../src/Timestamps.h"
 #include <cstdint> // int8_t
 #include <vector>
 #include <string>
@@ -33,6 +33,7 @@ ASSERT_EQ(testvector.size(), NumberOfBins);
 std::string s = myhisto.frequencystring();
 ASSERT_EQ(s, "2,3,0,0,0,0,0,0,0,0");
 }
+
 
 
 int main(int argc, char **argv)

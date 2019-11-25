@@ -1,6 +1,6 @@
 #include "Mdatevent.h"
 #include "Bitslicer.h"
-#include "Globaltypes.h"
+#include "../src/Timestamps.h"
 #include <cstdint>  // int8_t
 #include <iostream> // std::cout
 #include <sstream>

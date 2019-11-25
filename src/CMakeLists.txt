@@ -19,14 +19,14 @@ configure_file (
 # add_library(Histolong SHARED histolong.cpp)
 add_library(Histogram SHARED Histogram.cpp)
 add_executable(mkhistogram mkhistogram.cpp)
-target_link_libraries(mkhistogram Histogram)
+add_library(Timestamps SHARED Timestamps.cpp)
+target_link_libraries(mkhistogram Histogram Timestamps)
 
 
-add_library(Globaltypes SHARED Globaltypes.cpp)
 add_library(Bitslicer SHARED Bitslicer.cpp)
 add_library(Mdatevent SHARED Mdatevent.cpp)
 add_library(Lmfile SHARED Lmfile.cpp)
-target_link_libraries(Mdatevent Bitslicer Globaltypes)
-target_link_libraries(Lmfile Bitslicer Mdatevent Globaltypes)
+target_link_libraries(Mdatevent Bitslicer Timestamps)
+target_link_libraries(Lmfile Bitslicer Mdatevent Timestamps)
 add_executable(qmrdump extractmdat.cpp)
 target_link_libraries(qmrdump Mdatevent Lmfile Bitslicer)

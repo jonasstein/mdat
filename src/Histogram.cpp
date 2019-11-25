@@ -1,5 +1,5 @@
 #include "Histogram.h"
-#include "Globaltypes.h"
+#include "Timestamps.h"
 #include <cstdint> // int8_t
 #include <sstream>
 #include <vector>
