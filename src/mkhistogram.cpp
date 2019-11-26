@@ -171,6 +171,7 @@ int main(int argc, char *argv[]) {
                     if (MonitorStatisticEnabled) {
                         std::cout << histoMon.frequencystring() << std::endl;
                     }
+                    std::cerr << "\nSEMAPHORE on POS: " << ifs.tellg() << " found. \n";
                     histoDet.clear();
                     histoMon.clear();
                 }
