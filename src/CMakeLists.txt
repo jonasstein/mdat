@@ -16,6 +16,14 @@ configure_file (
   )
 
 
+
+FIND_PACKAGE( Boost 1.71 COMPONENTS program_options REQUIRED )
+INCLUDE_DIRECTORIES( ${Boost_INCLUDE_DIR} )
+
+
+
+
+
 # add_library(Histolong SHARED histolong.cpp)
 add_library(Histogram SHARED Histogram.cpp)
 add_executable(mkhistogram mkhistogram.cpp)
@@ -30,3 +38,5 @@ target_link_libraries(Mdatevent Bitslicer Timestamps)
 target_link_libraries(Lmfile Bitslicer Mdatevent Timestamps)
 add_executable(qmrdump extractmdat.cpp)
 target_link_libraries(qmrdump Mdatevent Lmfile Bitslicer)
+
+target_link_libraries( anyExecutable LINK_PUBLIC ${Boost_LIBRARIES} )
