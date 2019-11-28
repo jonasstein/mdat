@@ -28,7 +28,7 @@ INCLUDE_DIRECTORIES( ${Boost_INCLUDE_DIR} )
 add_library(Histogram SHARED Histogram.cpp)
 add_executable(mkhistogram mkhistogram.cpp)
 add_library(Timestamps SHARED Timestamps.cpp)
-target_link_libraries(mkhistogram Histogram Timestamps)
+target_link_libraries(mkhistogram LINK_PUBLIC Histogram Timestamps ${Boost_LIBRARIES} )
 
 
 add_library(Bitslicer SHARED Bitslicer.cpp)
@@ -37,6 +37,5 @@ add_library(Lmfile SHARED Lmfile.cpp)
 target_link_libraries(Mdatevent Bitslicer Timestamps)
 target_link_libraries(Lmfile Bitslicer Mdatevent Timestamps)
 add_executable(qmrdump extractmdat.cpp)
-target_link_libraries(qmrdump Mdatevent Lmfile Bitslicer)
 
-target_link_libraries( anyExecutable LINK_PUBLIC ${Boost_LIBRARIES} )
+target_link_libraries(qmrdump LINK_PUBLIC ${Boost_LIBRARIES} Mdatevent Lmfile Bitslicer)
