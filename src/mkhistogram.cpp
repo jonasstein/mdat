@@ -39,7 +39,7 @@ int main(int argc, char *argv[]) {
 	boost::program_options::options_description desc{"Options"};
 	desc.add_options()
 	      ("help,h", "Help screen")
-		  ("chdet", value<unsigned int>(&ArgChDet), "ArgChDet");
+		  ("ArgChDet", boost::program_options::value<Channel_t>(&ArgChDet), "ArgChDet");
 
 	boost::program_options::command_line_parser parser{argc, argv};
 	parser.options(desc).allow_unregistered().style(
@@ -53,6 +53,8 @@ int main(int argc, char *argv[]) {
 
 	    if (vm.count("help"))
 	      std::cout << desc << '\n';
+	    else if (vm.count("ArgChDet"))
+	          std::cout << "ArgChDet: " << ArgChDet << '\n';
 
 	    return (EXIT_SUCCESS);
 
@@ -67,10 +69,10 @@ int main(int argc, char *argv[]) {
 
     // read parameter
 
-*/
 
+*/
     std::string ArgThisProgram(argv[0]);
-    const Channel_t ArgChDet{std::min(atoi(argv[1]), 7)};
+  //  const Channel_t ArgChDet{std::min(atoi(argv[1]), 7)};
     const Channel_t ArgChSync = {std::min(atoi(argv[2]), 7)};
     const Channel_t ArgChSemaphore{std::min(atoi(argv[3]), 7)};
     const Channel_t ArgChMonitor = {std::min(atoi(argv[4]), 7)};
