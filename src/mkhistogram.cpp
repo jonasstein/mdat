@@ -2,18 +2,11 @@
 #include "Timestamps.h"
 #include <algorithm> //std::min
 #include <cstdint>
-#include <cstdio>
 #include <fstream>  // std::ifstream
 #include <iostream> // std::cout
 #include <istream>
+#include <stdio.h>
 #include <string> // std::string, std::stoull
-
-#include <boost/program_options/options_description.hpp>
-#include <boost/program_options/parsers.hpp>
-#include <boost/program_options/variables_map.hpp>
-#include <boost/tokenizer.hpp>
-#include <boost/token_functions.hpp>
-#include <exception>
 
 using Channel_t = uint32_t;
 using Mode_t = uint32_t;
@@ -36,18 +29,6 @@ void printhelp() {
 
 int main(int argc, char *argv[]) {
 
-	boost::program_options::options_description desc{"Options"};
-	desc.add_options()
-      ("help,h", "Help screen")
-      ("unreg", "Unrecognized options");
-
-	boost::program_options::command_line_parser parser{argc, argv};
-	    parser.options(desc).allow_unregistered().style(
-	      command_line_style::default_style |
-	      command_line_style::allow_slash_for_short);
-	    parsed_options parsed_options = parser.run();
-//FIXME continue here to include Boost
-
     if (argc != 8) {
         std::cerr << "Error wrong number of arguments. "
                      "Expected 7, got "
@@ -58,13 +39,13 @@ int main(int argc, char *argv[]) {
 
     // read parameter
     std::string ArgThisProgram(argv[0]);
-    const Channel_t ArgChDet {1};// { static_cast<unsigned long int> std::min(atoi(argv[1]), 7u)};// Stringconversion? or boost
-    const Channel_t ArgChSync = {std::min(atoi(argv[2]), 7)};
-    const Channel_t ArgChSemaphore{std::min(atoi(argv[3]), 7)};
-    const Channel_t ArgChMonitor = {std::min(atoi(argv[4]), 7)};
+    const Channel_t ArgChDet{std::min(atoi(argv[1]), 7u)};
+    const Channel_t ArgChSync = {std::min(atoi(argv[2]), 7u)};
+    const Channel_t ArgChSemaphore{std::min(atoi(argv[3]), 7u)};
+    const Channel_t ArgChMonitor = {std::min(atoi(argv[4]), 7u)};
     std::string ArgFilename(argv[5]);
     const uint64_t argbins = atoll(argv[6]);
-    const Mode_t ArgMode = std::min(atoi(argv[7]), 2);
+    const Mode_t ArgMode = std::min(atoi(argv[7]), 2u);
 
     switch (ArgMode) {
     case 1:
