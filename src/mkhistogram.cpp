@@ -39,10 +39,6 @@ int main(int argc, char *argv[]) {
 	boost::program_options::options_description desc{"Options"};
 	desc.add_options()
       ("help,h", "Help screen")
-      ("pi", value<float>()->implicit_value(3.14f), "Pi")
-      ("age", value<int>(&age), "Age")
-      ("phone", value<std::vector<std::string>>()->multitoken()->
-        zero_tokens()->composing(), "Phone")
       ("unreg", "Unrecognized options");
 
 	boost::program_options::command_line_parser parser{argc, argv};
