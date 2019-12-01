@@ -23,7 +23,6 @@ INCLUDE_DIRECTORIES( ${Boost_INCLUDE_DIR} )
 
 
 
-
 # add_library(Histolong SHARED histolong.cpp)
 add_library(Histogram SHARED Histogram.cpp)
 add_executable(mkhistogram mkhistogram.cpp)

@@ -7,9 +7,14 @@
 #include <istream>
 #include <stdio.h>
 #include <string> // std::string, std::stoull
+#include <boost/program_options.hpp>
+#include <vector>
+#include <algorithm>
+#include <iterator>
+#include <iostream>
 
-using Channel_t = uint32_t;
-using Mode_t = uint32_t;
+using Channel_t = uint16_t;
+using Mode_t = uint16_t;
 using Counter_t = uint64_t;
 
 enum class Modeselector_t : uint16_t { infomode = 1, histogrammode = 2 };
@@ -29,6 +34,29 @@ void printhelp() {
 
 int main(int argc, char *argv[]) {
 
+	Channel_t ArgChDet {};
+
+	boost::program_options::options_description desc{"Options"};
+	desc.add_options()
+	      ("help,h", "Help screen")
+		  ("chdet", value<unsigned int>(&ArgChDet), "ArgChDet");
+
+	boost::program_options::command_line_parser parser{argc, argv};
+	parser.options(desc).allow_unregistered().style(
+	boost::program_options::command_line_style::default_style |
+	boost::program_options::command_line_style::allow_slash_for_short);
+	boost::program_options::parsed_options parsed_options = parser.run();
+
+	boost::program_options::variables_map vm;
+	    store(parsed_options, vm);
+	    notify(vm);
+
+	    if (vm.count("help"))
+	      std::cout << desc << '\n';
+
+	    return (EXIT_SUCCESS);
+
+/*
     if (argc != 8) {
         std::cerr << "Error wrong number of arguments. "
                      "Expected 7, got "
@@ -38,14 +66,17 @@ int main(int argc, char *argv[]) {
     }
 
     // read parameter
+
+*/
+
     std::string ArgThisProgram(argv[0]);
-    const Channel_t ArgChDet{std::min(atoi(argv[1]), 7u)};
-    const Channel_t ArgChSync = {std::min(atoi(argv[2]), 7u)};
-    const Channel_t ArgChSemaphore{std::min(atoi(argv[3]), 7u)};
-    const Channel_t ArgChMonitor = {std::min(atoi(argv[4]), 7u)};
+    const Channel_t ArgChDet{std::min(atoi(argv[1]), 7)};
+    const Channel_t ArgChSync = {std::min(atoi(argv[2]), 7)};
+    const Channel_t ArgChSemaphore{std::min(atoi(argv[3]), 7)};
+    const Channel_t ArgChMonitor = {std::min(atoi(argv[4]), 7)};
     std::string ArgFilename(argv[5]);
-    const uint64_t argbins = atoll(argv[6]);
-    const Mode_t ArgMode = std::min(atoi(argv[7]), 2u);
+    const uint64_t argbins = atoi(argv[6]);
+    const Mode_t ArgMode = std::min(atoi(argv[7]), 2);
 
     switch (ArgMode) {
     case 1:
@@ -187,7 +218,7 @@ int main(int argc, char *argv[]) {
             currentts_ns = currentts_ns - StartOffset_ns;
             timesincesync_ns = currentts_ns - lastsync_ns;
 
-            if (7u == trigid) {
+            if (7 == trigid) {
                 if (ArgChDet == dataid)
                     histoDet.put(timesincesync_ns); // found a detector event
                 else if (ArgChMonitor == dataid)
@@ -205,7 +236,7 @@ int main(int argc, char *argv[]) {
                     histoMon.clear();
                 }
             } // end of if (7 == trigid)
-
+            std::cout << "TEST:" << currentts_ns << "\n";
         } // end of while
     }
 
