@@ -34,12 +34,28 @@ void printhelp() {
 
 int main(int argc, char *argv[]) {
 
-	Channel_t ArgChDet {};
+	Channel_t ArgChDet {7};
+	Channel_t ArgChSync {7};
+	Channel_t ArgChSemaphore {7};
+	Channel_t ArgChMonitor {7};
+
+	Channel_t ArgBins {100};
+	std::string ArgFilename {};
 
 	boost::program_options::options_description desc{"Options"};
 	desc.add_options()
 	      ("help,h", "Help screen")
-		  ("ArgChDet", boost::program_options::value<Channel_t>(&ArgChDet), "ArgChDet");
+		  ("filename,f", boost::program_options::value<std::string>(&ArgFilename ), "Name of the input file")
+		  ("detector", boost::program_options::value<Channel_t>(&ArgChDet), "Channel of detector signals (0..3)")
+		  ("sync", boost::program_options::value<Channel_t>(&ArgChSync), "Channel of sync signals (0..3)")
+		  ("semaphore,,", boost::program_options::value<Channel_t>(&ArgChSemaphore), "Channel of semaphore signals (0..3)")
+		  ("monitor", boost::program_options::value<Channel_t>(&ArgChMonitor), "Channel of monitor signals (0..3)")
+		  ("bins", boost::program_options::value<Channel_t>(&ArgBins), "Number of bins in the histogram (default = 100)")
+		  ("info", "Calculate and print only statistical information")
+		  ("histogram", "Calculate the histogram");
+
+
+
 
 	boost::program_options::command_line_parser parser{argc, argv};
 	parser.options(desc).allow_unregistered().style(
@@ -47,60 +63,31 @@ int main(int argc, char *argv[]) {
 	boost::program_options::command_line_style::allow_slash_for_short);
 	boost::program_options::parsed_options parsed_options = parser.run();
 
-	boost::program_options::variables_map vm;
+	boost::program_options::variables_map vm {};
 	    store(parsed_options, vm);
 	    notify(vm);
 
 	    if (vm.count("help"))
 	      std::cout << desc << '\n';
+	    else if(vm.count("info"))
+	    	mode = Modeselector_t::infomode;
+	    else if(vm.count("histogram"))
+	    	mode = Modeselector_t::histogrammode;
+
+
 	    else if (vm.count("ArgChDet"))
 	          std::cout << "ArgChDet: " << ArgChDet << '\n';
-
-	    return (EXIT_SUCCESS);
-
-/*
-    if (argc != 8) {
-        std::cerr << "Error wrong number of arguments. "
-                     "Expected 7, got "
-                  << argc - 1 << ". Stopped." << std::endl;
-        printhelp();
-        exit(3);
-    }
-
-    // read parameter
-
-
-*/
-    std::string ArgThisProgram(argv[0]);
-  //  const Channel_t ArgChDet{std::min(atoi(argv[1]), 7)};
-    const Channel_t ArgChSync = {std::min(atoi(argv[2]), 7)};
-    const Channel_t ArgChSemaphore{std::min(atoi(argv[3]), 7)};
-    const Channel_t ArgChMonitor = {std::min(atoi(argv[4]), 7)};
-    std::string ArgFilename(argv[5]);
-    const uint64_t argbins = atoi(argv[6]);
-    const Mode_t ArgMode = std::min(atoi(argv[7]), 2);
-
-    switch (ArgMode) {
-    case 1:
-        mode = Modeselector_t::infomode;
-        break;
-    case 2:
-        mode = Modeselector_t::histogrammode;
-    }
 
     const bool MonitorStatisticEnabled{ArgChMonitor < 4u};
 
     std::cout << "Read file " << ArgFilename << "\n"
-              << "# Histogram with " << static_cast<unsigned int>(argbins)
-              << " bins"
-              << "\n"
-              << "# Configuration of the input channels: \n"
+              << "# Histogram with " << static_cast<unsigned int>(ArgBins)
+              << " bins" << "\n"
+              << "# Configuration of the input channels:\n"
               << "# ChDet:" << static_cast<unsigned int>(ArgChDet) << "\n"
               << "# ChSync:" << static_cast<unsigned int>(ArgChSync) << "\n"
-              << "# ChSemaphore:" << static_cast<unsigned int>(ArgChSemaphore)
-              << "\n"
-              << "# ChMonitor:" << static_cast<unsigned int>(ArgChMonitor)
-              << "\n"
+              << "# ChSemaphore:" << static_cast<unsigned int>(ArgChSemaphore) << "\n"
+              << "# ChMonitor:" << static_cast<unsigned int>(ArgChMonitor) << "\n"
               << std::endl;
 
     std::ifstream ifs(ArgFilename, std::ifstream::in);
@@ -110,7 +97,7 @@ int main(int argc, char *argv[]) {
         exit(1);
     }
 
-    TimestampClass StartOffset_ns{0};
+    TimestampClass StartOffset_ns{0}; // first timestamp in file
     TimestampClass currentts_ns{0};
     uint16_t trigid{0};
     uint16_t dataid{0};
@@ -150,7 +137,7 @@ int main(int argc, char *argv[]) {
                 lastsync_ns = currentts_ns;
                 if (lastsync_ns > 0) {
                     if (Modeselector_t::infomode == mode) {
-                        std::cout << currentts_ns - lastsync_ns
+                        std::cout << timesincelastsync_ns
                                   << " ns period between " << lastsync_ns
                                   << " ns and " << currentts_ns << " ns"
                                   << std::endl;
@@ -165,6 +152,8 @@ int main(int argc, char *argv[]) {
         } // end of if (7 == trigid)
     }
     ifs.clear(); // reset EOF flag
+
+    std::cout << "STOPPED AT " << currentts_ns << " "<< trigid << " " << dataid << " " << data << "\n";
 
     if (QtySyncEvents < 2) {
         std::cerr << "WARNING: Found only "
@@ -202,8 +191,8 @@ int main(int argc, char *argv[]) {
 
         lastsync_ns = 0; // set time t0
 
-        histo::Histogram histoDet(argbins, avg_sync_ns / argbins);
-        histo::Histogram histoMon(argbins, avg_sync_ns / argbins);
+        histo::Histogram histoDet(ArgBins, avg_sync_ns / ArgBins);
+        histo::Histogram histoMon(ArgBins, avg_sync_ns / ArgBins);
 
         std::cout << histoDet.binsstring() << std::endl;
         TimestampClass timesincesync_ns{0};
