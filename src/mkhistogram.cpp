@@ -101,7 +101,7 @@ int main(int argc, char *argv[]) {
     TimestampClass currentts_ns{0};
     uint16_t trigid{0};
     uint16_t dataid{0};
-    uint16_t data{0};
+    uint32_t data{0}; // counter 0 .. 2^19-1
 
     TimestampClass ChSyncSumts_ns{0};
 
@@ -221,13 +221,10 @@ int main(int argc, char *argv[]) {
                     if (MonitorStatisticEnabled) {
                         std::cout << histoMon.frequencystring() << std::endl;
                     }
-                    std::cerr << "\nSEMAPHORE on POS: " << ifs.tellg()
-                              << " found. \n";
                     histoDet.clear();
                     histoMon.clear();
                 }
             } // end of if (7 == trigid)
-            std::cout << "TEST:" << currentts_ns << "\n";
         } // end of while
     }
 
