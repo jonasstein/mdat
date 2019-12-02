@@ -1,5 +1,5 @@
 #!/bin/bash
 
-clang-format -i src/*.h
-clang-format -i src/*.cpp
-#clang-format -i src/*.hpp
+clang-format -style="file" -i src/*.h
+clang-format -style="file" -i src/*.cpp
+#clang-format -i src/*.hpp 
