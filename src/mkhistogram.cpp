@@ -16,21 +16,12 @@
 using Channel_t = uint16_t;
 using Mode_t = uint16_t;
 using Counter_t = uint64_t;
+using Bins_t = uint32_t;
+
 
 enum class Modeselector_t : uint16_t { infomode = 1, histogrammode = 2 };
 Modeselector_t mode{Modeselector_t::infomode};
 
-void printhelp() {
-    std::cout << "mkhistogram by Jonas Stein (2016-2019) \n"
-              << "Usage: mkhistogram <ChDet> <ChSync> "
-                 "<ChSemaphore> <ChMonitor> "
-                 "<filename> <bins> <mode> \n"
-              << "Only ChMonitor 0..3 will be printed \n"
-              << "mode = 1 infomode, 2 histogram \n"
-              << "The monitor channel will be disabled automatically, if "
-                 "ChMonitor > 3."
-              << std::endl;
-}
 
 int main(int argc, char *argv[]) {
 
@@ -39,22 +30,21 @@ int main(int argc, char *argv[]) {
 	Channel_t ArgChSemaphore {7};
 	Channel_t ArgChMonitor {7};
 
-	Channel_t ArgBins {100};
+	Bins_t  ArgBins {100};
 	std::string ArgFilename {};
 
 	boost::program_options::options_description desc{"Options"};
 	desc.add_options()
 	      ("help,h", "Help screen")
 		  ("filename,f", boost::program_options::value<std::string>(&ArgFilename ), "Name of the input file")
-		  ("detector", boost::program_options::value<Channel_t>(&ArgChDet), "Channel of detector signals (0..3)")
-		  ("sync", boost::program_options::value<Channel_t>(&ArgChSync), "Channel of sync signals (0..3)")
-		  ("semaphore,,", boost::program_options::value<Channel_t>(&ArgChSemaphore), "Channel of semaphore signals (0..3)")
-		  ("monitor", boost::program_options::value<Channel_t>(&ArgChMonitor), "Channel of monitor signals (0..3)")
-		  ("bins", boost::program_options::value<Channel_t>(&ArgBins), "Number of bins in the histogram (default = 100)")
-		  ("info", "Calculate and print only statistical information")
+		  ("detector,d", boost::program_options::value<Channel_t>(&ArgChDet), "Channel of detector signals (0..3)")
+		  ("sync,s", boost::program_options::value<Channel_t>(&ArgChSync), "Channel of sync signals (0..3)")
+		  ("semaphore,S", boost::program_options::value<Channel_t>(&ArgChSemaphore), "Channel of semaphore signals (0..3)")
+		  ("monitor,m", boost::program_options::value<Channel_t>(&ArgChMonitor), "Channel of monitor signals (0..3)")
+		  ("bins,b", boost::program_options::value<Bins_t>(&ArgBins) -> default_value(100), "Number of bins in the histogram (default = 100)")
+		  ("info,i", "Calculate and print only statistical information")
+		  ("nomonitor,N", "Disable monitor statistics in the histogram")
 		  ("histogram", "Calculate the histogram");
-
-
 
 
 	boost::program_options::command_line_parser parser{argc, argv};
@@ -68,17 +58,17 @@ int main(int argc, char *argv[]) {
 	    notify(vm);
 
 	    if (vm.count("help"))
-	      std::cout << desc << '\n';
+	    {
+	    	std::cout << "mkhistogram by Jonas Stein (2016-2019)\n\n"
+	    			<< desc << std::endl;
+	    	return (EXIT_SUCCESS);
+	    }
 	    else if(vm.count("info"))
 	    	mode = Modeselector_t::infomode;
 	    else if(vm.count("histogram"))
 	    	mode = Modeselector_t::histogrammode;
 
-
-	    else if (vm.count("ArgChDet"))
-	          std::cout << "ArgChDet: " << ArgChDet << '\n';
-
-    const bool MonitorStatisticEnabled{ArgChMonitor < 4u};
+	    const bool MonitorStatisticEnabled {(vm.count("nomonitor")==1)};
 
     std::cout << "Read file " << ArgFilename << "\n"
               << "# Histogram with " << static_cast<unsigned int>(ArgBins)
@@ -176,14 +166,17 @@ int main(int argc, char *argv[]) {
             << "\n"
             << "# Monitor:   " << static_cast<unsigned int>(QtyMonitorEvents)
             << "\n"
-
             << "# avg SYNC period: " << static_cast<unsigned int>(avg_sync_ns)
             << " ns = " << integermilliseconds(avg_sync_ns) << " ms\n"
             << "# min SYNC period: " << static_cast<unsigned int>(MindSYNC_ns)
             << " ns = " << integermilliseconds(MindSYNC_ns) << " ms\n"
             << "# max SYNC period: " << static_cast<unsigned int>(MaxdSYNC_ns)
-            << " ns = " << integermilliseconds(MaxdSYNC_ns) << " ms"
-            << std::endl;
+            << " ns = " << integermilliseconds(MaxdSYNC_ns) << " ms \n"
+			<< "# MonitorStatistic: ";
+        if (MonitorStatisticEnabled)
+        	std::cout << "enabled\n";
+        else
+        	std::cout << "disabled\n";
     }
 
     if (Modeselector_t::histogrammode == mode) {
