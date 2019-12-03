@@ -95,7 +95,7 @@ int main(int argc, char *argv[]) {
     const bool MonitorStatisticEnabled{
         (vm.count("nomonitor") == 0)};
 
-    std::cout << "Read file " << ArgFilename << "\n"
+    std::cout << "# Read file " << ArgFilename << "\n"
               << "# Histogram with "
               << static_cast<unsigned int>(ArgBins)
               << " bins\n"
