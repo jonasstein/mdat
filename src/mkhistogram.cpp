@@ -185,9 +185,9 @@ int main(int argc, char *argv[]) {
     if (QtySyncEvents < 2) {
         std::cerr
             << "WARNING: Found only "
-            << static_cast<unsigned int>(QtySyncEvents)
+            << QtySyncEvents
             << " SYNC signals on channel "
-            << static_cast<unsigned int>(ArgChSync) << "\n"
+            << ArgChSync << "\n"
             << "WARNING: Expected at least 2 SYNC signals."
             << std::endl;
     } else {
@@ -195,20 +195,19 @@ int main(int argc, char *argv[]) {
 
         std::cout
             << "# Start offset ts: "
-            << static_cast<unsigned int>(StartOffset_ns)
+            << StartOffset_ns
             << "\n"
             << "# Number of events by category:\n"
-            << "# Detector:  "
-            << static_cast<unsigned int>(QtyDetEvents)
+            << "# Detector:  "  << QtyDetEvents
             << "\n"
             << "# Sync:      "
-            << static_cast<unsigned int>(QtySyncEvents)
+            << QtySyncEvents
             << "\n"
             << "# Semaphore: "
-            << static_cast<unsigned int>(QtySemaphoreEvents)
+            << QtySemaphoreEvents
             << "\n"
             << "# Monitor:   "
-            << static_cast<unsigned int>(QtyMonitorEvents)
+            << QtyMonitorEvents
             << "\n"
             << "# avg SYNC period: " << avg_sync_ns
             << " ns = " << integermilliseconds(avg_sync_ns)
@@ -244,11 +243,9 @@ int main(int argc, char *argv[]) {
             if (currentts_ns < StartOffset_ns) {
                 std::cerr
                     << "ERROR: Event with timestamp "
-                    << static_cast<unsigned int>(
-                           currentts_ns)
+                    << currentts_ns
                     << " was earlier than the start time "
-                    << static_cast<unsigned int>(
-                           StartOffset_ns)
+                    << StartOffset_ns
                     << std::endl;
             };
 
