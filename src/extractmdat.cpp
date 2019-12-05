@@ -20,7 +20,6 @@ void printhelp() {
 }
 
 int main(int argc, char *argv[]) {
-
     std::stringstream msgerr(); // thread save cout
 
     if (argc != 2) {
@@ -37,7 +36,6 @@ int main(int argc, char *argv[]) {
             mfile::Lmfile limo(ArgFilename, 0);
 
             limo.convertlistmodefile();
-
             return (EXIT_SUCCESS);
         }
     }
