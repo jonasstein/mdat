@@ -149,33 +149,36 @@ int main(int argc, char *argv[]) {
         currentts_ns = currentts_ns - StartOffset_ns;
 
         if (7 == trigid) {
-            if (ArgChDet == dataid)
+            if ((ArgChDet == dataid) && (0 < QtySyncEvents))
                 QtyDetEvents++;
-            else if (ArgChMonitor == dataid)
+            else if ((ArgChMonitor == dataid) &&
+                     (0 < QtySyncEvents))
                 QtyMonitorEvents++;
-            else if (ArgChSemaphore == dataid)
+            else if ((ArgChSemaphore == dataid) &&
+                     (0 < QtySyncEvents))
                 QtySemaphoreEvents++;
-            else if (ArgChSync == dataid) {
+            else if ((ArgChSync == dataid) &&
+                     (0 == QtySyncEvents)) {
                 QtySyncEvents++;
-                timesincelastsync_ns =
-                    currentts_ns - lastsync_ns;
+                lastsync_ns = currentts_ns;
+            } else if ((ArgChSync == dataid) &&
+                       (0 < QtySyncEvents)) {
+                QtySyncEvents++;
+                timesincelastsync_ns = currentts_ns - lastsync_ns;
                 ChSyncSumts_ns =
                     ChSyncSumts_ns + timesincelastsync_ns;
                 lastsync_ns = currentts_ns;
-                if (lastsync_ns > 0) {
-                    if (Modeselector_t::infomode == mode) {
-                        std::cout << timesincelastsync_ns
-                                  << " ns duration between "
-                                  << lastsync_ns
-                                  << " ns and "
-                                  << currentts_ns << " ns"
-                                  << std::endl;
-                    }
-                    MindSYNC_ns = std::min(
-                        MindSYNC_ns, timesincelastsync_ns);
-                    MaxdSYNC_ns = std::max(
-                        MaxdSYNC_ns, timesincelastsync_ns);
+                if (Modeselector_t::infomode == mode) {
+                    std::cout << timesincelastsync_ns
+                              << " ns duration between "
+                              << lastsync_ns << " ns and "
+                              << currentts_ns << " ns"
+                              << std::endl;
                 }
+                MindSYNC_ns = std::min(
+                    MindSYNC_ns, timesincelastsync_ns);
+                MaxdSYNC_ns = std::max(
+                    MaxdSYNC_ns, timesincelastsync_ns);
             }
 
         } // end of if (7 == trigid)
