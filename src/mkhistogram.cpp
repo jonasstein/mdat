@@ -132,8 +132,8 @@ int main(int argc, char *argv[]) {
     TimestampClass lastsync_ns{0};
     TimestampClass timesincelastsync_ns{0};
 
-    TimestampClass MaxdSYNC_ns{0};
-    TimestampClass MindSYNC_ns{~MaxdSYNC_ns};
+    TimestampClass MaxdSYNC_ns{0x0};
+    TimestampClass MindSYNC_ns{0xFFFFFFFFFFFFFFFF};
 
     Counter_t QtyDetEvents{0};
     Counter_t QtySyncEvents{0};
@@ -184,31 +184,22 @@ int main(int argc, char *argv[]) {
 
     if (QtySyncEvents < 2) {
         std::cerr
-            << "WARNING: Found only "
-            << QtySyncEvents
-            << " SYNC signals on channel "
-            << ArgChSync << "\n"
+            << "WARNING: Found only " << QtySyncEvents
+            << " SYNC signals on channel " << ArgChSync
+            << "\n"
             << "WARNING: Expected at least 2 SYNC signals."
             << std::endl;
     } else {
         avg_sync_ns = ChSyncSumts_ns / (QtySyncEvents - 1);
 
         std::cout
-            << "# Start offset ts: "
-            << StartOffset_ns
+            << "# Start offset ts: " << StartOffset_ns
             << "\n"
             << "# Number of events by category:\n"
-            << "# Detector:  "  << QtyDetEvents
-            << "\n"
-            << "# Sync:      "
-            << QtySyncEvents
-            << "\n"
-            << "# Semaphore: "
-            << QtySemaphoreEvents
-            << "\n"
-            << "# Monitor:   "
-            << QtyMonitorEvents
-            << "\n"
+            << "# Detector:  " << QtyDetEvents << "\n"
+            << "# Sync:      " << QtySyncEvents << "\n"
+            << "# Semaphore: " << QtySemaphoreEvents << "\n"
+            << "# Monitor:   " << QtyMonitorEvents << "\n"
             << "# avg SYNC period: " << avg_sync_ns
             << " ns = " << integermilliseconds(avg_sync_ns)
             << " ms\n"
@@ -238,6 +229,8 @@ int main(int argc, char *argv[]) {
         std::cout << histoDet.binsstring() << std::endl;
         TimestampClass timesincesync_ns{0};
 
+        bool bufferempty{true};
+
         while (ifs >> currentts_ns >> trigid >> dataid >>
                data) {
             if (currentts_ns < StartOffset_ns) {
@@ -245,14 +238,15 @@ int main(int argc, char *argv[]) {
                     << "ERROR: Event with timestamp "
                     << currentts_ns
                     << " was earlier than the start time "
-                    << StartOffset_ns
-                    << std::endl;
+                    << StartOffset_ns << std::endl;
             };
 
             currentts_ns = currentts_ns - StartOffset_ns;
             timesincesync_ns = currentts_ns - lastsync_ns;
 
             if (7 == trigid) {
+                bufferempty = false;
+
                 if (ArgChDet == dataid)
                     histoDet.put(
                         timesincesync_ns); // found a
@@ -274,9 +268,21 @@ int main(int argc, char *argv[]) {
                     }
                     histoDet.clear();
                     histoMon.clear();
+                    bufferempty = true;
                 }
             } // end of if (7 == trigid)
         }     // end of while
+        if (!bufferempty) {
+            std::cout << histoDet.frequencystring()
+                      << std::endl;
+            if (MonitorStatisticEnabled) {
+                std::cout << histoMon.frequencystring()
+                          << std::endl;
+            }
+            histoDet.clear();
+            histoMon.clear();
+            bufferempty = true;
+        }
     }
 
     ifs.close();
