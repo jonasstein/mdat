@@ -18,10 +18,7 @@ using Mode_t    = uint16_t;
 using Counter_t = uint64_t;
 using Bins_t    = uint32_t;
 
-enum class Modeselector_t : uint16_t {
-    infomode      = 1,
-    histogrammode = 2
-};
+enum class Modeselector_t : uint16_t { infomode = 1, histogrammode = 2 };
 Modeselector_t mode{Modeselector_t::infomode};
 
 namespace po = boost::program_options;
@@ -38,40 +35,29 @@ int main(int argc, char *argv[]) {
 
     po::options_description desc{"Options"};
     desc.add_options()("help,h", "Help screen");
-    desc.add_options()("filename,f",
-                       po::value<std::string>(&ArgFilename),
+    desc.add_options()("filename,f", po::value<std::string>(&ArgFilename),
                        "Name of the input file");
-    desc.add_options()(
-        "detector,d",
-        po::value<Channel_t>(&ArgChDet)->default_value(0),
-        "Channel of detector signals  (0..3, default = 0)");
+    desc.add_options()("detector,d",
+                       po::value<Channel_t>(&ArgChDet)->default_value(0),
+                       "Channel of detector signals  (0..3, default = 0)");
 
-    desc.add_options()(
-        "sync,s",
-        po::value<Channel_t>(&ArgChSync)->default_value(1),
-        "Channel of sync signals      (0..3, default = 1)");
-    desc.add_options()(
-        "semaphore,S",
-        po::value<Channel_t>(&ArgChSemaphore)
-            ->default_value(2),
-        "Channel of semaphore signals (0..3, default = 2)");
-    desc.add_options()(
-        "monitor,m",
-        po::value<Channel_t>(&ArgChMonitor)
-            ->default_value(3),
-        "Channel of monitor signals   (0..3, default = 3)");
-    desc.add_options()(
-        "bins,b",
-        po::value<Bins_t>(&ArgBins)->default_value(100),
-        "Number of bins in the histogram  (default = 100)");
-    desc.add_options()(
-        "info,i",
-        "Calculate and print only statistical information");
-    desc.add_options()(
-        "nomonitor,N",
-        "Disable monitor statistics in the histogram");
-    desc.add_options()("histogram",
-                       "Calculate the histogram");
+    desc.add_options()("sync,s",
+                       po::value<Channel_t>(&ArgChSync)->default_value(1),
+                       "Channel of sync signals      (0..3, default = 1)");
+    desc.add_options()("semaphore,S",
+                       po::value<Channel_t>(&ArgChSemaphore)->default_value(2),
+                       "Channel of semaphore signals (0..3, default = 2)");
+    desc.add_options()("monitor,m",
+                       po::value<Channel_t>(&ArgChMonitor)->default_value(3),
+                       "Channel of monitor signals   (0..3, default = 3)");
+    desc.add_options()("bins,b",
+                       po::value<Bins_t>(&ArgBins)->default_value(100),
+                       "Number of bins in the histogram  (default = 100)");
+    desc.add_options()("info,i",
+                       "Calculate and print only statistical information");
+    desc.add_options()("nomonitor,N",
+                       "Disable monitor statistics in the histogram");
+    desc.add_options()("histogram", "Calculate the histogram");
 
     po::command_line_parser parser{argc, argv};
     parser.options(desc).allow_unregistered().style(
@@ -83,40 +69,33 @@ int main(int argc, char *argv[]) {
     notify(vm);
 
     if (vm.count("help")) {
-        std::cout
-            << "mkhistogram by Jonas Stein (2016-2019)\n\n"
-            << desc << std::endl;
+        std::cout << "mkhistogram by Jonas Stein (2016-2019)\n\n"
+                  << desc << std::endl;
         return (EXIT_SUCCESS);
     } else if (vm.count("info"))
         mode = Modeselector_t::infomode;
     else if (vm.count("histogram"))
         mode = Modeselector_t::histogrammode;
 
-    const bool MonitorStatisticEnabled{
-        (vm.count("nomonitor") == 0)};
+    const bool MonitorStatisticEnabled{(vm.count("nomonitor") == 0)};
 
     std::cout << "# Read file " << ArgFilename << "\n"
-              << "# Histogram with "
-              << static_cast<unsigned int>(ArgBins)
+              << "# Histogram with " << static_cast<unsigned int>(ArgBins)
               << " bins\n"
               << "# Configuration of the input channels:\n"
-              << "# ChDet:       "
-              << static_cast<unsigned int>(ArgChDet) << "\n"
-              << "# ChSync:      "
-              << static_cast<unsigned int>(ArgChSync)
+              << "# ChDet:       " << static_cast<unsigned int>(ArgChDet)
               << "\n"
-              << "# ChSemaphore: "
-              << static_cast<unsigned int>(ArgChSemaphore)
+              << "# ChSync:      " << static_cast<unsigned int>(ArgChSync)
               << "\n"
-              << "# ChMonitor:   "
-              << static_cast<unsigned int>(ArgChMonitor)
+              << "# ChSemaphore: " << static_cast<unsigned int>(ArgChSemaphore)
+              << "\n"
+              << "# ChMonitor:   " << static_cast<unsigned int>(ArgChMonitor)
               << std::endl;
 
     std::ifstream ifs(ArgFilename, std::ifstream::in);
 
     if (!ifs) {
-        std::cerr << "ERROR: Could not open file."
-                  << std::endl;
+        std::cerr << "ERROR: Could not open file." << std::endl;
         exit(1);
     }
 
@@ -141,8 +120,7 @@ int main(int argc, char *argv[]) {
     Counter_t QtyMonitorEvents{0};
 
     // calculate mean time between SYNC
-    while (ifs >> currentts_ns >> trigid >> dataid >>
-           data) {
+    while (ifs >> currentts_ns >> trigid >> dataid >> data) {
         if (0 == StartOffset_ns) {
             StartOffset_ns = currentts_ns;
         }
@@ -151,34 +129,25 @@ int main(int argc, char *argv[]) {
         if (7 == trigid) {
             if ((ArgChDet == dataid) && (0 < QtySyncEvents))
                 QtyDetEvents++;
-            else if ((ArgChMonitor == dataid) &&
-                     (0 < QtySyncEvents))
+            else if ((ArgChMonitor == dataid) && (0 < QtySyncEvents))
                 QtyMonitorEvents++;
-            else if ((ArgChSemaphore == dataid) &&
-                     (0 < QtySyncEvents))
+            else if ((ArgChSemaphore == dataid) && (0 < QtySyncEvents))
                 QtySemaphoreEvents++;
-            else if ((ArgChSync == dataid) &&
-                     (0 == QtySyncEvents)) {
+            else if ((ArgChSync == dataid) && (0 == QtySyncEvents)) {
                 QtySyncEvents++;
                 lastsync_ns = currentts_ns;
-            } else if ((ArgChSync == dataid) &&
-                       (0 < QtySyncEvents)) {
+            } else if ((ArgChSync == dataid) && (0 < QtySyncEvents)) {
                 QtySyncEvents++;
                 timesincelastsync_ns = currentts_ns - lastsync_ns;
-                ChSyncSumts_ns =
-                    ChSyncSumts_ns + timesincelastsync_ns;
-                lastsync_ns = currentts_ns;
+                ChSyncSumts_ns       = ChSyncSumts_ns + timesincelastsync_ns;
+                lastsync_ns          = currentts_ns;
                 if (Modeselector_t::infomode == mode) {
-                    std::cout << timesincelastsync_ns
-                              << " ns duration between "
-                              << lastsync_ns << " ns and "
-                              << currentts_ns << " ns"
-                              << std::endl;
+                    std::cout << timesincelastsync_ns << " ns duration between "
+                              << lastsync_ns << " ns and " << currentts_ns
+                              << " ns" << std::endl;
                 }
-                MindSYNC_ns = std::min(
-                    MindSYNC_ns, timesincelastsync_ns);
-                MaxdSYNC_ns = std::max(
-                    MaxdSYNC_ns, timesincelastsync_ns);
+                MindSYNC_ns = std::min(MindSYNC_ns, timesincelastsync_ns);
+                MaxdSYNC_ns = std::max(MaxdSYNC_ns, timesincelastsync_ns);
             }
 
         } // end of if (7 == trigid)
@@ -186,33 +155,25 @@ int main(int argc, char *argv[]) {
     ifs.clear(); // reset EOF flag
 
     if (QtySyncEvents < 2) {
-        std::cerr
-            << "WARNING: Found only " << QtySyncEvents
-            << " SYNC signals on channel " << ArgChSync
-            << "\n"
-            << "WARNING: Expected at least 2 SYNC signals."
-            << std::endl;
+        std::cerr << "WARNING: Found only " << QtySyncEvents
+                  << " SYNC signals on channel " << ArgChSync << "\n"
+                  << "WARNING: Expected at least 2 SYNC signals." << std::endl;
     } else {
         avg_sync_ns = ChSyncSumts_ns / (QtySyncEvents - 1);
 
-        std::cout
-            << "# Start offset ts: " << StartOffset_ns
-            << "\n"
-            << "# Number of events by category:\n"
-            << "# Detector:  " << QtyDetEvents << "\n"
-            << "# Sync:      " << QtySyncEvents << "\n"
-            << "# Semaphore: " << QtySemaphoreEvents << "\n"
-            << "# Monitor:   " << QtyMonitorEvents << "\n"
-            << "# avg SYNC period: " << avg_sync_ns
-            << " ns = " << integermilliseconds(avg_sync_ns)
-            << " ms\n"
-            << "# min SYNC period: " << MindSYNC_ns
-            << " ns = " << integermilliseconds(MindSYNC_ns)
-            << " ms\n"
-            << "# max SYNC period: " << MaxdSYNC_ns
-            << " ns = " << integermilliseconds(MaxdSYNC_ns)
-            << " ms \n"
-            << "# MonitorStatistic: ";
+        std::cout << "# Start offset ts: " << StartOffset_ns << "\n"
+                  << "# Number of events by category:\n"
+                  << "# Detector:  " << QtyDetEvents << "\n"
+                  << "# Sync:      " << QtySyncEvents << "\n"
+                  << "# Semaphore: " << QtySemaphoreEvents << "\n"
+                  << "# Monitor:   " << QtyMonitorEvents << "\n"
+                  << "# avg SYNC period: " << avg_sync_ns
+                  << " ns = " << integermilliseconds(avg_sync_ns) << " ms\n"
+                  << "# min SYNC period: " << MindSYNC_ns
+                  << " ns = " << integermilliseconds(MindSYNC_ns) << " ms\n"
+                  << "# max SYNC period: " << MaxdSYNC_ns
+                  << " ns = " << integermilliseconds(MaxdSYNC_ns) << " ms \n"
+                  << "# MonitorStatistic: ";
         if (MonitorStatisticEnabled)
             std::cout << "enabled\n";
         else
@@ -224,50 +185,39 @@ int main(int argc, char *argv[]) {
 
         lastsync_ns = 0; // set time t0
 
-        histo::Histogram histoDet(ArgBins,
-                                  avg_sync_ns / ArgBins);
-        histo::Histogram histoMon(ArgBins,
-                                  avg_sync_ns / ArgBins);
+        histo::Histogram histoDet(ArgBins, avg_sync_ns / ArgBins);
+        histo::Histogram histoMon(ArgBins, avg_sync_ns / ArgBins);
 
         std::cout << histoDet.binsstring() << std::endl;
         TimestampClass timesincesync_ns{0};
 
         bool bufferempty{true};
 
-        while (ifs >> currentts_ns >> trigid >> dataid >>
-               data) {
+        while (ifs >> currentts_ns >> trigid >> dataid >> data) {
             if (currentts_ns < StartOffset_ns) {
-                std::cerr
-                    << "ERROR: Event with timestamp "
-                    << currentts_ns
-                    << " was earlier than the start time "
-                    << StartOffset_ns << std::endl;
+                std::cerr << "ERROR: Event with timestamp " << currentts_ns
+                          << " was earlier than the start time "
+                          << StartOffset_ns << std::endl;
             };
 
-            currentts_ns = currentts_ns - StartOffset_ns;
+            currentts_ns     = currentts_ns - StartOffset_ns;
             timesincesync_ns = currentts_ns - lastsync_ns;
 
             if (7 == trigid) {
                 bufferempty = false;
 
                 if (ArgChDet == dataid)
-                    histoDet.put(
-                        timesincesync_ns); // found a
-                                           // detector event
+                    histoDet.put(timesincesync_ns); // found a
+                                                    // detector event
                 else if (ArgChMonitor == dataid)
-                    histoMon.put(
-                        timesincesync_ns); // found a
-                                           // monitor event
+                    histoMon.put(timesincesync_ns); // found a
+                                                    // monitor event
                 else if (ArgChSync == dataid)
-                    lastsync_ns =
-                        currentts_ns; // found a SYNC event
+                    lastsync_ns = currentts_ns; // found a SYNC event
                 else if (ArgChSemaphore == dataid) {
-                    std::cout << histoDet.frequencystring()
-                              << std::endl;
+                    std::cout << histoDet.frequencystring() << std::endl;
                     if (MonitorStatisticEnabled) {
-                        std::cout
-                            << histoMon.frequencystring()
-                            << std::endl;
+                        std::cout << histoMon.frequencystring() << std::endl;
                     }
                     histoDet.clear();
                     histoMon.clear();
@@ -276,11 +226,9 @@ int main(int argc, char *argv[]) {
             } // end of if (7 == trigid)
         }     // end of while
         if (!bufferempty) {
-            std::cout << histoDet.frequencystring()
-                      << std::endl;
+            std::cout << histoDet.frequencystring() << std::endl;
             if (MonitorStatisticEnabled) {
-                std::cout << histoMon.frequencystring()
-                          << std::endl;
+                std::cout << histoMon.frequencystring() << std::endl;
             }
             histoDet.clear();
             histoMon.clear();

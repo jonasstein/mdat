@@ -48,8 +48,7 @@ class Lmfile {
     uint64_t       read64bit();
 
   public:
-    Lmfile(const std::string mypath,
-           uint8_t           verbositylevel);
+    Lmfile(const std::string mypath, uint8_t verbositylevel);
     virtual ~Lmfile();
     void                  convertlistmodefile();
     filesize_t            getposition();

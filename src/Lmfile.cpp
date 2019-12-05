@@ -14,25 +14,20 @@
 namespace mfile {
 
 Lmbuffer::Lmbuffer(std::vector<uint16_t> rawbuffer) {
-    this->bufferlengthinwords =
-        bitslicer::byteswap(rawbuffer[0]);
-    this->buffertype = bitslicer::byteswap(rawbuffer[1]);
-    this->headerlengthinwords =
-        bitslicer::byteswap(rawbuffer[2]);
-    this->buffernumber = bitslicer::byteswap(rawbuffer[3]);
-    this->runid        = bitslicer::byteswap(rawbuffer[4]);
-    this->mcpdid =
-        (bitslicer::byteswap(rawbuffer[5]) & (0xFF00)) >> 8;
-    this->status =
-        bitslicer::byteswap(rawbuffer[5]) & (0x00FF);
+    this->bufferlengthinwords = bitslicer::byteswap(rawbuffer[0]);
+    this->buffertype          = bitslicer::byteswap(rawbuffer[1]);
+    this->headerlengthinwords = bitslicer::byteswap(rawbuffer[2]);
+    this->buffernumber        = bitslicer::byteswap(rawbuffer[3]);
+    this->runid               = bitslicer::byteswap(rawbuffer[4]);
+    this->mcpdid = (bitslicer::byteswap(rawbuffer[5]) & (0xFF00)) >> 8;
+    this->status = bitslicer::byteswap(rawbuffer[5]) & (0x00FF);
 
     uint16_t htsLow  = bitslicer::byteswap(rawbuffer[6]);
     uint16_t htsMid  = bitslicer::byteswap(rawbuffer[7]);
     uint16_t htsHigh = bitslicer::byteswap(rawbuffer[8]);
 
     this->headertimestamp_ns =
-        bitslicer::LowMidHigh(htsLow, htsMid, htsHigh) *
-        100;
+        bitslicer::LowMidHigh(htsLow, htsMid, htsHigh) * 100;
 }
 
 Lmbuffer::~Lmbuffer() {}
@@ -51,18 +46,14 @@ TimestampClass Lmbuffer::getheadertimestamp_ns() {
 
 uint16_t Lmbuffer::getrunid() { return (this->runid); }
 
-Lmfile::Lmfile(std::string const mypath,
-               uint8_t           myverbositylevel)
-    : ifs(mypath,
-          std::ifstream::ate | std::ifstream::binary),
-      filesize(0), firsttimestamp_ns(0),
-      verbositylevel(myverbositylevel) {
+Lmfile::Lmfile(std::string const mypath, uint8_t myverbositylevel)
+    : ifs(mypath, std::ifstream::ate | std::ifstream::binary), filesize(0),
+      firsttimestamp_ns(0), verbositylevel(myverbositylevel) {
 
     filesize = std::filesystem::file_size(mypath);
 
     if (filesize < 134) {
-        std::cerr << "Size of file: " << filesize
-                  << " Bytes. \n";
+        std::cerr << "Size of file: " << filesize << " Bytes. \n";
         throw std::runtime_error{error_003_filetoosmall};
     }
     ifs.seekg(0, ifs.beg);
@@ -85,22 +76,18 @@ uint64_t Lmfile::getsortedevent() {
     ifs.read(reinterpret_cast<char *>(&Mid), 2);
     ifs.read(reinterpret_cast<char *>(&High), 2);
 
-    return (bitslicer::LowMidHigh(
-        bitslicer::byteswap(Low), bitslicer::byteswap(Mid),
-        bitslicer::byteswap(High)));
+    return (bitslicer::LowMidHigh(bitslicer::byteswap(Low),
+                                  bitslicer::byteswap(Mid),
+                                  bitslicer::byteswap(High)));
 }
 
 filesize_t Lmfile::getposition() { return (ifs.tellg()); }
 
 void Lmfile::convertlistmodefile() {
     this->jumpbehindfileheader();
-    std::cerr << "\n getposition:" << this->getposition()
-              << "\n"
-              << std::endl;
+    std::cerr << "\n getposition:" << this->getposition() << "\n" << std::endl;
     this->readheadersignature();
-    std::cerr << "\n getposition:" << this->getposition()
-              << "\n"
-              << std::endl;
+    std::cerr << "\n getposition:" << this->getposition() << "\n" << std::endl;
     std::vector<uint16_t> bhwords;
     uint16_t              numberofevents{0};
     TimestampClass        bufferoffset_ns{0};
@@ -109,15 +96,14 @@ void Lmfile::convertlistmodefile() {
         bhwords = this->getbufferheader();
 
         mfile::Lmbuffer mybuffer{bhwords};
-        numberofevents =
-            (mybuffer.getbufferlengthinwords() -
-             mybuffer.getheaderlengthinwords()) /
-            3;
+        numberofevents = (mybuffer.getbufferlengthinwords() -
+                          mybuffer.getheaderlengthinwords()) /
+                         3;
         bufferoffset_ns = mybuffer.getheadertimestamp_ns();
 
         for (uint16_t i = 0; i < numberofevents; i++) {
-            mevent::Mdatevent myevent = mevent::Mdatevent(
-                this->getsortedevent(), bufferoffset_ns);
+            mevent::Mdatevent myevent =
+                mevent::Mdatevent(this->getsortedevent(), bufferoffset_ns);
             std::cout << myevent.printevent() << std::endl;
         }
         this->readbuffersignature();
@@ -149,11 +135,10 @@ void Lmfile::jumpbehindfileheader() {
     std::getline(ifs,
                  thisline); // header length: nnnnn lines
     uint64_t    numberofheaderlines = thisline.find(": ");
-    std::string sustri              = thisline.substr(
-        numberofheaderlines + 1, numberofheaderlines + 4);
+    std::string sustri =
+        thisline.substr(numberofheaderlines + 1, numberofheaderlines + 4);
 
-    uint64_t fileHeaderLength =
-        std::stoi(sustri, nullptr, 10);
+    uint64_t fileHeaderLength = std::stoi(sustri, nullptr, 10);
 
     std::string commentline;
     for (auto i = 2; i < fileHeaderLength; ++i) {
@@ -186,16 +171,10 @@ void Lmfile::setverbosity(uint8_t myverbositylevel) {
     this->verbositylevel = myverbositylevel;
 }
 
-uint8_t Lmfile::getverbosity() {
-    return (this->verbositylevel);
-}
+uint8_t Lmfile::getverbosity() { return (this->verbositylevel); }
 
-filesize_t Lmfile::getfilesize() {
-    return (this->filesize);
-}
+filesize_t Lmfile::getfilesize() { return (this->filesize); }
 
-filesize_t Lmfile::getbytestillEOF() {
-    return (this->filesize - ifs.tellg());
-}
+filesize_t Lmfile::getbytestillEOF() { return (this->filesize - ifs.tellg()); }
 
 } /* namespace mfile */

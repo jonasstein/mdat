@@ -8,8 +8,7 @@
 #include <type_traits>
 
 namespace mevent {
-template <typename E>
-constexpr auto to_underlying(E e) noexcept {
+template <typename E> constexpr auto to_underlying(E e) noexcept {
     return (static_cast<std::underlying_type_t<E>>(e));
 }
 
@@ -65,8 +64,7 @@ class Mdatevent {
 
   public:
     Mdatevent();
-    Mdatevent(uint64_t       sortedevent,
-              TimestampClass myBufferTimestamp_ns);
+    Mdatevent(uint64_t sortedevent, TimestampClass myBufferTimestamp_ns);
 
     virtual ~Mdatevent();
 

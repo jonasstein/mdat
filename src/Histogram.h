@@ -17,8 +17,7 @@ class Histogram {
     TimestampClass              switchingperiod;
 
   public:
-    Histogram(uint64_t       TheNumberOfBins,
-              TimestampClass binwidth);
+    Histogram(uint64_t TheNumberOfBins, TimestampClass binwidth);
     virtual ~Histogram();
     void                        put(TimestampClass &Event);
     void                        clear();
