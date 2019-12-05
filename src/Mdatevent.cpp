@@ -60,9 +60,8 @@ Mdatevent::~Mdatevent() {}
 
 IDClass getEventID(uint64_t rawinteger) {
     switch (rawinteger) {
-    case 0: {
+    case 0:
         return (mevent::IDClass::neutron);
-    }
     default:
         return (mevent::IDClass::trigger);
     }
@@ -70,56 +69,41 @@ IDClass getEventID(uint64_t rawinteger) {
 
 TrigIDClass getTrigID(uint64_t rawinteger) {
     switch (rawinteger) {
-    case 1: {
+    case 1:
         return (mevent::TrigIDClass::Timer1);
-    }
-    case 2: {
+    case 2:
         return (mevent::TrigIDClass::Timer2);
-    }
-    case 3: {
+    case 3:
         return (mevent::TrigIDClass::Timer3);
-    }
-    case 4: {
+    case 4:
         return (mevent::TrigIDClass::Timer4);
-    }
-    case 5: {
+    case 5:
         return (mevent::TrigIDClass::RearTTL1);
-    }
-    case 6: {
+    case 6:
         return (mevent::TrigIDClass::RearTTL2);
-    }
-    default: {
+    default:
         return (mevent::TrigIDClass::CmpReg);
-    }
     }
 }
 
 DataIDClass getDataID(uint64_t rawinteger) {
     switch (rawinteger) {
-    case 0: {
+    case 0:
         return (mevent::DataIDClass::Monitor1);
-    }
-    case 1: {
+    case 1:
         return (mevent::DataIDClass::Monitor2);
-    }
-    case 2: {
+    case 2:
         return (mevent::DataIDClass::Monitor3);
-    }
-    case 3: {
+    case 3:
         return (mevent::DataIDClass::Monitor4);
-    }
-    case 4: {
+    case 4:
         return (mevent::DataIDClass::RearTTL1);
-    }
-    case 5: {
+    case 5:
         return (mevent::DataIDClass::RearTTL2);
-    }
-    case 6: {
+    case 6:
         return (mevent::DataIDClass::ADC1);
-    }
-    default: {
+    default:
         return (mevent::DataIDClass::ADC2);
-    }
     }
 }
 
