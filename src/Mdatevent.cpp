@@ -1,10 +1,35 @@
+//==============================================
+// Name        : Mdatevent.cpp
+// Author      : Jonas Stein
+// Description : Class Mdatevent provides a full
+//               set of member functions and
+//               data types to parse and print
+//               neutron and trigger events
+//==============================================
 #include "Mdatevent.h"
-#include "../src/Timestamps.h"
 #include "Bitslicer.h"
+#include "Timestamps.h"
 #include <cstdint>  // int8_t
 #include <iostream> // std::cout
 #include <sstream>
 #include <string>
+
+/*
+ * Neutron events
+ *  ID         = event[0] = 0   1 Bit
+ *  ModID      = event[1..3]    3 Bit
+ *  SlotID     = event[4..8]    5 Bit
+ *  Amplitude  = event[9..18]  10 Bit
+ *  Position   = event[19..28] 10 Bit
+ *  Timestamp  = event[29..47] 19 Bit
+ *
+ * Trigger events
+ *  ID         = event[0] = 1   1 Bit
+ *  TrigID     = event[1..3]    3 Bit
+ *  DataID     = event[4..7]    4 Bit
+ *  Data       = event[8..28]  21 Bit
+ *  Timestamp  = event[29..47] 19 Bit
+ */
 
 namespace mevent {
 
@@ -157,21 +182,3 @@ std::string Mdatevent::printevent(void) {
 }
 
 } /* namespace mevent */
-
-/*
- * Neutron events
- * ID         = event[0] = 0   1 Bit
- * ModID      = event[1..3]    3 Bit
- * SlotID     = event[4..8]    5 Bit
- * Amplitude  = event[9..18]  10 Bit
- * Position  = event[19..28] 10 Bit
- * Timestamp  = event[29..47] 19 Bit
- *
- *
- * Trigger events
- * ID         = event[0] = 1   1 Bit
- * TrigID     = event[1..3]    3 Bit
- * DataID     = event[4..7]    4 Bit
- * Data       = event[8..28]  21 Bit
- * Timestamp  = event[29..47] 19 Bit
- */

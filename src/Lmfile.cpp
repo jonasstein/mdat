@@ -1,3 +1,11 @@
+//==============================================
+// Name        : Lmfile.cpp
+// Author      : Jonas Stein
+// Description : Class to read, split and parse
+//               the bits from binary mesytec
+//               list mode files
+//==============================================
+
 #include "Lmfile.h"
 #include "Bitslicer.h"
 #include "Mdatevent.h"

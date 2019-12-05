@@ -1,3 +1,9 @@
+//==============================================
+// Name        : Lmfile.h
+// Author      : Jonas Stein
+// Description : Interface for Lmfile.cpp
+//==============================================
+
 #ifndef LMFILE_H_
 #define LMFILE_H_
 

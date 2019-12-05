@@ -1,3 +1,9 @@
+//==============================================
+// Name        : Timestamps.h
+// Author      : Jonas Stein
+// Description : Provide unified timestamp type
+//==============================================
+
 #ifndef SRC_GLOBALTYPES_H_
 #define SRC_GLOBALTYPES_H_
 

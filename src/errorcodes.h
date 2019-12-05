@@ -1,3 +1,8 @@
+//==============================================
+// Name        : errorcodes.h
+// Author      : Jonas Stein
+// Description : Printable error messages
+//==============================================
 #ifndef SRC_ERRORCODES_H_
 #define SRC_ERRORCODES_H_
 

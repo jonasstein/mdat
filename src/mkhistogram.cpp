@@ -1,3 +1,23 @@
+//==============================================
+// Name        : mkhistogram.cpp
+// Author      : Jonas Stein
+// Description : Main program to generate
+//               histogram like structured files
+//               from extracted list mode data.
+//
+// Options:
+//  -h [ --help ]               Help screen
+//  -f [ --filename ] arg       Name of the input file
+//  -d [ --detector ] arg (=0)  Channel of detector signals  (0..3, default = 0)
+//  -s [ --sync ] arg (=1)      Channel of sync signals      (0..3, default = 1)
+//  -S [ --semaphore ] arg (=2) Channel of semaphore signals (0..3, default = 2)
+//  -m [ --monitor ] arg (=3)   Channel of monitor signals   (0..3, default = 3)
+//  -b [ --bins ] arg (=100)    Number of bins in the histogram  (default = 100)
+//  -i [ --info ]               Calculate and print only statistical information
+//  -N [ --nomonitor ]          Disable monitor statistics in the histogram
+//  --histogram                 Calculate the histogram
+//==============================================
+
 #include "Histogram.h"
 #include "Timestamps.h"
 #include <algorithm> //std::min

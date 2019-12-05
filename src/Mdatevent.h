@@ -1,3 +1,9 @@
+//==============================================
+// Name        : Mdatevent.h
+// Author      : Jonas Stein
+// Description : Interface for Mdatevent.cpp
+//==============================================
+
 #ifndef SRC_MDATEVENT_H_
 #define SRC_MDATEVENT_H_
 
