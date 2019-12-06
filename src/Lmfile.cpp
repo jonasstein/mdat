@@ -92,9 +92,7 @@ filesize_t Lmfile::getposition() { return (ifs.tellg()); }
 
 void Lmfile::convertlistmodefile() {
     this->jumpbehindfileheader();
-    std::cerr << "\n getposition:" << this->getposition() << "\n" << std::endl;
     this->readheadersignature();
-    std::cerr << "\n getposition:" << this->getposition() << "\n" << std::endl;
     std::vector<uint16_t> bhwords;
     uint16_t              numberofevents{0};
     TimestampClass        bufferoffset_ns{0};

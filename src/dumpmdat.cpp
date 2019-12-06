@@ -1,5 +1,5 @@
 //==============================================
-// Name        : extractmdat.cpp
+// Name        : dumpmdat.cpp
 // Author      : Jonas Stein
 // Description : Extract events with timestamps
 //               from binary mdat files

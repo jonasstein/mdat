@@ -35,10 +35,10 @@ add_library(Mdatevent SHARED Mdatevent.cpp)
 add_library(Lmfile SHARED Lmfile.cpp)
 target_link_libraries(Mdatevent Bitslicer Timestamps)
 target_link_libraries(Lmfile Bitslicer Mdatevent Timestamps)
-add_executable(qmrdump extractmdat.cpp)
+add_executable(dumpmdat dumpmdat.cpp)
 
 
 add_executable(timeshift timeshift.cpp)
 target_link_libraries(timeshift Timestamps)
 
-target_link_libraries(qmrdump LINK_PUBLIC ${Boost_LIBRARIES} Mdatevent Lmfile Bitslicer)
+target_link_libraries(dumpmdat LINK_PUBLIC ${Boost_LIBRARIES} Mdatevent Lmfile Bitslicer)
