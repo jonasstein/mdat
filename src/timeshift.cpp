@@ -34,7 +34,7 @@ int main(int argc, char *argv[]) {
     } else {
         std::cerr << "Error: Could not read data from pipe."
                   << "\n";
-        exit(3);
+        return(3);
     }
     return (EXIT_SUCCESS);
 }

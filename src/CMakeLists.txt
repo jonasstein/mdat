@@ -41,4 +41,7 @@ add_executable(dumpmdat dumpmdat.cpp)
 add_executable(timeshift timeshift.cpp)
 target_link_libraries(timeshift Timestamps)
 
+
+add_executable(slicemdat slicemdat.cpp)
+
 target_link_libraries(dumpmdat LINK_PUBLIC ${Boost_LIBRARIES} Mdatevent Lmfile Bitslicer)
