@@ -57,7 +57,6 @@ uint16_t Lmbuffer::getrunid() { return (this->runid); }
 Lmfile::Lmfile(std::string const mypath, uint8_t myverbositylevel)
     : ifs(mypath, std::ifstream::ate | std::ifstream::binary), filesize(0),
       firsttimestamp_ns(0), verbositylevel(myverbositylevel) {
-
     filesize = std::filesystem::file_size(mypath);
 
     if (filesize < 134) {
