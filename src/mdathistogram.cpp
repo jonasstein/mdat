@@ -1,5 +1,5 @@
 //==============================================
-// Name        : mkhistogram.cpp
+// Name        : mdathistogram.cpp
 // Author      : Jonas Stein
 // Description : Main program to generate
 //               histogram like structured files
@@ -60,7 +60,6 @@ int main(int argc, char *argv[]) {
     desc.add_options()("detector,d",
                        po::value<Channel_t>(&ArgChDet)->default_value(0),
                        "Channel of detector signals  (0..3, default = 0)");
-
     desc.add_options()("sync,s",
                        po::value<Channel_t>(&ArgChSync)->default_value(1),
                        "Channel of sync signals      (0..3, default = 1)");
@@ -116,7 +115,7 @@ int main(int argc, char *argv[]) {
 
     if (!ifs) {
         std::cerr << "ERROR: Could not open file." << std::endl;
-        exit(1);
+        return (1);
     }
 
     TimestampClass StartOffset_ns{0};

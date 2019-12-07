@@ -20,7 +20,7 @@ int main(int argc, char *argv[]) {
     uint32_t       data{0}; // counter 0 .. 2^19-1
 
     if (std::cin >> currentts_ns >> trigid >> dataid >> data) {
-    	// read the timestamp from the first line
+        // read the timestamp from the first line
         StartOffset_ns = currentts_ns;
         std::cout << " " << currentts_ns - StartOffset_ns << " " << trigid
                   << " " << dataid << " " << data << "\n";
@@ -34,7 +34,7 @@ int main(int argc, char *argv[]) {
     } else {
         std::cerr << "Error: Could not read data from pipe."
                   << "\n";
-        return(3);
+        return (3);
     }
     return (EXIT_SUCCESS);
 }

@@ -44,4 +44,5 @@ target_link_libraries(mdatshift Timestamps)
 
 
 add_executable(mdatslice mdatslice.cpp)
+target_link_libraries(mdatslice LINK_PUBLIC ${Boost_LIBRARIES})
 
