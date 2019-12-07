@@ -9,7 +9,8 @@ SCRIPTPATH=`dirname ${SCRIPT}`
 BINPATH=${SCRIPTPATH}/src
 
 
-(cp ${BINPATH}/mkhistogram /usr/local/bin) && \
-(cp ${BINPATH}/dumpmdat /usr/local/bin) && \
-(cp ${BINPATH}/timeshift /usr/local/bin)  
+(cp ${BINPATH}/mdathistogram /usr/local/bin) && \
+(cp ${BINPATH}/mdatdump /usr/local/bin) && \
+(cp ${BINPATH}/mdataddtof.pl /usr/local/bin) && \
+(cp ${BINPATH}/mdatshift /usr/local/bin)  
 
