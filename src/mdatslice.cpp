@@ -15,7 +15,7 @@ int main(int argc, char *argv[]) {
 
     Channel_t ArgTrigID{7};
     Channel_t ArgDataID{1};
-    Channel_t ArgKeep{1};
+    Channel_t ArgKeep{9};
     Counter_t ArgStart{7};
     Counter_t ArgEnd{7};
 
@@ -32,8 +32,8 @@ int main(int argc, char *argv[]) {
                        po::value<Channel_t>(&ArgDataID)->default_value(1),
                        "DataID of the events which mark start and end (0..7)");
     desc.add_options()("keep,k",
-                       po::value<Channel_t>(&ArgKeep)->default_value(1),
-                       "DataID of trigger events to keep (0..7)");
+                       po::value<Channel_t>(&ArgKeep)->default_value(9),
+                       "DataID of trigger events to keep");
     desc.add_options()("start,m",
                        po::value<Counter_t>(&ArgStart)->default_value(1),
                        "Slice starts at the m-th event with the given DataID");
