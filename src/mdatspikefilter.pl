@@ -15,7 +15,7 @@ my $numArgs = @ARGV;
 if ($numArgs!=9)
 {
   printf("Expected 9 arguments, got %d\n Usage: \n 
-	  autofilter <ChDet> <ChSync> <ChSemaphore> <ChMonitor> <Period ns> <filename> <outfile>\n",$numArgs);
+	  mdatspikefilter <ChDet> <ChSync> <ChSemaphore> <ChMonitor> <Period ns> <startSpike> <endSpike> <filename> <outfile>\n",$numArgs);
   exit(1);
 }
 
