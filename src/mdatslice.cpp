@@ -39,6 +39,7 @@ int main(int argc, char *argv[]) {
                        "Slice starts at the m-th event with the given DataID");
     desc.add_options()("end,n", po::value<Counter_t>(&ArgEnd)->default_value(2),
                        "Slice ends at the n-th event with the given DataID");
+    desc.add_options()("autoend,a", "Slice ends automatically at the last event.");
     po::command_line_parser parser{argc, argv};
     parser.options(desc).allow_unregistered().style(
         po::command_line_style::default_style);
@@ -56,10 +57,6 @@ int main(int argc, char *argv[]) {
 
     std::ifstream ifs(ArgFilename, std::ifstream::in);
 
-    if (ArgStart > ArgEnd){
-    	std::cerr << "ERROR: Cannot proceed with Start < End.\n";
-    	return (1);
-    }
 
     if (!ifs) {
         std::cerr << "ERROR: Could not open file." << std::endl;
@@ -80,6 +77,26 @@ int main(int argc, char *argv[]) {
     bool endmarkerwasfound{false};
 
     Counter_t occurence{0};
+
+    while (ifs >> currentts_ns >> trigid >> dataid >> data) {
+            ismarker = ((ArgTrigID == trigid) && (ArgDataID == dataid));
+            if (ismarker)
+            	occurence++;
+    }
+    ifs.clear(); // reset EOF flag
+    ifs.seekg(0, ifs.beg); // go to file start again
+
+    if (vm.count("autoend")) {
+    	ArgEnd = occurence;
+    }
+
+    if (ArgStart > ArgEnd){
+        	std::cerr << "ERROR: Cannot proceed with Start < End.\n";
+        	return (1);
+        }
+
+
+    occurence = 0;
 
     while (ifs >> currentts_ns >> trigid >> dataid >> data) {
         ismarker = ((ArgTrigID == trigid) && (ArgDataID == dataid));
@@ -106,7 +123,6 @@ int main(int argc, char *argv[]) {
             std::cout << currentts_ns << " " << trigid << " " << dataid << " "
                       << data << "\n";
         }
-
     }
 
     ifs.close();
