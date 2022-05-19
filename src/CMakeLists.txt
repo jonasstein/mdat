@@ -21,8 +21,6 @@ FIND_PACKAGE( Boost 1.71 COMPONENTS program_options REQUIRED )
 INCLUDE_DIRECTORIES( ${Boost_INCLUDE_DIR} )
 
 
-
-
 # add_library(Histolong SHARED histolong.cpp)
 add_library(Histogram SHARED Histogram.cpp)
 add_executable(mdathistogram mdathistogram.cpp)
@@ -45,4 +43,7 @@ target_link_libraries(mdatshift Timestamps)
 
 add_executable(mdatslice mdatslice.cpp)
 target_link_libraries(mdatslice LINK_PUBLIC ${Boost_LIBRARIES})
+
+add_executable(mdatsyncchecker mdatsyncchecker.cpp)
+target_link_libraries(mdatsyncchecker LINK_PUBLIC ${Boost_LIBRARIES})
 

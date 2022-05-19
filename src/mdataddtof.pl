@@ -1,7 +1,7 @@
 #!/usr/bin/perl
 
-# one could subtract TOF from ChDet, but times could get negative and it would result in more calculations
-# better, and used here: add TOF to ChSync and ChSemaphore.
+# ChDet - TOF can result in negative times, requires signed integers and needs more calculations
+# better: add TOF to ChSync and ChSemaphore.
 # Ignore ChMonitor
 
 use strict;
@@ -12,7 +12,7 @@ my $numArgs = @ARGV;
 if ($numArgs!=6)
 {
   printf("Expected 6 arguments, got %d\n Usage: \n 
-	  addtof <ChDet> <ChSync> <ChSemaphore> <ChMonitor> <filename> <TOF sample..det (ns)>\n",$numArgs);
+	  mdataddtof <ChDet> <ChSync> <ChSemaphore> <ChMonitor> <filename> <TOF sample..det (ns)>\n",$numArgs);
   printf("Sort events afterwards.");
   exit(1);
 }
